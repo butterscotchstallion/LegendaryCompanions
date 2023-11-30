@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="6" build="5" />
+	<region id="Templates">
+		<node id="Templates">
+			<children>
+				<!-- Gith'zerai -->
+				<node id="GameObjects">
+					<!--
+					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
+					<attribute id="AnubisConfigName" type="FixedString" value="PLA_GithRaider" />
+					<attribute id="Archetype" type="FixedString" value="melee_smart" />
+					<attribute id="CharacterVisualResourceID" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191" />
+					<attribute id="CombatGroupID" type="FixedString" value="fc52998f-783d-b3ab-e533-bc914db98c7a" />
+					<attribute id="IsLootable" type="bool" value="True" />
+					<attribute id="SoftBodyCollisionTemplate" type="FixedString" value="4350b66a-f56a-4f2a-9c60-b5a56609afa4" />
+					<attribute id="GeneratePortrait" type="LSString" value="Icon_Githyanki_Male" />
+					-->
+					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
+					<attribute id="Archetype" type="FixedString" value="melee_smart" />
+					<attribute id="CharacterVisualResourceID" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191" />
+					<attribute id="DisplayName" type="TranslatedString" handle="he9970b22gfd51g418cgb50agfa567ac24fd2" version="1" />
+					<attribute id="Equipment" type="FixedString" value="EQP_Longsword_HalfPlate_Gith" />
+					<attribute id="Icon" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191-EQP_Longsword_HalfPlate_Gith_(Icon_Githyanki_Male)" />
+					<attribute id="MapKey" type="FixedString" value="b0c13825-1346-4e9e-b43a-5f54de1577a0" />
+					<attribute id="ParentTemplateId" type="FixedString" value="366bca00-1c0c-4fba-bb1c-45c6ae20d691" />
+					<attribute id="Name" type="LSString" value="LC_githzerai_raider" />
+					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
+					<attribute id="Type" type="FixedString" value="character" />
+					<children>
+						<node id="ItemList" />
+						<node id="LayerList">
+							<children>
+								<node id="Layers">
+									<children>
+										<node id="Object">
+											<attribute id="MapKey" type="FixedString" value="WLD_Main_A" />
+											<children>
+												<node id="Layer">
+													<attribute id="Object" type="guid" value="bac39da5-c70e-e89a-3c95-9dd955ad660c" />
+												</node>
+												<node id="Layer">
+													<attribute id="Object" type="guid" value="ee769ffe-b0ae-c949-eba7-f5f692fa23b7" />
+												</node>
+												<node id="Layer">
+													<attribute id="Object" type="guid" value="67e0889c-19e7-3231-97ba-82e90c1b8946" />
+												</node>
+											</children>
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+						<node id="LocomotionParams" />
+						<node id="SkillList">
+							<children>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="2" />
+									<attribute id="Skill" type="FixedString" value="Target_MistyStep_Githyanki" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="2" />
+									<attribute id="Skill" type="FixedString" value="Target_ShockingGrasp" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="1" />
+									<attribute id="Skill" type="FixedString" value="Projectile_RayOfFrost" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="2" />
+									<attribute id="Skill" type="FixedString" value="Zone_BurningHands" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="2" />
+									<attribute id="Skill" type="FixedString" value="Target_HoldPerson" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+								<node id="Skill">
+									<attribute id="AIFlags" type="uint16" value="0" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="LearningStrategy" type="uint8" value="0" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="2" />
+									<attribute id="Skill" type="FixedString" value="Target_Blindness" />
+									<attribute id="SpellCastingAbility" type="uint8" value="0" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+						<node id="Transform">
+							<attribute id="Position" type="fvec3" value="-143.576 24.37095 562.9485" />
+							<attribute id="RotationQuat" type="fvec4" value="0 0.9932133 0 0.1163069" />
+							<attribute id="Scale" type="float" value="1" />
+						</node>
+					</children>
+				</node>
+				<node id="GameObjects"> BOOK_LC_Githzerai_TornPage_01
+					<attribute id="DisplayName" type="TranslatedString" handle="h18eb2fe6g78dbg4515gb031g9b5265d9fc49" version="1" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="92d5930c-8ce3-4552-b3c2-ba4c6eaef58e" />
+					<attribute id="Name" type="LSString" value="BOOK_LC_Githzerai_TornPage_01" />
+					<!--
+					<attribute id="ParentTemplateId" type="FixedString" value="3596708b-11b0-44f2-8f40-8073d2cf0084" />
+					-->
+					<attribute id="ParentTemplateId" type="FixedString" value="1a750a66-e5c2-40be-9f62-0a4bf3ddb403" />
+					<attribute id="Stats" type="FixedString" value="BOOK_LC_Githzerai_TornPage_01" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<children>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="23" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="CombineSlots" type="int8" value="1" />
+											<attribute id="IsBase" type="bool" value="True" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+				<node id="GameObjects"> BOOK_LC_Githzerai_TornPage_02
+					<attribute id="DisplayName" type="TranslatedString" handle="h32885304g6fe4g4024g8590gba73f192028f" version="1" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="cf401d6d-e820-47ff-b8fe-328163edcff8" />
+					<attribute id="Name" type="LSString" value="BOOK_LC_Githzerai_TornPage_02" />
+					<!--
+					<attribute id="ParentTemplateId" type="FixedString" value="3596708b-11b0-44f2-8f40-8073d2cf0084" />
+					-->
+					<attribute id="ParentTemplateId" type="FixedString" value="1a750a66-e5c2-40be-9f62-0a4bf3ddb403" />
+					<attribute id="Stats" type="FixedString" value="BOOK_LC_Githzerai_TornPage_02" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<children>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="23" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="CombineSlots" type="int8" value="1" />
+											<attribute id="IsBase" type="bool" value="True" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+				<node id="GameObjects"> LC_Githzerai_Combined_Tome
+					<attribute id="MapKey" type="FixedString" value="f982c800-c772-43db-97e7-9d2d5cf8e3ae"/>
+					<attribute id="DisplayName" type="TranslatedString" handle="haa854579g9f4bg414bg9e82gdf9556ab6607" version="1"/>
+					<attribute id="Name" type="LSString" value="LC_Githzerai_Combined_Tome"/>
+					<attribute id="LevelName" type="FixedString" value=""/>
+					<attribute id="Type" type="FixedString" value="item"/>
+					<attribute id="ParentTemplateId" type="FixedString" value="23f65dff-a1ca-42fb-91ee-4cbb69450336"/>
+					<attribute id="ReadinessFlags" type="uint32" value="12"/>
+					<attribute id="VisualTemplate" type="FixedString" value="2b6edf0d-5ddc-0f16-b13c-c97b553a2518"/>
+					<attribute id="Stats" type="FixedString" value="LC_Githzerai_Combined_Tome" />
+					<children>
+						<node id="Bounds">
+						<children>
+							<node id="Bound">
+								<attribute id="Type" type="uint8" value="1"/>
+								<attribute id="Shape" type="uint8" value="1"/>
+								<attribute id="Min" type="fvec3" value="-0.536167 -0.0410083 -0.304595"/>
+								<attribute id="Max" type="fvec3" value="0.536167 0.111889 0.30139"/>
+								<attribute id="Radius" type="float" value="0.312969"/>
+								<attribute id="Height" type="float" value="0.18436"/>
+							</node>
+							<node id="Bound">
+								<attribute id="Type" type="uint8" value="2"/>
+								<attribute id="Shape" type="uint8" value="1"/>
+								<attribute id="Min" type="fvec3" value="-0.536167 -0.0410083 -0.304595"/>
+								<attribute id="Max" type="fvec3" value="0.536167 0.111889 0.30139"/>
+								<attribute id="Radius" type="float" value="0.312969"/>
+								<attribute id="Height" type="float" value="0.18436"/>
+							</node>
+							<node id="Bound">
+								<attribute id="Type" type="uint8" value="0"/>
+								<attribute id="Shape" type="uint8" value="1"/>
+								<attribute id="Min" type="fvec3" value="-0.2680835 -0.0410083 -0.1522975"/>
+								<attribute id="Max" type="fvec3" value="0.2680835 0.111889 0.150695"/>
+								<attribute id="Radius" type="float" value="0.1564845"/>
+								<attribute id="Height" type="float" value="0.18436"/>
+							</node>
+						</children>
+						</node>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+								<attribute id="ActionType" type="int32" value="11"/>
+								<children>
+									<node id="Attributes">
+									<attribute id="Animation" type="FixedString" value=""/>
+									<attribute id="Conditions" type="LSString" value=""/>
+									<attribute id="BookId" type="FixedString" value="LC_Githzerai_Combined_Tome"/>
+									</node>
+								</children>
+								</node>
+							</children>
+						</node>
+						<node id="OnDestroyActions">
+							<children>
+								<node id="Action">
+								<attribute id="ActionType" type="int32" value="26"/>
+								<children>
+									<node id="Attributes">
+										<attribute id="Animation" type="FixedString" value=""/>
+										<attribute id="Conditions" type="LSString" value=""/>
+										<attribute id="ActivateSoundEvent" type="FixedString" value="3ea82655-5140-4287-9ab8-794559f182d3"/>
+										<attribute id="PlayOnHUD" type="bool" value="False"/>
+									</node>
+								</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+			</children>
+		</node>
+	</region>
+</save>

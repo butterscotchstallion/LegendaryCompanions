@@ -1,0 +1,11 @@
+// LegendaryCompanions chest //
+//new treasuretable "SOTA_ARMORY_CHEST_TT"
+//CanMerge 1
+//new subtable "-1"
+//object category "I_SOTA_TARNISHED_RING_OF_THE_ABSOLUTE",1,0,0,0,0,0,0,0
+
+// Tutorial chest //
+//new treasuretable "TUT_Chest_Potions"
+//CanMerge 1
+//new subtable "-1" //
+//object category "I_SOTA_ARMORY_CHEST",1,0,0,0,0,0,0,0 //
