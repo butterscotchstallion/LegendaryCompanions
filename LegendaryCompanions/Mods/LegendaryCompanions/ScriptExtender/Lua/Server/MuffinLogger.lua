@@ -1,5 +1,5 @@
 MuffinLogger = {}
-local LOG_PREFIX = '[SOTA]'
+local LOG_PREFIX = '[LC]'
 
 function MuffinLogger.log(message, level)
     local fmt_msg = string.format('%s[%s] %s', LOG_PREFIX, level, message)
