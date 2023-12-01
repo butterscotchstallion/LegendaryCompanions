@@ -1,14 +1,18 @@
 // Torn page combos //
 new ItemCombination "LC_Book_Githzerai_TornPage_Combo"
+		// Page 1 //
 		data "Type 1" "Object"
 		data "Object 1" "BOOK_LC_Githzerai_TornPage_01"
-		data "Transform 1" "Transform"
+		data "Transform 1" "Consume"
 		data "Combine 1" "Base"
+		// Page 2 //
 		data "Type 2" "Object"
 		data "Object 2" "BOOK_LC_Githzerai_TornPage_02"
-		data "Transform 2" "Transform"
+		data "Transform 2" "Consume"
 		data "Combine 2" "Base"
 
 new ItemCombinationResult "LC_Book_Githzerai_TornPage_Combo_1"
 		data "ResultAmount 1" "1"
 		data "Result 1" "LC_Githzerai_Combined_Tome"
+		data "PreviewStatsID" "LC_Githzerai_Combined_Tome"
+		data "PreviewIcon" "MAG_Cold_IncreaseColdDamageOnCast_Staff"

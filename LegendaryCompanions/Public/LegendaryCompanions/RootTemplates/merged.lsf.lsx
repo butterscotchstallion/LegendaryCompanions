@@ -230,10 +230,10 @@
 					<attribute id="LevelName" type="FixedString" value="" />
 					<attribute id="MapKey" type="FixedString" value="92d5930c-8ce3-4552-b3c2-ba4c6eaef58e" />
 					<attribute id="Name" type="LSString" value="BOOK_LC_Githzerai_TornPage_01" />
-					<!--
 					<attribute id="ParentTemplateId" type="FixedString" value="3596708b-11b0-44f2-8f40-8073d2cf0084" />
-					-->
+					<!-- Dye
 					<attribute id="ParentTemplateId" type="FixedString" value="1a750a66-e5c2-40be-9f62-0a4bf3ddb403" />
+					-->
 					<attribute id="Stats" type="FixedString" value="BOOK_LC_Githzerai_TornPage_01" />
 					<attribute id="Type" type="FixedString" value="item" />
 					<children>
@@ -258,10 +258,11 @@
 					<attribute id="LevelName" type="FixedString" value="" />
 					<attribute id="MapKey" type="FixedString" value="cf401d6d-e820-47ff-b8fe-328163edcff8" />
 					<attribute id="Name" type="LSString" value="BOOK_LC_Githzerai_TornPage_02" />
-					<!--
 					<attribute id="ParentTemplateId" type="FixedString" value="3596708b-11b0-44f2-8f40-8073d2cf0084" />
-					-->
+
+					<!-- Dye
 					<attribute id="ParentTemplateId" type="FixedString" value="1a750a66-e5c2-40be-9f62-0a4bf3ddb403" />
+					-->
 					<attribute id="Stats" type="FixedString" value="BOOK_LC_Githzerai_TornPage_02" />
 					<attribute id="Type" type="FixedString" value="item" />
 					<children>
@@ -272,7 +273,7 @@
 									<children>
 										<node id="Attributes">
 											<attribute id="Animation" type="FixedString" value="" />
-											<attribute id="CombineSlots" type="int8" value="1" />
+											<attribute id="CombineSlots" type="int8" value="2" />
 											<attribute id="IsBase" type="bool" value="True" />
 										</node>
 									</children>
@@ -283,7 +284,7 @@
 				</node>
 				<node id="GameObjects"> LC_Githzerai_Combined_Tome
 					<attribute id="MapKey" type="FixedString" value="f982c800-c772-43db-97e7-9d2d5cf8e3ae"/>
-					<attribute id="DisplayName" type="TranslatedString" handle="haa854579g9f4bg414bg9e82gdf9556ab6607" version="1"/>
+					<attribute id="DisplayName" type="TranslatedString" handle="hf5517675g944bg4845ga8d9g9343aa69d3e5" version="1"/>
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Combined_Tome"/>
 					<attribute id="LevelName" type="FixedString" value=""/>
 					<attribute id="Type" type="FixedString" value="item"/>
