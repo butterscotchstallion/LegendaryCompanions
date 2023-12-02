@@ -1,4 +1,3 @@
-
 new ItemCombination "LC_gith_torn_page"
 		data "Type 1" "Object"
 		data "Object 1" "BOOK_LC_Githzerai_TornPage_01"
@@ -14,4 +13,4 @@ new ItemCombinationResult "LC_gith_torn_page_1"
 		data "ResultAmount 1" "1"
 		data "Result 1" "BOOK_LC_Githzerai_Combined_Tome_3"
 		data "PreviewStatsID" "BOOK_LC_Githzerai_Combined_Tome_3"
-		data "PreviewIcon" "BOOK_LC_Githzerai_Combined_Tome_3"
+		data "PreviewIcon" "Item_BOOK_GEN_Book_C"
