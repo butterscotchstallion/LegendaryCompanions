@@ -1,5 +1,5 @@
 
-new ItemCombination "rainbow"
+new ItemCombination "LC_gith_torn_page"
 		data "Type 1" "Object"
 		data "Object 1" "BOOK_LC_Githzerai_TornPage_01"
 		data "Combine 1" "Base"
@@ -10,7 +10,7 @@ new ItemCombination "rainbow"
 		data "Combine 2" "Base"
 		data "Transform 2" "Consume"
 
-new ItemCombinationResult "rainbow_1"
+new ItemCombinationResult "LC_gith_torn_page_1"
 		data "ResultAmount 1" "1"
 		data "Result 1" "BOOK_LC_Githzerai_Combined_Tome_3"
 		data "PreviewStatsID" "BOOK_LC_Githzerai_Combined_Tome_3"
