@@ -3,7 +3,9 @@
   <content contentuid="h78e6ba11gea6ag4627g983fg592126b8f047" version="1">Automated</content>
 
   <!-- Gith'zerai -->
-  <content contentuid="he9970b22gfd51g418cgb50agfa567ac24fd2" version="1">Gith'zerai Raider</content>
+  <content contentuid="he9970b22gfd51g418cgb50agfa567ac24fd2" version="1">Gith'zerai Common</content>
+  <content contentuid="h42adc026gce94g4264ga59fg856a3857d2f6" version="1">Gith'zerai Rare</content>
+  <content contentuid="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1">Gith'zerai Legendary</content>
 
   <!-- Torn page 1 -->
   <content contentuid="h18eb2fe6g78dbg4515gb031g9b5265d9fc49" version="1">Torn Page of Gith'zerai Lore 1</content>

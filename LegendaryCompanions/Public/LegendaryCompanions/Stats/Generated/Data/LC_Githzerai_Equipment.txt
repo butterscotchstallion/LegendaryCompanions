@@ -1,0 +1,20 @@
+new equipment "EQP_Githzerai_Common"
+    add initialweaponset "Melee"
+    add equipmentgroup
+    add equipment entry "WPN_Longsword_Gith"
+    add equipmentgroup
+    add equipment entry "ARM_HalfPlate_Body_Githyanki"
+
+new equipment "EQP_Githzerai_Rare"
+    add initialweaponset "Melee"
+    add equipmentgroup
+    add equipment entry "MAG_Fire_AlwaysDippedInFire_Greatsword"
+    add equipmentgroup
+    add equipment entry "ARM_HalfPlate_Body_Githyanki"
+
+new equipment "EQP_Githzerai_Legendary"
+    add initialweaponset "Melee"
+    add equipmentgroup
+    add equipment entry "MAG_GreaterSilver_Greatsword"
+    add equipmentgroup
+    add equipment entry "ARM_HalfPlate_Body_Githyanki"

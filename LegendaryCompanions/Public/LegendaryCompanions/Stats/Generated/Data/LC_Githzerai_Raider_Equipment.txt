@@ -1,6 +1,0 @@
-new equipment "EQP_Longsword_HalfPlate_Gith"
-    add initialweaponset "Melee"
-    add equipmentgroup
-    add equipment entry "WPN_Longsword_Gith"
-    add equipmentgroup
-    add equipment entry "ARM_HalfPlate_Body_Githyanki"

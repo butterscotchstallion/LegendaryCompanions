@@ -2,9 +2,11 @@
 ---------------------LegendaryCompanions-----------------------
 ------------------------------------------------------------------
 Ext.Require('Server/Config.lua')
+Ext.Require('Server/HotStatsReload.lua')
 Ext.Require('Server/SimoLoops.lua')
 Ext.Require('Server/MuffinLogger.lua')
 Ext.Require('Server/SECommands.lua')
+Ext.Require('Server/GithzeraiTemplates.lua')
 Ext.Require('Server/LegendaryCompanions.lua')
 
 local function print_start_up_message()

@@ -13,7 +13,7 @@ function MuffinLogger.log(message, level)
 end
 
 function MuffinLogger.debug(message)
-    if SOTA_LOG_LEVEL == 'DEBUG' then
+    if LC_LOG_LEVEL == 'DEBUG' then
         MuffinLogger.log(message, 'DEBUG')
     end
 end

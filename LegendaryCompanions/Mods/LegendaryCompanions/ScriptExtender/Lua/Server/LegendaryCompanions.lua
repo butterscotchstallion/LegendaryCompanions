@@ -33,10 +33,11 @@ local creatures = {
         }
     },
     --]]
-    -- Githyanki Raider
+    -- Githzerai
     {
-        ['summon_spell'] = 'EC_Summon_Githzerai_Raider',
+        ['summon_spell'] = '',
         ['template_ids'] = {
+            LC_GITHZERAI_COMMON,
             --'b0c13825-1346-4e9e-b43a-5f54de1577a0',
             --'LC_githzerai_raider_b0c13825-1346-4e9e-b43a-5f54de1577a0',
             --'Githyanki_Male_Civilian_e1eedf2d-5b9e-480c-bdd3-6e108e4740e5',
@@ -235,6 +236,7 @@ local function spawn_creature()
     last_spawned_creature_info = get_random_creature_info(creatures)
     local templates = last_spawned_creature_info['template_ids']
     local summon_spell = last_spawned_creature_info['summon_spell']
+
     if #templates > 0 then
         local rnd_creature_tpl_id = templates[math.random(#templates)]
         local x, y, z = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
@@ -271,7 +273,6 @@ local function spawn_creature()
 end
 
 local function on_item_opened(item_template_id)
-    -- TODO: implement chance here
     MuffinLogger.info(string.format('Opened item %s', item_template_id))
     spawn_creature()
 end
@@ -318,12 +319,16 @@ local function on_casted_spell(caster, spell, spellType, spellElement, storyActi
 end
 
 local function on_template_added_to(objectTemplate, object2, inventoryHolder, addType)
-    MuffinLogger.debug(string.format('Added item %s to %s', objectTemplate, inventoryHolder))
+    MuffinLogger.critical(string.format('Added item %s to %s', objectTemplate, inventoryHolder))
+end
+
+local function on_book_read(character, book_name)
+    MuffinLogger.debug('BOOK READ!!')
+    MuffinLogger.debug(book_name)
 end
 
 Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', on_went_on_stage)
 Ext.Osiris.RegisterListener('Opened', 1, 'after', on_item_opened)
 Ext.Osiris.RegisterListener('TemplateAddedTo', 4, 'after', on_template_added_to)
-
---Ext.Osiris.RegisterListener('CastedSpell', 5, 'after', on_casted_spell)
+Ext.Osiris.RegisterListener('OpenCustomBookUI', 2, 'after', on_book_read)
 -- TODO add death handler that removes creatures and from buff table
