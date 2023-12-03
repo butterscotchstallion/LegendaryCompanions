@@ -13,19 +13,19 @@ function MuffinLogger.Log(message, level)
 end
 
 function MuffinLogger.Debug(message)
-    if LC_LOG_LEVEL == 'DEBUG' then
-        MuffinLogger.log(message, 'DEBUG')
+    if LC['logLevel'] == 'DEBUG' then
+        MuffinLogger.Log(message, 'DEBUG')
     end
 end
 
 function MuffinLogger.Info(message)
-    MuffinLogger.log(message, 'INFO')
+    MuffinLogger.Log(message, 'INFO')
 end
 
 function MuffinLogger.Warn(message)
-    MuffinLogger.log(message, 'WARN')
+    MuffinLogger.Log(message, 'WARN')
 end
 
 function MuffinLogger.Critical(message)
-    MuffinLogger.log(message, 'CRITICAL')
+    MuffinLogger.Log(message, 'CRITICAL')
 end

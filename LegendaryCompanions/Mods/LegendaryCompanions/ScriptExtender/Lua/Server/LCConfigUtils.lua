@@ -11,25 +11,57 @@ LCConfigUtils = {
     }
 }
 
+function LCConfigUtils.GetPartyBuffsFromConfig(config)
+    return config['buffPartySpells']
+end
+
+function LCConfigUtils.GetRandomPartyBuff(config)
+    local buffs = LCConfigUtils.GetPartyBuffsFromConfig(config)
+    return buffs[math.random(#buffs)]
+end
+
+function LCConfigUtils.GetRandomCreatureTplFromConfig(config)
+    local tpls = config['entityUUIDs']
+    if #tpls == 0 then
+        MuffinLogger.Warn('Warning: no templates in config!')
+    end
+    return tpls[math.random(#tpls)]
+end
+
+function LCConfigUtils.GetRandomSelfStatusFromConfig(config)
+    local statuses = config['selfStatus']
+    if #statuses == 0 then
+        MuffinLogger.Warn('Warning: no self statuses in config!')
+    end
+    return statuses[math.random(#statuses)]
+end
+
 -- @param rarity 'common' | 'rare' | 'legendary'
--- @return table | nil
-function LCConfigUtils.GetRandomCreatureByRarity(rarity)
+-- @return string
+function LCConfigUtils.GetRandomConfigByRarity(rarity)
     local enabledConfigs = LCConfigUtils.GetEnabledConfigs()
     local randomCreature = nil
     if #enabledConfigs > 0 then
         local randomConfig = enabledConfigs[math.random(#enabledConfigs)]
-        local rarityConfig = randomConfig[rarity]
-        if rarityConfig ~= nil then
-            local creatureUUIDs = rarityConfig['entityUUIDs']
-            randomCreature = rarityConfig[math.random(#creatureUUIDs)]
-            return randomCreature
-        else
-            MuffinLogger.critical(string.format('Invalid rarity: %s', rarity))
+        if randomConfig then
+            return randomConfig[rarity]
         end
     else
-        MuffinLogger.warn('No enabled configs!')
+        MuffinLogger.Warn('No enabled configs!')
     end
     return randomCreature
+end
+
+function LCConfigUtils.GetRandomCommonConfig()
+    return LCConfigUtils.GetRandomConfigByRarity('common')
+end
+
+function LCConfigUtils.GetRandomRareConfig()
+    return LCConfigUtils.GetRandomConfigByRarity('rare')
+end
+
+function LCConfigUtils.GetRandomLegendaryConfig()
+    return LCConfigUtils.GetRandomConfigByRarity('legendary')
 end
 
 -- @return table

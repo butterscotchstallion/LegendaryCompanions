@@ -2,20 +2,14 @@
 -- Legendary Companions
 --]]
 local EVIL_FACTION_ID = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
-local creatures = {}
 local creatureBuffSpells = {
     --'Target_Bless_3_AI',
     --'EC_Target_Enlarge_AOE',
     --'EC_Target_Haste_AOE',
     'EC_Target_Longstrider_AOE'
 }
-local function IsFriend()
-    return math.random(0, 1) == 1
-end
-local lastSpawnedCreature = ''
-local lastSpawnedCreatureInfo = nil
+local creatureConfig = nil
 local buffedCreatures = {}
-
 local function GetGUIDFromTpl(tpl_id)
     return string.sub(tpl_id, -36)
 end
@@ -44,106 +38,72 @@ local function HandleHostileSpawn(creatureTplId)
     -- TODO maybe they buff themselves or debuff player here
 end
 
---[[
--- Creatures that are spawned can't cast spells immediately;
--- we have to wait for them to be on stage. We queue up a spell
--- here in anticipation of the event handler
---]]
 local function AddBuffsToCreature(creatureTplId)
     local rndSpellName = creatureBuffSpells[math.random(#creatureBuffSpells)]
     if rndSpellName then
-        --spawned_creature_spell_queue[rndSpellName] = creatureTplId
         Osi.UseSpell(creatureTplId, rndSpellName, creatureTplId)
         MuffinLogger.Info(string.format('Queued spell %s with target %s', rndSpellName, creatureTplId))
     end
 end
 
--- @param partyMemberTpl string
 -- @return nil
-local function AddPartyBuffs(partyMemberTpl)
-    if lastSpawnedCreature and lastSpawnedCreatureInfo then
-        if #lastSpawnedCreatureInfo['buff_party_spells'] > 0 then
-            local spells = lastSpawnedCreatureInfo['buff_party_spells']
-            local rnd_party_buff = spells[math.random(#spells)]
-            --spawned_creature_spell_queue[rnd_party_buff] = partyMemberTpl
-            Osi.UseSpell(lastSpawnedCreature, rnd_party_buff, partyMemberTpl)
-            MuffinLogger.Debug(string.format('Queued creature buff: %s', rnd_party_buff))
-        else
-            AddBuffsToCreature(partyMemberTpl)
-        end
+local function AddPartyBuffs()
+    MuffinLogger.Info('Adding buffs to party')
+    local partyMemberTpl = GetGUIDFromTpl(Osi.GetHostCharacter())
+    local randomBuff = LCConfigUtils.GetRandomPartyBuff(creatureConfig)
+    if creatureConfig and randomBuff then
+        Osi.UseSpell(creatureConfig['spawnedGUID'], randomBuff, partyMemberTpl)
+        MuffinLogger.Debug(string.format('Queued creature buff: %s', randomBuff))
     end
 end
 
--- Remove is here to prevent stacking on multiple
--- of the same creature
-local function ApplyGeneralCreatureStatus()
-    Osi.RemoveStatus(lastSpawnedCreature, 'EC_AUTOMATED')
-    Osi.ApplyStatus(lastSpawnedCreature, 'EC_AUTOMATED', -1, 1, lastSpawnedCreature)
-end
-
 local function ApplySpawnSelfStatus()
-    if lastSpawnedCreatureInfo and lastSpawnedCreatureInfo['selfStatus'] then
-        local statuses = lastSpawnedCreatureInfo['selfStatus']
-        if #statuses > 0 then
-            local rndStatus = statuses[math.random(#statuses)]
-            MuffinLogger.Debug(string.format('Applying creature self status %s to %s', rndStatus, lastSpawnedCreature))
-            Osi.RemoveStatus(lastSpawnedCreature, rndStatus)
-            Osi.ApplyStatus(lastSpawnedCreature, rndStatus, -1, 1, lastSpawnedCreature)
-        end
+    local rndStatus = LCConfigUtils.GetRandomSelfStatusFromConfig(creatureConfig)
+    if creatureConfig and rndStatus then
+        MuffinLogger.Debug(string.format('Applying creature self status %s to %s', rndStatus,
+            creatureConfig['spawnedGUID']))
+        Osi.RemoveStatus(creatureConfig['spawnedGUID'], rndStatus)
+        Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
     end
 end
 
 local function HandleCreatureSpawn()
-    if lastSpawnedCreatureInfo then
-        local creatureTplId = lastSpawnedCreatureInfo['spawnedGUID']
-
+    if creatureConfig then
+        local creatureTplId = creatureConfig['spawnedGUID']
+        local isFriend = true
         -- Creature statuses
-        ApplyGeneralCreatureStatus()
-        if lastSpawnedCreatureInfo['selfStatus'] then
-            ApplySpawnSelfStatus()
-        end
-        buffedCreatures[lastSpawnedCreature] = 1
-
-        -- Handle spells
+        ApplySpawnSelfStatus()
+        buffedCreatures[creatureConfig['spawnedGUID']] = 1
 
         -- Handle hostility
-        --[[
-        if is_friend then
-            handle_friendly_spawn(creatureTplId)
-        --else
-            handle_hostile_spawn(creatureTplId)
-        --end
-        ]]
-        HandleFriendlySpawn(creatureTplId)
-        --handle_hostile_spawn(creatureTplId)
+        if isFriend then
+            HandleFriendlySpawn(creatureTplId)
+        else
+            HandleHostileSpawn(creatureTplId)
+        end
 
         -- Set creature level and buffs
         SetCreatureLevelEqualToHost(creatureTplId)
-        -- AddBuffsToCreature(creatureTplId)
 
         -- Party buffs
-        --if is_friend and config['friendly_spawn_buff_party'] then
-        MuffinLogger.Info('Adding buffs to party')
-        local partyMemberTpl = GetGUIDFromTpl(Osi.GetHostCharacter())
-        AddPartyBuffs(partyMemberTpl)
-        --end
+        if isFriend then
+            AddPartyBuffs()
+        end
 
-        lastSpawnedCreatureInfo['handledSpawn'] = true
+        creatureConfig['handledSpawn'] = true
     end
 end
 
 local function SpawnCreature()
-    lastSpawnedCreatureInfo = LCConfigUtils.GetRandomCreatureByRarity('common')
-    if lastSpawnedCreatureInfo then
-        local templates = lastSpawnedCreatureInfo['templateIds']
-        local summonSpell = lastSpawnedCreatureInfo['summonSpell']
+    creatureConfig = LCConfigUtils.GetRandomCommonConfig()
+    if creatureConfig and creatureConfig['spawnedGUID'] then
+        local randomCreatureTpl = LCConfigUtils.GetRandomCreatureTplFromConfig(creatureConfig)
 
-        if #templates > 0 then
-            local rndCreatureTplId = templates[math.random(#templates)]
+        if randomCreatureTpl then
             local x, y, z = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
             local numericXPos = tonumber(x)
-            local isFriendly = IsFriend()
-            MuffinLogger.Info(string.format('Spawning a %s at %s, %s, %s', rndCreatureTplId, x, y, z))
+            local isFriendly = math.random(0, 1) == 1
+            MuffinLogger.Info(string.format('Attempting to spawn a %s at %s, %s, %s', randomCreatureTpl, x, y, z))
 
             -- Give some space if this is a hostile creature
             if not isFriendly then
@@ -151,24 +111,17 @@ local function SpawnCreature()
                 y = y + 10
             end
 
-            if numericXPos ~= nil then
-                local createdGUID = Osi.CreateAt(rndCreatureTplId, numericXPos, y, z, 0, 1, '')
-                if createdGUID ~= nil then
+            if numericXPos then
+                local createdGUID = Osi.CreateAt(randomCreatureTpl, numericXPos, y, z, 0, 1, '')
+                if createdGUID then
                     MuffinLogger.Debug('Successful spawn')
-                    lastSpawnedCreature = tostring(createdGUID)
-                    lastSpawnedCreatureInfo['spawnedGUID'] = lastSpawnedCreature
-                    lastSpawnedCreatureInfo['handledSpawn'] = false
+                    creatureConfig['spawnedTpl'] = randomCreatureTpl
+                    creatureConfig['spawnedGUID'] = createdGUID
+                    creatureConfig['handledSpawn'] = false
+                    -- Creature spawn will be handled in OnWentOnStage
                 else
-                    MuffinLogger.Critical(string.format('Failed to spawn %s', rndCreatureTplId))
+                    MuffinLogger.Critical(string.format('Failed to spawn %s', randomCreatureTpl))
                 end
-            end
-        else
-            if summonSpell then
-                MuffinLogger.Debug(string.format('Casting summoning spell: %s', summonSpell))
-                local hostChar = tostring(Osi.GetHostCharacter())
-                Osi.UseSpell(hostChar, summonSpell, hostChar)
-                lastSpawnedCreatureInfo['spawnedGUID'] = nil
-                lastSpawnedCreatureInfo['handledSpawn'] = false
             end
         end
     end
@@ -181,12 +134,12 @@ end
 
 local function OnWentOnStage(objectGUID, isOnStageNow)
     if isOnStageNow then
-        if lastSpawnedCreature then
-            local alreadyBuffed = buffedCreatures[lastSpawnedCreature] == objectGUID
-            if objectGUID == lastSpawnedCreature and not alreadyBuffed then
+        if creatureConfig and creatureConfig['spawnedGUID'] then
+            local alreadyBuffed = buffedCreatures[creatureConfig['spawnedGUID']] == objectGUID
+            if objectGUID == creatureConfig['spawnedGUID'] and not alreadyBuffed then
                 -- TODO copy this status into EC mod
                 -- TODO make this only apply to friendlies
-                if lastSpawnedCreatureInfo and not lastSpawnedCreatureInfo['handledSpawn'] then
+                if creatureConfig and not creatureConfig['handledSpawn'] then
                     HandleCreatureSpawn()
                 end
             end
@@ -194,17 +147,16 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
     end
 end
 
-local function OnTemplateAddedTo(objectTemplate, object2, inventoryHolder, addType)
-    MuffinLogger.Critical(string.format('Added item %s to %s', objectTemplate, inventoryHolder))
-end
+-- item1, item2, item3, item4, item5, character, newItem
+local function OnCombined(item1, item2, _, _, _, _, newItem)
+    MuffinLogger.Debug(item1)
+    MuffinLogger.Debug(item2)
 
-local function OnBookRead(character, bookName)
-    MuffinLogger.Debug('BOOK READ!!')
-    MuffinLogger.Debug(bookName)
+    LC['BookEventHandler'].HandleBookCreated(item1, item2, newItem)
 end
 
 Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', OnWentOnStage)
-Ext.Osiris.RegisterListener('Opened', 1, 'after', OnItemOpened)
-Ext.Osiris.RegisterListener('TemplateAddedTo', 4, 'after', OnTemplateAddedTo)
-Ext.Osiris.RegisterListener('OpenCustomBookUI', 2, 'after', OnBookRead)
+-- Ext.Osiris.RegisterListener('Opened', 1, 'after', OnItemOpened)
+Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
+
 -- TODO add death handler that removes creatures and from buff table

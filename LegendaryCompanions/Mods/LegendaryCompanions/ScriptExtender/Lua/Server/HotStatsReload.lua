@@ -5,15 +5,16 @@ local FILES_TO_RELOAD = {
     'LC_Summons.txt',
     'LC_Books.txt',
 }
+
 local function OnReset()
     for _, filename in pairs(FILES_TO_RELOAD) do
         local filePath = string.format('%s%s', MOD_PATH, filename)
         if string.len(filename) > 0 then
-            MuffinLogger.critical(string.format('RELOADING %s', filePath))
+            MuffinLogger.Info(string.format('RELOADING %s', filePath))
             ---@diagnostic disable-next-line: undefined-field
             Ext.Stats.LoadStatsFile(filePath, false)
         else
-            MuffinLogger.critical(string.format('Invalid file: %s', filePath))
+            MuffinLogger.Critical(string.format('Invalid file: %s', filePath))
         end
     end
 end

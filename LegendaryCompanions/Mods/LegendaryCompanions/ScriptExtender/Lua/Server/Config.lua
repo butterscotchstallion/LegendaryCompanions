@@ -1,1 +1,0 @@
-LC_LOG_LEVEL = 'DEBUG'
