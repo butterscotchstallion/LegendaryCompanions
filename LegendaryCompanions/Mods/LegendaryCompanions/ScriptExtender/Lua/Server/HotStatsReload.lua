@@ -1,20 +1,21 @@
 local MOD_PATH = 'Public/LegendaryCompanions/Stats/Generated/Data/'
 local FILES_TO_RELOAD = {
     'LC_Summons_Buffs.txt',
+    'LC_Githzerai_Equipment.txt',
     'LC_Summons.txt',
+    'LC_Books.txt',
 }
-
-local function on_reset()
+local function OnReset()
     for _, filename in pairs(FILES_TO_RELOAD) do
-        local file_path = string.format('%s%s', MOD_PATH, filename)
-        if filename then
-            MuffinLogger.critical(string.format('RELOADING %s', file_path))
+        local filePath = string.format('%s%s', MOD_PATH, filename)
+        if string.len(filename) > 0 then
+            MuffinLogger.critical(string.format('RELOADING %s', filePath))
             ---@diagnostic disable-next-line: undefined-field
-            Ext.Stats.LoadStatsFile(file_path, false)
+            Ext.Stats.LoadStatsFile(filePath, false)
         else
-            MuffinLogger.critical(string.format('Invalid file: %s', file_path))
+            MuffinLogger.critical(string.format('Invalid file: %s', filePath))
         end
     end
 end
 
-Ext.Events.ResetCompleted:Subscribe(on_reset)
+Ext.Events.ResetCompleted:Subscribe(OnReset)
