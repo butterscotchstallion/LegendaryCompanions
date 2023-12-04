@@ -1,6 +1,6 @@
---[[
--- Legendary Companions
---]]
+local CU = {}
+local creatureConfig = nil
+local buffedCreatures = {}
 local EVIL_FACTION_ID = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
 local creatureBuffSpells = {
     --'Target_Bless_3_AI',
@@ -8,8 +8,7 @@ local creatureBuffSpells = {
     --'EC_Target_Haste_AOE',
     'EC_Target_Longstrider_AOE'
 }
-local creatureConfig = nil
-local buffedCreatures = {}
+
 local function GetGUIDFromTpl(tpl_id)
     return string.sub(tpl_id, -36)
 end
@@ -36,14 +35,6 @@ end
 local function HandleHostileSpawn(creatureTplId)
     SetCreatureHostile(creatureTplId)
     -- TODO maybe they buff themselves or debuff player here
-end
-
-local function AddBuffsToCreature(creatureTplId)
-    local rndSpellName = creatureBuffSpells[math.random(#creatureBuffSpells)]
-    if rndSpellName then
-        Osi.UseSpell(creatureTplId, rndSpellName, creatureTplId)
-        MuffinLogger.Info(string.format('Queued spell %s with target %s', rndSpellName, creatureTplId))
-    end
 end
 
 -- @return nil
@@ -73,7 +64,7 @@ local function HandleCreatureSpawn()
         local isFriend = true
         -- Creature statuses
         ApplySpawnSelfStatus()
-        buffedCreatures[creatureConfig['spawnedGUID']] = 1
+        buffedCreatures[creatureTplId] = 1
 
         -- Handle hostility
         if isFriend then
@@ -137,8 +128,6 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
         if creatureConfig and creatureConfig['spawnedGUID'] then
             local alreadyBuffed = buffedCreatures[creatureConfig['spawnedGUID']] == objectGUID
             if objectGUID == creatureConfig['spawnedGUID'] and not alreadyBuffed then
-                -- TODO copy this status into EC mod
-                -- TODO make this only apply to friendlies
                 if creatureConfig and not creatureConfig['handledSpawn'] then
                     HandleCreatureSpawn()
                 end
@@ -147,16 +136,7 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
     end
 end
 
--- item1, item2, item3, item4, item5, character, newItem
-local function OnCombined(item1, item2, _, _, _, _, newItem)
-    MuffinLogger.Debug(item1)
-    MuffinLogger.Debug(item2)
-
-    LC['BookEventHandler'].HandleBookCreated(item1, item2, newItem)
-end
-
-Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', OnWentOnStage)
--- Ext.Osiris.RegisterListener('Opened', 1, 'after', OnItemOpened)
-Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
-
--- TODO add death handler that removes creatures and from buff table
+-- External
+CU.SpawnCreature = SpawnCreature
+CU.OnWentOnStage = OnWentOnStage
+LC['CreatureManager'] = CU

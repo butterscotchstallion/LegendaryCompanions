@@ -10,11 +10,11 @@ Ext.Require('Server/SimoLoops.lua')
 Ext.Require('Server/MuffinLogger.lua')
 Ext.Require('Server/SECommands.lua')
 Ext.Require('Server/CommonStatuses.lua')
-Ext.Require('Server/BookEventHandler.lua')
----Integrations---------------------------------------------------
-Ext.Require('Server/GithzeraiConfig.lua')
-------------------------------------------------------------------
+Ext.Require('Server/CreatureManager.lua')
+Ext.Require('Server/Integrations.lua')
 Ext.Require('Server/LegendaryCompanions.lua')
+Ext.Require('Server/BookEventHandler.lua')
+Ext.Require('Server/EventHandler.lua')
 
 local function PrintStartUpMessage()
     local mod = Ext.Mod.GetMod(ModuleUUID)

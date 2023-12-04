@@ -1,8 +1,5 @@
 LCConfigUtils = {
     ['config'] = {
-        ['integrations'] = {
-            GITHZERAI_CONFIG,
-        },
         -- Party buffs
         ['friendlySpawnBuffParty'] = true,
         -- Spawn buffs
@@ -39,15 +36,15 @@ end
 -- @param rarity 'common' | 'rare' | 'legendary'
 -- @return string
 function LCConfigUtils.GetRandomConfigByRarity(rarity)
-    local enabledConfigs = LCConfigUtils.GetEnabledConfigs()
+    local configs = LCConfigUtils.GetConfigs()
     local randomCreature = nil
-    if #enabledConfigs > 0 then
-        local randomConfig = enabledConfigs[math.random(#enabledConfigs)]
+    if #configs > 0 then
+        local randomConfig = configs[math.random(#configs)]
         if randomConfig then
             return randomConfig[rarity]
         end
     else
-        MuffinLogger.Warn('No enabled configs!')
+        MuffinLogger.Warn('No configs!')
     end
     return randomCreature
 end
@@ -65,14 +62,25 @@ function LCConfigUtils.GetRandomLegendaryConfig()
 end
 
 -- @return table
-function LCConfigUtils.GetEnabledConfigs()
-    local enabledConfigs = {}
-    local integrationConfigs = LCConfigUtils['config']['integrations']
-    for _, intConfig in pairs(integrationConfigs) do
-        _D(intConfig)
-        if intConfig['enabled'] then
-            table.insert(enabledConfigs)
+function LCConfigUtils.GetConfigs()
+    return LC['integrations']
+end
+
+function LCConfigUtils.GetBooks()
+    local configs = LCConfigUtils.GetConfigs()
+    for _, intName in pairs(configs) do
+        local books = configs[intName]['books']
+        return books
+    end
+end
+
+function LCConfigUtils.GetBookByTplName(tplName)
+    local books = LCConfigUtils.GetBooks()
+    if books then
+        for _, bookTplName in pairs(books) do
+            if bookTplName == tplName then
+                return books[bookTplName]
+            end
         end
     end
-    return enabledConfigs
 end
