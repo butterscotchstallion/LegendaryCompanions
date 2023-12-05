@@ -1,12 +1,15 @@
-local CU = {}
-local creatureConfig = nil
-local buffedCreatures = {}
-local EVIL_FACTION_ID = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
+local CM                 = {}
+local creatureConfig     = nil
+local buffedCreatures    = {}
 local creatureBuffSpells = {
     --'Target_Bless_3_AI',
     --'EC_Target_Enlarge_AOE',
     --'EC_Target_Haste_AOE',
     'EC_Target_Longstrider_AOE'
+}
+local LC_COMMON_STATUSES = {
+    'UNSUMMON_ABLE',
+    'SHADOWCURSE_SUMMON_CHECK',
 }
 
 local function GetGUIDFromTpl(tpl_id)
@@ -14,6 +17,7 @@ local function GetGUIDFromTpl(tpl_id)
 end
 
 local function SetCreatureHostile(creatureTplId)
+    local EVIL_FACTION_ID = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
     Osi.SetFaction(creatureTplId, EVIL_FACTION_ID)
     MuffinLogger.Info(string.format('Set hostile on %s', creatureTplId))
 end
@@ -28,13 +32,9 @@ local function SetCreatureLevelEqualToHost(creatureTplId)
     end
 end
 
-local function HandleFriendlySpawn(creatureTplId)
-    Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
-end
-
 local function HandleHostileSpawn(creatureTplId)
     SetCreatureHostile(creatureTplId)
-    -- TODO maybe they buff themselves or debuff player here
+    -- TODO maybe they buff themselves or debuff player here?
 end
 
 -- @return nil
@@ -44,15 +44,23 @@ local function AddPartyBuffs()
     local randomBuff = LCConfigUtils.GetRandomPartyBuff(creatureConfig)
     if creatureConfig and randomBuff then
         Osi.UseSpell(creatureConfig['spawnedGUID'], randomBuff, partyMemberTpl)
-        MuffinLogger.Debug(string.format('Queued creature buff: %s', randomBuff))
+        MuffinLogger.Debug(string.format('Casting creature buff: %s', randomBuff))
     end
+end
+
+local function HandleFriendlySpawn(creatureTplId)
+    Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
+    AddPartyBuffs()
 end
 
 local function ApplySpawnSelfStatus()
     local rndStatus = LCConfigUtils.GetRandomSelfStatusFromConfig(creatureConfig)
     if creatureConfig and rndStatus then
-        MuffinLogger.Debug(string.format('Applying creature self status %s to %s', rndStatus,
-            creatureConfig['spawnedGUID']))
+        MuffinLogger.Debug(string.format(
+            'Applying creature self status %s to %s',
+            rndStatus,
+            creatureConfig['spawnedGUID']
+        ))
         Osi.RemoveStatus(creatureConfig['spawnedGUID'], rndStatus)
         Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
     end
@@ -60,67 +68,60 @@ end
 
 local function HandleCreatureSpawn()
     if creatureConfig then
-        local creatureTplId = creatureConfig['spawnedGUID']
         local isFriend = true
+        buffedCreatures[creatureConfig['spawnedGUID']] = 1
         -- Creature statuses
         ApplySpawnSelfStatus()
-        buffedCreatures[creatureTplId] = 1
 
         -- Handle hostility
         if isFriend then
-            HandleFriendlySpawn(creatureTplId)
+            HandleFriendlySpawn(creatureConfig['spawnedGUID'])
         else
-            HandleHostileSpawn(creatureTplId)
+            HandleHostileSpawn(creatureConfig['spawnedGUID'])
         end
 
         -- Set creature level and buffs
-        SetCreatureLevelEqualToHost(creatureTplId)
-
-        -- Party buffs
-        if isFriend then
-            AddPartyBuffs()
-        end
+        SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
 
         creatureConfig['handledSpawn'] = true
     end
 end
 
-local function SpawnCreature()
-    creatureConfig = LCConfigUtils.GetRandomCommonConfig()
-    if creatureConfig and creatureConfig['spawnedGUID'] then
-        local randomCreatureTpl = LCConfigUtils.GetRandomCreatureTplFromConfig(creatureConfig)
+local function SpawnCreatureByTemplateId(creatureTplId, isFriendly)
+    local x, y, z     = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
+    local numericXPos = tonumber(x)
+    -- Use config value instead
+    MuffinLogger.Info(string.format('Attempting to spawn a %s at %s, %s, %s', creatureTplId, x, y, z))
 
-        if randomCreatureTpl then
-            local x, y, z = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
-            local numericXPos = tonumber(x)
-            local isFriendly = math.random(0, 1) == 1
-            MuffinLogger.Info(string.format('Attempting to spawn a %s at %s, %s, %s', randomCreatureTpl, x, y, z))
+    -- Give some space if this is a hostile creature
+    if not isFriendly then
+        x = x + 10
+        y = y + 10
+    end
 
-            -- Give some space if this is a hostile creature
-            if not isFriendly then
-                x = x + 10
-                y = y + 10
-            end
-
-            if numericXPos then
-                local createdGUID = Osi.CreateAt(randomCreatureTpl, numericXPos, y, z, 0, 1, '')
-                if createdGUID then
-                    MuffinLogger.Debug('Successful spawn')
-                    creatureConfig['spawnedTpl'] = randomCreatureTpl
-                    creatureConfig['spawnedGUID'] = createdGUID
-                    creatureConfig['handledSpawn'] = false
-                    -- Creature spawn will be handled in OnWentOnStage
-                else
-                    MuffinLogger.Critical(string.format('Failed to spawn %s', randomCreatureTpl))
-                end
-            end
+    if numericXPos then
+        local createdGUID = Osi.CreateAt(creatureTplId, numericXPos, y, z, 0, 1, '')
+        if createdGUID then
+            MuffinLogger.Debug('Successful spawn')
+            creatureConfig['spawnedTpl']   = creatureTplId
+            creatureConfig['spawnedGUID']  = createdGUID
+            creatureConfig['handledSpawn'] = false
+            -- Creature spawn will be handled in OnWentOnStage
+        else
+            MuffinLogger.Critical(string.format('Failed to spawn %s', creatureTplId))
         end
     end
 end
 
-local function OnItemOpened(itemTemplateId)
-    MuffinLogger.Info(string.format('Opened item %s', itemTemplateId))
-    SpawnCreature()
+local function SpawnCreatureUsingRandomConfig()
+    creatureConfig = LCConfigUtils.GetRandomCommonConfig()
+    if creatureConfig and creatureConfig['spawnedGUID'] then
+        local randomCreatureTplId = LCConfigUtils.GetRandomCreatureTplFromConfig(creatureConfig)
+
+        if randomCreatureTplId then
+            SpawnCreatureByTemplateId(randomCreatureTplId)
+        end
+    end
 end
 
 local function OnWentOnStage(objectGUID, isOnStageNow)
@@ -137,6 +138,6 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
 end
 
 -- External
-CU.SpawnCreature = SpawnCreature
-CU.OnWentOnStage = OnWentOnStage
-LC['CreatureManager'] = CU
+CM.OnWentOnStage             = OnWentOnStage
+CM.SpawnCreatureByTemplateId = SpawnCreatureByTemplateId
+LC['CreatureManager']        = CM

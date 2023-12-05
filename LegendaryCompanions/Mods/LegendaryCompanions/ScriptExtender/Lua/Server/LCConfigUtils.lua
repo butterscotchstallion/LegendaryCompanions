@@ -66,20 +66,39 @@ function LCConfigUtils.GetConfigs()
     return LC['integrations']
 end
 
-function LCConfigUtils.GetBooks()
+-- @return table
+function LCConfigUtils.GetBooksWithIntegrationName()
     local configs = LCConfigUtils.GetConfigs()
-    for _, intName in pairs(configs) do
-        local books = configs[intName]['books']
-        return books
+    local books = {}
+    local integrationName = nil
+    for intName, _ in pairs(configs) do
+        integrationName = intName
+        for index, bookName in pairs(configs[intName]['books']) do
+            books[bookName] = configs[intName]['books'][index]
+        end
+    end
+    return {
+        ['books']           = books,
+        ['integrationName'] = integrationName
+    }
+end
+
+-- @param bookInfo table
+function LCConfigUtils.GetTemplateByBookInfo(bookInfo)
+    local templates = bookInfo['entityUUIDs']
+    if #templates > 0 then
+        return templates[math.random(#templates)]
+    else
+        MuffinLogger.Debug('No templates found for book')
     end
 end
 
 function LCConfigUtils.GetBookByTplName(tplName)
-    local books = LCConfigUtils.GetBooks()
-    if books then
-        for _, bookTplName in pairs(books) do
+    local booksExtra = LCConfigUtils.GetBooksWithIntegrationName()
+    if booksExtra and booksExtra['books'] then
+        for _, bookTplName in pairs(booksExtra['books']) do
             if bookTplName == tplName then
-                return books[bookTplName]
+                return booksExtra['books'][bookTplName]
             end
         end
     end
