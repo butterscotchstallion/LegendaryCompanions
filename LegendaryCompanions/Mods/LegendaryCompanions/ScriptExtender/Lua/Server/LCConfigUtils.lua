@@ -71,16 +71,13 @@ function LCConfigUtils.GetBooksWithIntegrationName()
     local configs = LCConfigUtils.GetConfigs()
     local books = {}
     local integrationName = nil
+    local bookInfo = nil
     for intName, _ in pairs(configs) do
         integrationName = intName
-        for index, bookName in pairs(configs[intName]['books']) do
-            books[bookName] = configs[intName]['books'][index]
-        end
+        bookInfo = configs[intName]['books']
+        books[intName] = bookInfo
     end
-    return {
-        ['books']           = books,
-        ['integrationName'] = integrationName
-    }
+    return books
 end
 
 -- @param bookInfo table
@@ -94,11 +91,13 @@ function LCConfigUtils.GetTemplateByBookInfo(bookInfo)
 end
 
 function LCConfigUtils.GetBookByTplName(tplName)
-    local booksExtra = LCConfigUtils.GetBooksWithIntegrationName()
-    if booksExtra and booksExtra['books'] then
-        for _, bookTplName in pairs(booksExtra['books']) do
-            if bookTplName == tplName then
-                return booksExtra['books'][bookTplName]
+    local books = LCConfigUtils.GetBooksWithIntegrationName()
+    if books then
+        for _, intName in pairs(books) do
+            for _, book in pairs(books[intName]) do
+                if book['name'] == tplName then
+                    return book
+                end
             end
         end
     end
