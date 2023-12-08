@@ -15,11 +15,8 @@ local LCBookEventHandler = {}
 -- @return void
 --]]
 function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
-    local books      = LCConfigUtils.GetBooksWithIntegrationName()
-    local book       = LCConfigUtils.GetBookByBookTplId(books, bookTplId)
-    local isFriendly = true
-
-    _D(book)
+    local books = LCConfigUtils.GetBooksWithIntegrationName()
+    local book  = LCConfigUtils.GetBookByBookTplId(books, bookTplId)
 
     if book then
         local pages = {
@@ -32,13 +29,8 @@ function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
             -- SpawnCreature based on book
             local templateId = LCConfigUtils.GetTemplateByBookInfo(book)
 
-            -- This can be false so we explicitly check for its existence
-            if book['isFriendly'] ~= nil then
-                isFriendly = book['isFriendly']
-            end
-
             if templateId then
-                LC['CreatureManager'].SpawnCreatureByTemplateId(templateId, isFriendly)
+                LC['CreatureManager'].SpawnCreatureByTemplateId(templateId, book)
             else
                 MuffinLogger.Debug(string.format('No templates for book %s', book['name']))
                 -- Find creature based on rarity?

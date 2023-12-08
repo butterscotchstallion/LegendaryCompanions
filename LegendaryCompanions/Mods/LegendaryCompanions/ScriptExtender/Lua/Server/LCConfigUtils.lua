@@ -30,7 +30,6 @@ end
 
 function LCConfigUtils.GetRandomSelfStatusFromConfig(config)
     local statuses = config['selfStatus']
-    _D(config)
     if not statuses or #statuses == 0 then
         MuffinLogger.Warn('Warning: no self statuses in config!')
     else
