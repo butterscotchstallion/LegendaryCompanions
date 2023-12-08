@@ -4,7 +4,6 @@
 LC = {
     logLevel = 'DEBUG'
 }
-Ext.Require('Server/Config.lua')
 Ext.Require('Server/HotStatsReload.lua')
 Ext.Require('Server/SimoLoops.lua')
 Ext.Require('Server/MuffinLogger.lua')

@@ -3,59 +3,51 @@
 --]]
 local LCBookEventHandler = {}
 
-function string.starts(String, Start)
-    return string.sub(String, 1, string.len(Start)) == Start
-end
-
-local function GetTplNameByBookTplId(books, bookTplId)
-    _D(books)
-    for _, bookTplName in pairs(books) do
-        if string.starts(bookTplId, bookTplName) then
-            return bookTplName
-        end
-    end
-end
-
-local function GetTplNameByPageTplId(books, bookTplId, itemPageTplId)
-    if books[bookTplId] then
-        for _, pageTplId in pairs(books[bookTplId]) do
-            if string.starts(itemPageTplId, pageTplId) then
-                return pageTplId
-            end
-        end
-    else
-        MuffinLogger.Critical('Invalid bookTplId ' .. bookTplId)
-    end
-end
-
+--[[
+-- When a book is created:
+------------------------------------------------
+-- 1. Check if it's one of ours
+-- 2. Check if the pages match the ones we have
+-- 3. Get template based on book info
+-- @param item1TplId string
+-- @param item2TplId string
+-- @param bookTplId string
+-- @return void
+--]]
 function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
-    local books       = LCConfigUtils.GetBooksWithIntegrationName()
-    local bookTplName = GetTplNameByBookTplId(books, bookTplId)
+    local books      = LCConfigUtils.GetBooksWithIntegrationName()
+    local book       = LCConfigUtils.GetBookByBookTplId(books, bookTplId)
+    local isFriendly = true
 
-    if bookTplName then
-        local book = LCConfigUtils.GetBookByTplName(bookTplName)
-        if bookTplName and book then
-            local page1TplId = GetTplNameByPageTplId(books, bookTplName, item1TplId)
-            local page2TplId = GetTplNameByPageTplId(books, bookTplName, item2TplId)
-            if page1TplId and page2TplId then
-                MuffinLogger.Debug(string.format('"%s" created!', bookTplName))
-                -- SpawnCreature based on book
-                local templateId = LCConfigUtils.GetTemplateByBookInfo(book)
-                local isFriendly = book['isFriendly'] or true
-                if templateId then
-                    LC['CreatureManager'].SpawnCreatureByTemplateId(templateId, isFriendly)
-                else
-                    MuffinLogger.Debug(string.format('No templates for book %s', bookTplName))
-                    -- Find creature based on rarity?
-                end
+    _D(book)
+
+    if book then
+        local pages = {
+            item1TplId,
+            item2TplId,
+        }
+        local pagesMatch = LCConfigUtils.IsPageMatch(book, pages)
+        if pagesMatch then
+            MuffinLogger.Debug(string.format('"%s" created!', book['name']))
+            -- SpawnCreature based on book
+            local templateId = LCConfigUtils.GetTemplateByBookInfo(book)
+
+            -- This can be false so we explicitly check for its existence
+            if book['isFriendly'] ~= nil then
+                isFriendly = book['isFriendly']
+            end
+
+            if templateId then
+                LC['CreatureManager'].SpawnCreatureByTemplateId(templateId, isFriendly)
             else
-                MuffinLogger.Debug(string.format('%s and %s not found in ingredients', item1TplId, item2TplId))
+                MuffinLogger.Debug(string.format('No templates for book %s', book['name']))
+                -- Find creature based on rarity?
             end
         else
-            MuffinLogger.Debug(string.format('Book %s created but not one of ours', bookTplName))
+            MuffinLogger.Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))
         end
     else
-        MuffinLogger.Debug(string.format('Could not find book with tpl id: %s', bookTplId))
+        MuffinLogger.Debug(string.format('Book %s created but not one of ours', bookTplId))
     end
 end
 
