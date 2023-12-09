@@ -27,6 +27,7 @@ function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
         if pagesMatch then
             MuffinLogger.Debug(string.format('"%s" created!', book['name']))
 
+            LC['CreatureManager'].OnBeforeSpawn()
             LC['CreatureManager'].SpawnCreatureUsingStrategy(book)
         else
             MuffinLogger.Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))

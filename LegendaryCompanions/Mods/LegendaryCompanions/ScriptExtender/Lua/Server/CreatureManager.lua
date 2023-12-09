@@ -61,7 +61,9 @@ local function HandleFriendlySpawn(creatureTplId)
 end
 
 local function CastPortalSpell(creatureGUID)
-    Osi.UseSpell(creatureGUID, 'Target_LOW_CastPortal', creatureGUID)
+    MuffinLogger.Debug('Opening a portal!')
+    local host = tostring(Osi.GetHostCharacter())
+    Osi.ApplyStatus(host, 'PUZ_CASTEDPORTAL_BLUE', 1, 1, host)
 end
 
 local function OnBeforeSpawn(creatureGUID)
@@ -96,8 +98,6 @@ local function HandleCreatureSpawn()
         end
 
         SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
-
-        OnBeforeSpawn(creatureConfig['spawnedGUID'])
 
         creatureConfig['handledSpawn'] = true
     end
@@ -215,4 +215,5 @@ CM.SpawnCreatureByTemplateId  = SpawnCreatureByTemplateId
 CM.SpawnCreatureUsingStrategy = SpawnCreatureUsingStrategy
 CM.HandleCreatureSpawn        = HandleCreatureSpawn
 CM.GetGUIDFromTpl             = GetGUIDFromTpl
+CM.OnBeforeSpawn              = OnBeforeSpawn
 LC['CreatureManager']         = CM
