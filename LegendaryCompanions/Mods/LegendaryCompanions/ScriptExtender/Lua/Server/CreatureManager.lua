@@ -2,6 +2,10 @@ local CM              = {}
 local creatureConfig  = {}
 local buffedCreatures = {}
 
+local function GetHostGUID()
+    return tostring(Osi.GetHostCharacter())
+end
+
 local function GetGUIDFromTpl(tplId)
     return string.sub(tplId, -36)
 end
@@ -62,7 +66,6 @@ end
 
 local function CastPortalSpell()
     MuffinLogger.Debug('Opening a portal!')
-    local host   = tostring(Osi.GetHostCharacter())
     local spells = {
         'LOW_SORCEROUSSUNDRIES_PORTAL_BLUE',
         'LOW_SORCEROUSSUNDRIES_PORTAL_GREEN',
@@ -70,10 +73,15 @@ local function CastPortalSpell()
         'LOW_SORCEROUSSUNDRIES_PORTAL_PURPLE',
     }
     local spell  = spells[math.random(#spells)]
-    Osi.ApplyStatus(host, spell, 1, 1, host)
+    Osi.ApplyStatus(GetHostGUID(), spell, 1, 1, GetHostGUID())
 end
 
-local function OnBeforeSpawn()
+local function ShowSummonMessage(message)
+    Osi.OpenMessageBox(GetHostGUID(), message)
+end
+
+local function OnBeforeSpawn(book)
+    ShowSummonMessage(book['summonMessage'])
     CastPortalSpell()
 end
 

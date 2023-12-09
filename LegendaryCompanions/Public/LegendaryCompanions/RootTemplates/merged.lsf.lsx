@@ -17,6 +17,7 @@
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Common" />
 					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<attribute id="Type" type="FixedString" value="character" />
+					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
 					<children>
 						<node id="StatusList">
 							<children>
@@ -237,6 +238,7 @@
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Rare" />
 					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<attribute id="Type" type="FixedString" value="character" />
+					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
 					<children>
 						<node id="StatusList">
 							<children>
@@ -459,6 +461,7 @@
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Legendary" />
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
+					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
 					<!-- GTZ -->
 					<attribute id="Icon" type="FixedString" value="49b8ba93-b465-5ed2-d243-25f986f040b6-_(Icon_Githyanki_Female)" />
 					<attribute id="GeneratePortrait" type="LSString" value="Icon_Githyanki_Female" />
