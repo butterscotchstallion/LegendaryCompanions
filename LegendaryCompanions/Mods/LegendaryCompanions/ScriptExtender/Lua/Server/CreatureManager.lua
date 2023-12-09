@@ -122,6 +122,51 @@ local function SpawnCreatureByTemplateId(creatureTplId, book)
     end
 end
 
+--[[
+-- Spawn creature based on book config
+-- 1. If there are summon spells, use those
+-- 2. If there are no spells but there are entity UUIDs, use those
+-- 3. If none of the above, get a random template based on book rarity
+-- @param strategy string
+-- @param book table
+-- @return void
+--]]
+local function SpawnCreatureUsingStrategy(book)
+    local strategy     = LCConfigUtils.GetSummoningStrategy(book)
+    local summonSpells = book['summonSpells']
+
+    MuffinLogger.Debug(string.format('Spawning creature using strategy: %s', strategy))
+
+    if summonSpells and #summonSpells > 0 then
+        local rndSpell = summonSpells[math.random(#summonSpells)]
+        local target = tostring(creatureConfig['spawnedGUID'])
+        local caster = target
+        MuffinLogger.Debug(string.format('Casting summoning spell: %s', rndSpell))
+        Osi.UseSpell(caster, rndSpell, target)
+    else
+        local templates = book['entityUUIDs']
+
+        if not templates or #templates == 0 then
+            MuffinLogger.Debug(string.format('No templates for book %s; using rarity %s',
+                book['name'],
+                book['rarity']
+            ))
+            local configs = LCConfigUtils.GetConfigs()
+            if configs and configs[book['integrationName']] then
+                templates = configs[book['integrationName']][book['rarity']]['entityUUIDs']
+            else
+                MuffinLogger.Warn('Invalid book rarity!')
+            end
+
+            SpawnCreatureByTemplateId(templates[math.random(#templates)], book)
+        end
+    end
+end
+
+local function CastPortalSpell(creatureGUID)
+    Osi.UseSpell(creatureGUID, 'Target_LOW_CastPortal', creatureGUID)
+end
+
 local function SpawnCreatureUsingRandomConfig()
     local config = LCConfigUtils.GetRandomCommonConfig()
     if config then
@@ -150,6 +195,7 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
 end
 
 -- External
-CM.OnWentOnStage             = OnWentOnStage
-CM.SpawnCreatureByTemplateId = SpawnCreatureByTemplateId
-LC['CreatureManager']        = CM
+CM.OnWentOnStage              = OnWentOnStage
+CM.SpawnCreatureByTemplateId  = SpawnCreatureByTemplateId
+CM.SpawnCreatureUsingStrategy = SpawnCreatureUsingStrategy
+LC['CreatureManager']         = CM

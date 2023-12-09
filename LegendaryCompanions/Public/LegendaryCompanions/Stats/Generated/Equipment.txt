@@ -11,6 +11,8 @@ new equipment "EQP_Githzerai_Rare"
     add equipment entry "MAG_Fire_AlwaysDippedInFire_Greatsword"
     add equipmentgroup
     add equipment entry "ARM_HalfPlate_Body_Githyanki"
+    add equipmentgroup
+    add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
 
 new equipment "EQP_Githzerai_Legendary"
     add initialweaponset "Melee"
@@ -21,5 +23,5 @@ new equipment "EQP_Githzerai_Legendary"
     add equipmentgroup
     add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
     add equipmentgroup
-    add equipment entry "UNI_UND_KC_AdamantineGolem_Helmet"
+    add equipment entry "UNI_HAG_SwampedHero_OldFancyHelmet"
 

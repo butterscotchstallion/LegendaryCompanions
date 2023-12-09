@@ -26,20 +26,8 @@ function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
         local pagesMatch = LCConfigUtils.IsPageMatch(book, pages)
         if pagesMatch then
             MuffinLogger.Debug(string.format('"%s" created!', book['name']))
-            -- SpawnCreature based on book
-            local templateId    = LCConfigUtils.GetTemplateByBookInfo(book)
-            local creatureTplId = templateId
-            -- Use specific book entityUUIDs if present
-            if templateId then
-                creatureTplId = templateId
-            else
-                MuffinLogger.Debug(string.format('No templates for book %s; using rarity %s',
-                    book['name'],
-                    book['rarity']
-                ))
-                creatureTplId = LCConfigUtils.GetRandomTemplateByRarity(book['rarity'])
-            end
-            LC['CreatureManager'].SpawnCreatureByTemplateId(creatureTplId, book)
+
+            LC['CreatureManager'].SpawnCreatureUsingStrategy(book)
         else
             MuffinLogger.Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))
         end

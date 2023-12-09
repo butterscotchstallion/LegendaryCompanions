@@ -20,9 +20,11 @@
 					<children>
 						<node id="StatusList">
 							<children>
-								<node id="Status">
-									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
-								</node>
+								<!--
+									<node id="Status">
+										<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
+									</node>
+								-->
 							</children>
 						</node>
 						<node id="ItemList" />
@@ -238,9 +240,11 @@
 					<children>
 						<node id="StatusList">
 							<children>
-								<node id="Status">
-									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
-								</node>
+								<!--
+									<node id="Status">
+										<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
+									</node>
+								-->
 							</children>
 						</node>
 						<node id="ItemList" />
@@ -444,21 +448,25 @@
 				<node id="GameObjects">
 					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
 					<attribute id="Archetype" type="FixedString" value="melee_smart" />
-					<attribute id="CharacterVisualResourceID" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191" />
 					<attribute id="DisplayName" type="TranslatedString" handle="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1" />
 					<attribute id="Equipment" type="FixedString" value="EQP_Githzerai_Legendary" />
-					<attribute id="Icon" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191-EQP_Longsword_HalfPlate_Gith_(Icon_Githyanki_Male)" />
 					<attribute id="MapKey" type="FixedString" value="4973f064-fe29-4857-89fb-a18af7a5d02a" />
+					<!-- gith'zerai
+					Gith Raider 366bca00-1c0c-4fba-bb1c-45c6ae20d691
 					<attribute id="ParentTemplateId" type="FixedString" value="366bca00-1c0c-4fba-bb1c-45c6ae20d691" />
+					-->
+					<attribute id="ParentTemplateId" type="FixedString" value="39c7c3a9-8393-4df9-9bbf-6d52aa7f34db" />
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Legendary" />
-					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<attribute id="Type" type="FixedString" value="character" />
+					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<children>
 						<node id="StatusList">
 							<children>
+							<!--
 								<node id="Status">
 									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
 								</node>
+							-->
 							</children>
 						</node>
 						<node id="LayerList">

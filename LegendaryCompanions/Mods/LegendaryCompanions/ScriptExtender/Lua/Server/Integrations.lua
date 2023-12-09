@@ -17,7 +17,10 @@ LC['integrations']       = {
     ['Githzerai'] = {
         ['books'] = {
             {
-                ['rarity']          = 'common',
+                ['rarity']          = RARITY_LEGENDARY,
+                ['summonSpells']    = {
+                    'LC_Summon_Githzerai_Legendary'
+                },
                 ['entityUUIDs']     = {
                     GTY_LEGENDARY_UUID,
                 },

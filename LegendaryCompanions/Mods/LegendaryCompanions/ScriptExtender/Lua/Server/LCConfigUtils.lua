@@ -82,8 +82,27 @@ function LCConfigUtils.GetBooksWithIntegrationName()
     return books
 end
 
+--[[
+-- Use summon spells by default, or entity UUIDs if not
+--]]
+function LCConfigUtils.GetSummoningStrategy(bookInfo)
+    local strategy = 'spell'
+    local hasSummonSpells = bookInfo['summonSpells'] and #bookInfo['summonSpells']
+    local hasEntityUUIDs = bookInfo['entityUUIDs'] and #bookInfo['entityUUIDs']
+
+    if hasEntityUUIDs then
+        strategy = 'entityUUIDs'
+    else
+        if not hasEntityUUIDs and not hasSummonSpells then
+            MuffinLogger.Warn('Invalid configuration: no summon spells OR entityUUIDs!')
+        end
+    end
+
+    return strategy
+end
+
 -- @param bookInfo table
-function LCConfigUtils.GetTemplateByBookInfo(bookInfo)
+function LCConfigUtils.GetEntityUUIDByBookInfo(bookInfo)
     local templates = bookInfo['entityUUIDs']
     if templates and #templates > 0 then
         return templates[math.random(#templates)]
