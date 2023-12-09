@@ -461,7 +461,6 @@
 								</node>
 							</children>
 						</node>
-						<node id="ItemList" />
 						<node id="LayerList">
 							<children>
 								<node id="Layers">
