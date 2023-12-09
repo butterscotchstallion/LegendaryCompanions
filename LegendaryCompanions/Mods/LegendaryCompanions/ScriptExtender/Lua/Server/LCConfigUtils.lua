@@ -40,7 +40,7 @@ end
 -- @param rarity 'common' | 'rare' | 'legendary'
 -- @return string
 function LCConfigUtils.GetRandomConfigByRarity(rarity)
-    local configs = LCConfigUtils.GetConfigs()
+    local configs        = LCConfigUtils.GetConfigs()
     local randomCreature = nil
     if #configs > 0 then
         local randomConfig = configs[math.random(#configs)]
