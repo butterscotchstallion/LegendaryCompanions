@@ -60,14 +60,21 @@ local function HandleFriendlySpawn(creatureTplId)
     AddPartyBuffs()
 end
 
-local function CastPortalSpell(creatureGUID)
+local function CastPortalSpell()
     MuffinLogger.Debug('Opening a portal!')
-    local host = tostring(Osi.GetHostCharacter())
-    Osi.ApplyStatus(host, 'PUZ_CASTEDPORTAL_BLUE', 1, 1, host)
+    local host   = tostring(Osi.GetHostCharacter())
+    local spells = {
+        'LOW_SORCEROUSSUNDRIES_PORTAL_BLUE',
+        'LOW_SORCEROUSSUNDRIES_PORTAL_GREEN',
+        'LOW_SORCEROUSSUNDRIES_PORTAL_RED',
+        'LOW_SORCEROUSSUNDRIES_PORTAL_PURPLE',
+    }
+    local spell  = spells[math.random(#spells)]
+    Osi.ApplyStatus(host, spell, 1, 1, host)
 end
 
 local function OnBeforeSpawn(creatureGUID)
-    CastPortalSpell(creatureGUID)
+    CastPortalSpell()
 end
 
 local function ApplySpawnSelfStatus()
