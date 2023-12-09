@@ -1,19 +1,9 @@
-local CM                 = {}
-local creatureConfig     = {}
-local buffedCreatures    = {}
-local creatureBuffSpells = {
-    --'Target_Bless_3_AI',
-    --'EC_Target_Enlarge_AOE',
-    --'EC_Target_Haste_AOE',
-    'EC_Target_Longstrider_AOE'
-}
-local LC_COMMON_STATUSES = {
-    'UNSUMMON_ABLE',
-    'SHADOWCURSE_SUMMON_CHECK',
-}
+local CM              = {}
+local creatureConfig  = {}
+local buffedCreatures = {}
 
-local function GetGUIDFromTpl(tpl_id)
-    return string.sub(tpl_id, -36)
+local function GetGUIDFromTpl(tplId)
+    return string.sub(tplId, -36)
 end
 
 local function SetCreatureHostile(creatureTplId)
@@ -27,6 +17,7 @@ local function SetCreatureLevelEqualToHost(creatureTplId)
     if host then
         local level = Osi.GetLevel(host)
         if level then
+            MuffinLogger.Debug(string.format('Setting %s level to %s', creatureTplId, level))
             Osi.SetLevel(creatureTplId, tonumber(level))
         end
     end
@@ -41,19 +32,40 @@ end
 -- @return nil
 local function AddPartyBuffs()
     MuffinLogger.Info('Adding buffs to party')
-    local partyMemberTpl = GetGUIDFromTpl(Osi.GetHostCharacter())
+    local host       = tostring(Osi.GetHostCharacter())
     local randomBuff = LCConfigUtils.GetRandomPartyBuff(creatureConfig['book'])
 
     if randomBuff then
-        Osi.UseSpell(creatureConfig['spawnedGUID'], randomBuff, partyMemberTpl)
-        MuffinLogger.Debug(string.format('Casting party buff: %s', randomBuff))
+        MuffinLogger.Debug(
+            string.format(
+                '%s is casting party buff: %s on %s',
+                creatureConfig['spawnedGUID'],
+                randomBuff,
+                host
+            )
+        )
+        Osi.UseSpell(creatureConfig['spawnedGUID'], randomBuff, host)
     end
 end
 
 local function HandleFriendlySpawn(creatureTplId)
-    MuffinLogger.Debug(string.format('Handling friendly spawn and adding %s as follower', creatureTplId))
-    Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
+    MuffinLogger.Debug('Handling friendly spawn')
+
+    -- Spells add them as a follower automatically
+    if creatureConfig['spawnStrategy'] == 'entityUUIDs' then
+        MuffinLogger.Debug('Adding ' .. creatureTplId .. ' as follower')
+        Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
+    end
+
     AddPartyBuffs()
+end
+
+local function CastPortalSpell(creatureGUID)
+    Osi.UseSpell(creatureGUID, 'Target_LOW_CastPortal', creatureGUID)
+end
+
+local function OnBeforeSpawn(creatureGUID)
+    CastPortalSpell(creatureGUID)
 end
 
 local function ApplySpawnSelfStatus()
@@ -71,6 +83,8 @@ end
 
 local function HandleCreatureSpawn()
     if creatureConfig then
+        MuffinLogger.Debug('Handling creature spawn')
+
         buffedCreatures[creatureConfig['spawnedGUID']] = 1
 
         ApplySpawnSelfStatus()
@@ -82,6 +96,8 @@ local function HandleCreatureSpawn()
         end
 
         SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
+
+        OnBeforeSpawn(creatureConfig['spawnedGUID'])
 
         creatureConfig['handledSpawn'] = true
     end
@@ -108,7 +124,6 @@ local function SpawnCreatureByTemplateId(creatureTplId, book)
             if createdGUID then
                 MuffinLogger.Debug(string.format('Successfully spawned %s [%s]', creatureTplId, createdGUID))
 
-                creatureConfig['spawnedTpl']   = creatureTplId
                 creatureConfig['spawnedGUID']  = createdGUID
                 creatureConfig['handledSpawn'] = false
                 creatureConfig['book']         = book
@@ -139,45 +154,44 @@ local function SpawnCreatureUsingStrategy(book)
 
     if summonSpells and #summonSpells > 0 then
         local rndSpell = summonSpells[math.random(#summonSpells)]
-        local target = tostring(creatureConfig['spawnedGUID'])
-        local caster = target
-        MuffinLogger.Debug(string.format('Casting summoning spell: %s', rndSpell))
-        Osi.UseSpell(caster, rndSpell, target)
+        local caster   = tostring(Osi.GetHostCharacter())
+
+        MuffinLogger.Debug(string.format('Casting summoning spell: %s', rndSpell['name']))
+
+        Osi.UseSpell(caster, rndSpell['name'], caster)
+
+        -- Set creature info for this scenario
+        creatureConfig['spawnedGUID']   = rndSpell['entityUUID']
+        creatureConfig['handledSpawn']  = false
+        creatureConfig['book']          = book
+        creatureConfig['spawnStrategy'] = 'spells'
+
+        -- This will be handled in EnteredLevel
+        CM['creatureConfig']            = creatureConfig
     else
         local templates = book['entityUUIDs']
-
         if not templates or #templates == 0 then
-            MuffinLogger.Debug(string.format('No templates for book %s; using rarity %s',
-                book['name'],
-                book['rarity']
-            ))
             local configs = LCConfigUtils.GetConfigs()
-            if configs and configs[book['integrationName']] then
-                templates = configs[book['integrationName']][book['rarity']]['entityUUIDs']
+            local intName = book['integrationName']
+            local rarity  = book['rarity']
+            if configs and configs[intName] then
+                MuffinLogger.Debug(string.format('No templates for book %s; using rarity %s',
+                    book['name'],
+                    book['rarity']
+                ))
+                templates = configs[intName][rarity]['entityUUIDs']
+
+                if templates then
+                    creatureConfig['spawnStrategy'] = 'entityUUIDs'
+                else
+                    MuffinLogger.Critical('Failed to get creature UUID by rarity!')
+                end
             else
                 MuffinLogger.Warn('Invalid book rarity!')
             end
-
-            SpawnCreatureByTemplateId(templates[math.random(#templates)], book)
         end
-    end
-end
 
-local function CastPortalSpell(creatureGUID)
-    Osi.UseSpell(creatureGUID, 'Target_LOW_CastPortal', creatureGUID)
-end
-
-local function SpawnCreatureUsingRandomConfig()
-    local config = LCConfigUtils.GetRandomCommonConfig()
-    if config then
-        creatureConfig = config
-        if creatureConfig['spawnedGUID'] then
-            local randomCreatureTplId = LCConfigUtils.GetRandomCreatureTplFromConfig(creatureConfig)
-
-            if randomCreatureTplId then
-                SpawnCreatureByTemplateId(randomCreatureTplId)
-            end
-        end
+        SpawnCreatureByTemplateId(templates[math.random(#templates)], book)
     end
 end
 
@@ -187,6 +201,7 @@ local function OnWentOnStage(objectGUID, isOnStageNow)
             local alreadyBuffed = buffedCreatures[creatureConfig['spawnedGUID']] == objectGUID
             if objectGUID == creatureConfig['spawnedGUID'] and not alreadyBuffed then
                 if creatureConfig and not creatureConfig['handledSpawn'] then
+                    MuffinLogger.Debug(creatureConfig['spawnedGUID'] .. ' is now on stage!')
                     HandleCreatureSpawn()
                 end
             end
@@ -198,4 +213,6 @@ end
 CM.OnWentOnStage              = OnWentOnStage
 CM.SpawnCreatureByTemplateId  = SpawnCreatureByTemplateId
 CM.SpawnCreatureUsingStrategy = SpawnCreatureUsingStrategy
+CM.HandleCreatureSpawn        = HandleCreatureSpawn
+CM.GetGUIDFromTpl             = GetGUIDFromTpl
 LC['CreatureManager']         = CM

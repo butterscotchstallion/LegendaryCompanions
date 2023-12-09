@@ -4,6 +4,8 @@ new equipment "EQP_Githzerai_Common"
     add equipment entry "WPN_Longsword_Gith"
     add equipmentgroup
     add equipment entry "ARM_HalfPlate_Body_Githyanki"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Metal_Githyanki"
 
 new equipment "EQP_Githzerai_Rare"
     add initialweaponset "Melee"
@@ -13,6 +15,8 @@ new equipment "EQP_Githzerai_Rare"
     add equipment entry "ARM_HalfPlate_Body_Githyanki"
     add equipmentgroup
     add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Metal_Githyanki"
 
 new equipment "EQP_Githzerai_Legendary"
     add initialweaponset "Melee"
@@ -23,5 +27,6 @@ new equipment "EQP_Githzerai_Legendary"
     add equipmentgroup
     add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
     add equipmentgroup
-    add equipment entry "UNI_HAG_SwampedHero_OldFancyHelmet"
-
+    add equipment entry "CRE_MAG_Psychic_Githborn_Circlet"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Metal_Githyanki"

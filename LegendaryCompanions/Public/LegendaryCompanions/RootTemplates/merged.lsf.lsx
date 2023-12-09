@@ -455,6 +455,7 @@
 					Gith Raider 366bca00-1c0c-4fba-bb1c-45c6ae20d691
 					<attribute id="ParentTemplateId" type="FixedString" value="366bca00-1c0c-4fba-bb1c-45c6ae20d691" />
 					-->
+					<attribute id="Icon" type="FixedString" value="9e645e51-bf7d-4f0a-9c73-4ab3038b43a6-_(Icon_Githyanki_Female)" />
 					<attribute id="ParentTemplateId" type="FixedString" value="39c7c3a9-8393-4df9-9bbf-6d52aa7f34db" />
 					<attribute id="Name" type="LSString" value="LC_Githzerai_Legendary" />
 					<attribute id="Type" type="FixedString" value="character" />

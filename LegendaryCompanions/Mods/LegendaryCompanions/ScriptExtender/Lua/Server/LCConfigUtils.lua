@@ -84,13 +84,14 @@ end
 
 --[[
 -- Use summon spells by default, or entity UUIDs if not
+-- @param book
 --]]
-function LCConfigUtils.GetSummoningStrategy(bookInfo)
+function LCConfigUtils.GetSummoningStrategy(book)
     local strategy = 'spell'
-    local hasSummonSpells = bookInfo['summonSpells'] and #bookInfo['summonSpells']
-    local hasEntityUUIDs = bookInfo['entityUUIDs'] and #bookInfo['entityUUIDs']
+    local hasSummonSpells = book['summonSpells'] and #book['summonSpells']
+    local hasEntityUUIDs = book['entityUUIDs'] and #book['entityUUIDs']
 
-    if hasEntityUUIDs then
+    if not hasSummonSpells and hasEntityUUIDs then
         strategy = 'entityUUIDs'
     else
         if not hasEntityUUIDs and not hasSummonSpells then
@@ -101,9 +102,9 @@ function LCConfigUtils.GetSummoningStrategy(bookInfo)
     return strategy
 end
 
--- @param bookInfo table
-function LCConfigUtils.GetEntityUUIDByBookInfo(bookInfo)
-    local templates = bookInfo['entityUUIDs']
+-- @param book table
+function LCConfigUtils.GetEntityUUIDByBookInfo(book)
+    local templates = book['entityUUIDs']
     if templates and #templates > 0 then
         return templates[math.random(#templates)]
     else

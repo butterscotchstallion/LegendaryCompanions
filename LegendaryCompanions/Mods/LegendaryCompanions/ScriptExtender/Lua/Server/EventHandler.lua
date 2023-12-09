@@ -13,7 +13,25 @@ local function OnItemOpened(itemTemplateId)
     LC['CreatureManager'].SpawnCreature()
 end
 
+--[[
+-- When summoning via spell, we have to listen for this event to get
+-- the GUID of the entity
+--]]
+local function OnEnteredLevel(object, objectRT, level)
+    local creatureConfig = LC['CreatureManager']['creatureConfig']
+    local objectGUID = LC['CreatureManager'].GetGUIDFromTpl(object)
+
+    if creatureConfig then
+        if creatureConfig['spawnedGUID'] == objectRT then
+            MuffinLogger.Debug(string.format('%s (%s) entered level!', objectRT, level))
+            LC['CreatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
+            LC['CreatureManager'].HandleCreatureSpawn()
+        end
+    end
+end
+
 Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['CreatureManager'].OnWentOnStage)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
+Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
 -- Ext.Osiris.RegisterListener('Opened', 1, 'after', OnItemOpened)
 -- TODO add death handler that removes creatures and from buff table
