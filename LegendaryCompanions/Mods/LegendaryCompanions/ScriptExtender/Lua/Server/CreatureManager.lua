@@ -73,7 +73,7 @@ local function CastPortalSpell()
     Osi.ApplyStatus(host, spell, 1, 1, host)
 end
 
-local function OnBeforeSpawn(creatureGUID)
+local function OnBeforeSpawn()
     CastPortalSpell()
 end
 
