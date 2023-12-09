@@ -41,7 +41,6 @@ end
 -- @return nil
 local function AddPartyBuffs()
     MuffinLogger.Info('Adding buffs to party')
-    -- need to pass intConfig here
     local partyMemberTpl = GetGUIDFromTpl(Osi.GetHostCharacter())
     local randomBuff = LCConfigUtils.GetRandomPartyBuff(creatureConfig['book'])
 
@@ -52,7 +51,7 @@ local function AddPartyBuffs()
 end
 
 local function HandleFriendlySpawn(creatureTplId)
-    MuffinLogger.Debug('Handling friendly spawn')
+    MuffinLogger.Debug(string.format('Handling friendly spawn and adding %s as follower', creatureTplId))
     Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
     AddPartyBuffs()
 end
@@ -72,21 +71,16 @@ end
 
 local function HandleCreatureSpawn()
     if creatureConfig then
-        local isFriend = true
-
         buffedCreatures[creatureConfig['spawnedGUID']] = 1
 
-        -- Creature statuses
         ApplySpawnSelfStatus()
 
-        -- Handle hostility
-        if isFriend then
-            HandleFriendlySpawn(creatureConfig['spawnedGUID'])
-        else
+        if creatureConfig['isHostile'] == true then
             HandleHostileSpawn(creatureConfig['spawnedGUID'])
+        else
+            HandleFriendlySpawn(creatureConfig['spawnedGUID'])
         end
 
-        -- Set creature level and buffs
         SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
 
         creatureConfig['handledSpawn'] = true
@@ -98,34 +92,33 @@ end
 local function SpawnCreatureByTemplateId(creatureTplId, book)
     local x, y, z     = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
     local numericXPos = tonumber(x)
-    local isFriendly  = true
+    local isHostile   = false
 
-    MuffinLogger.Debug(string.format('Attempting to spawn a %s at %s, %s, %s', creatureTplId, x, y, z))
+    if creatureTplId then
+        MuffinLogger.Debug(string.format('Attempting to spawn a %s at %s, %s, %s', creatureTplId, x, y, z))
 
-    -- This can be false so we explicitly check for its existence
-    if book['isFriendly'] ~= nil then
-        isFriendly = book['isFriendly']
-    end
-
-    -- Give some space if this is a hostile creature
-    if not isFriendly then
-        x = x + 10
-        y = y + 10
-    end
-
-    if numericXPos then
-        local createdGUID = Osi.CreateAt(creatureTplId, numericXPos, y, z, 0, 1, '')
-        if createdGUID then
-            MuffinLogger.Debug(string.format('Successfully spawned %s [%s]', creatureTplId, createdGUID))
-
-            creatureConfig['spawnedTpl']   = creatureTplId
-            creatureConfig['spawnedGUID']  = createdGUID
-            creatureConfig['handledSpawn'] = false
-            creatureConfig['book']         = book
-            -- Creature spawn will be handled in OnWentOnStage
-        else
-            MuffinLogger.Critical(string.format('Failed to spawn %s', creatureTplId))
+        -- Give some space if this is a hostile creature
+        if isHostile then
+            x = x + 10
+            y = y + 10
         end
+
+        if numericXPos then
+            local createdGUID = Osi.CreateAt(creatureTplId, numericXPos, y, z, 0, 1, '')
+            if createdGUID then
+                MuffinLogger.Debug(string.format('Successfully spawned %s [%s]', creatureTplId, createdGUID))
+
+                creatureConfig['spawnedTpl']   = creatureTplId
+                creatureConfig['spawnedGUID']  = createdGUID
+                creatureConfig['handledSpawn'] = false
+                creatureConfig['book']         = book
+                -- Creature spawn will be handled in OnWentOnStage
+            else
+                MuffinLogger.Critical(string.format('Failed to spawn %s', creatureTplId))
+            end
+        end
+    else
+        MuffinLogger.Critical('Invalid template id!')
     end
 end
 

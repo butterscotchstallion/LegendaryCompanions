@@ -4,6 +4,7 @@
 
 -- item1, item2, item3, item4, item5, character, newItem
 local function OnCombined(item1, item2, _, _, _, _, newItem)
+    -- Update me if we add books with more pages
     LC['BookEventHandler'].HandleBookCreated(item1, item2, newItem)
 end
 

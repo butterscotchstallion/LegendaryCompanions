@@ -85,11 +85,19 @@ end
 -- @param bookInfo table
 function LCConfigUtils.GetTemplateByBookInfo(bookInfo)
     local templates = bookInfo['entityUUIDs']
-    if #templates > 0 then
+    if templates and #templates > 0 then
         return templates[math.random(#templates)]
     else
         MuffinLogger.Debug('No templates found for book')
         -- Get template based on book rarity here
+    end
+end
+
+function LCConfigUtils.GetRandomTemplateByRarity(rarity)
+    if LC['rarities'][rarity] then
+        return LCConfigUtils.GetTemplateByBookInfo()
+    else
+        MuffinLogger.Critical(string.format('Invalid rarity: %s', rarity))
     end
 end
 
@@ -105,6 +113,8 @@ function LCConfigUtils.GetBookByBookTplId(books, bookTplId)
         for _, book in pairs(books[integrationName]) do
             local isLikelyMatch = string.starts(bookTplId, book['name'])
             if isLikelyMatch then
+                -- Used to get other templates based on rarity
+                book['integrationName'] = integrationName
                 return book
             end
         end

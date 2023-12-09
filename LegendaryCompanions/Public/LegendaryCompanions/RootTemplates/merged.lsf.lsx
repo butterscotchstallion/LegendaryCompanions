@@ -21,7 +21,7 @@
 						<node id="StatusList">
 							<children>
 								<node id="Status">
-									<attribute id="Object" type="FixedString" value="EC_AUTOMATED" />
+									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
 								</node>
 							</children>
 						</node>
@@ -239,7 +239,7 @@
 						<node id="StatusList">
 							<children>
 								<node id="Status">
-									<attribute id="Object" type="FixedString" value="EC_AUTOMATED" />
+									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
 								</node>
 							</children>
 						</node>
@@ -446,7 +446,7 @@
 					<attribute id="Archetype" type="FixedString" value="melee_smart" />
 					<attribute id="CharacterVisualResourceID" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191" />
 					<attribute id="DisplayName" type="TranslatedString" handle="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1" />
-					<attribute id="Equipment" type="FixedString" value="LC_Githzerai_Legendary" />
+					<attribute id="Equipment" type="FixedString" value="EQP_Githzerai_Legendary" />
 					<attribute id="Icon" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191-EQP_Longsword_HalfPlate_Gith_(Icon_Githyanki_Male)" />
 					<attribute id="MapKey" type="FixedString" value="4973f064-fe29-4857-89fb-a18af7a5d02a" />
 					<attribute id="ParentTemplateId" type="FixedString" value="366bca00-1c0c-4fba-bb1c-45c6ae20d691" />
@@ -454,221 +454,10 @@
 					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<attribute id="Type" type="FixedString" value="character" />
 					<children>
-						<node id="ItemList" />
-						<node id="LayerList">
-							<children>
-								<node id="Layers">
-									<children>
-										<node id="Object">
-											<attribute id="MapKey" type="FixedString" value="WLD_Main_A" />
-											<children>
-												<node id="Layer">
-													<attribute id="Object" type="guid" value="bac39da5-c70e-e89a-3c95-9dd955ad660c" />
-												</node>
-												<node id="Layer">
-													<attribute id="Object" type="guid" value="ee769ffe-b0ae-c949-eba7-f5f692fa23b7" />
-												</node>
-												<node id="Layer">
-													<attribute id="Object" type="guid" value="67e0889c-19e7-3231-97ba-82e90c1b8946" />
-												</node>
-											</children>
-										</node>
-									</children>
-								</node>
-							</children>
-						</node>
-						<node id="LocomotionParams" />
-						<node id="SkillList">
-							<children>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="-1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="2" />
-									<attribute id="Skill" type="FixedString" value="Target_MistyStep_Githyanki" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="-1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="2" />
-									<attribute id="Skill" type="FixedString" value="Target_ShockingGrasp" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="1" />
-									<attribute id="Skill" type="FixedString" value="Projectile_RayOfFrost" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="-1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="2" />
-									<attribute id="Skill" type="FixedString" value="Zone_BurningHands" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="-1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="2" />
-									<attribute id="Skill" type="FixedString" value="Target_HoldPerson" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-								<node id="Skill">
-									<attribute id="AIFlags" type="uint16" value="0" />
-									<attribute id="FallbackStartRound" type="int32" value="-1" />
-									<attribute id="LearningStrategy" type="uint8" value="0" />
-									<attribute id="MinimumImpact" type="int32" value="0" />
-									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
-									<attribute id="ScoreModifier" type="float" value="2" />
-									<attribute id="Skill" type="FixedString" value="Target_Blindness" />
-									<attribute id="SpellCastingAbility" type="uint8" value="0" />
-									<attribute id="StartRound" type="int32" value="0" />
-									<children>
-										<node id="SourceConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-										<node id="TargetConditions">
-											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
-											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
-											<children>
-												<node id="Tags" />
-											</children>
-										</node>
-									</children>
-								</node>
-							</children>
-						</node>
-						<node id="Transform">
-							<attribute id="Position" type="fvec3" value="-143.576 24.37095 562.9485" />
-							<attribute id="RotationQuat" type="fvec4" value="0 0.9932133 0 0.1163069" />
-							<attribute id="Scale" type="float" value="1" />
-						</node>
-					</children>
-				</node>
-				<!-- Gith'zerai - Raider (do not remove) -->
-				<node id="GameObjects">
-					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
-					<attribute id="Archetype" type="FixedString" value="melee_smart" />
-					<attribute id="CharacterVisualResourceID" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1" />
-					<attribute id="Equipment" type="FixedString" value="EQP_Githzerai_Legendary" />
-					<attribute id="Icon" type="FixedString" value="5a785ecb-4178-92c0-0087-ba8eef16d191-EQP_Longsword_HalfPlate_Gith_(Icon_Githyanki_Male)" />
-					<attribute id="MapKey" type="FixedString" value="b0c13825-1346-4e9e-b43a-5f54de1577a0" />
-					<attribute id="ParentTemplateId" type="FixedString" value="366bca00-1c0c-4fba-bb1c-45c6ae20d691" />
-					<attribute id="Name" type="LSString" value="LC_githzerai_raider" />
-					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
-					<attribute id="Type" type="FixedString" value="character" />
-					<children>
 						<node id="StatusList">
 							<children>
 								<node id="Status">
-									<attribute id="Object" type="FixedString" value="EC_AUTOMATED" />
+									<attribute id="Object" type="FixedString" value="LC_AUTOMATED" />
 								</node>
 							</children>
 						</node>
