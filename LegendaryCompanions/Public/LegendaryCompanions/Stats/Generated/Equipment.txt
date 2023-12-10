@@ -44,5 +44,8 @@ new equipment "EQP_Githzerai_Legendary"
 new equipment "EQP_RSO_Legendary"
     add initialweaponset "Melee"
     add equipmentgroup
-    add equipment entry "RS_Slim_Clothing_Anarchic"
+    add equipment entry "RS_Fitted_Clothing_Dark"
+    add equipmentgroup
+    add equipment entry "MAG_Vicious_Shortsword"
+
 

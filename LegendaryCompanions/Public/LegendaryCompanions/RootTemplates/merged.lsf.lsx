@@ -906,25 +906,6 @@
 				<!-- RSSlimOutfits -->
 				<!-- Legendary -->
 				<node id="GameObjects">
-				<!--
-					<attribute id="AnubisConfigName" type="FixedString" value="DEN_Bard" />
-					<attribute id="CharacterVisualResourceID" type="FixedString" value="1ab11041-a5b8-7f62-ced5-a6bc1179c0e3" />
-					<attribute id="DisplayName" type="TranslatedString" handle="ha56e1454g5433g4c27ga904g78df82805018" version="1" />
-					<attribute id="Equipment" type="FixedString" value="EQP_Unarmed_Lute" />
-					<attribute id="Faction" type="guid" value="082ce2e1-e636-4a56-817c-af798bdc59d8" />
-					<attribute id="Flag" type="int32" value="1" />
-					<attribute id="GeneratePortrait" type="LSString" value="Icon_Tiefling_Female" />
-					<attribute id="Icon" type="FixedString" value="1ab11041-a5b8-7f62-ced5-a6bc1179c0e3-EQP_Unarmed_Lute_(Icon_Tiefling_Female)" />
-					<attribute id="IsGlobal" type="bool" value="True" />
-					<attribute id="IsLootable" type="bool" value="True" />
-					<attribute id="LevelName" type="FixedString" value="WLD_Main_A" />
-					<attribute id="MapKey" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
-					<attribute id="Name" type="LSString" value="S_DEN_Bard" />
-					<attribute id="SoftBodyCollisionTemplate" type="FixedString" value="e96eed75-850b-4497-b077-a8f62f731bf3" />
-					<attribute id="Stats" type="FixedString" value="DEN_Refugees_Tiefling_Bard" />
-					<attribute id="TemplateName" type="FixedString" value="9103fce3-6423-4f8a-af04-83ac1af2a1d7" />
-					<attribute id="Type" type="FixedString" value="character" />
-					-->
 					<attribute id="DisplayName" type="TranslatedString" handle="h18580da7ge9b8g4f70g9864geee1b4b823dc" version="1" />
 					<attribute id="CharacterVisualResourceID" type="FixedString" value="1ab11041-a5b8-7f62-ced5-a6bc1179c0e3" />
 					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
@@ -936,8 +917,46 @@
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Icon" type="FixedString" value="1ab11041-a5b8-7f62-ced5-a6bc1179c0e3-EQP_Unarmed_Lute_(Icon_Tiefling_Female)" />
 					<attribute id="GeneratePortrait" type="LSString" value="Icon_Tiefling_Female" />
-					<!--
 					<children>
+						<node id="ItemList">
+							<children>
+								<node id="Item">
+									<!--
+										<attribute id="AIFlags" type="uint16" value="0" />
+									-->
+									<attribute id="Amount" type="int32" value="1" />
+									<attribute id="CanBePickpocketed" type="bool" value="True" />
+									<attribute id="FallbackStartRound" type="int32" value="-1" />
+									<attribute id="IsDroppedOnDeath" type="bool" value="True" />
+									<attribute id="IsTradable" type="uint8" value="0" />
+									<attribute id="ItemName" type="LSString" value="S_DEN_BardMandolin" />
+									<attribute id="LevelName" type="LSString" value="WLD_Main_A" />
+									<attribute id="MinimumImpact" type="int32" value="0" />
+									<attribute id="OnlyCastOnSelf" type="bool" value="False" />
+									<attribute id="ScoreModifier" type="float" value="1" />
+									<attribute id="StartRound" type="int32" value="0" />
+									<attribute id="TemplateID" type="FixedString" value="13f3991e-01d3-498f-ad71-a55900c39516" />
+									<attribute id="Type" type="uint8" value="2" />
+									<attribute id="UUID" type="FixedString" value="45a48cf7-baed-4d48-aaf4-1399948314e6" />
+									<children>
+										<node id="SourceConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+										<node id="TargetConditions">
+											<attribute id="MaximumHealthPercentage" type="int32" value="100" />
+											<attribute id="MinimumHealthPercentage" type="int32" value="0" />
+											<children>
+												<node id="Tags" />
+											</children>
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
 						<node id="OnDeathActions">
 							<children>
 								<node id="Action">
@@ -1154,7 +1173,6 @@
 							<attribute id="Scale" type="float" value="1" />
 						</node>
 					</children>
-					-->
 				</node>
 				<node id="GameObjects"> Torn page 1
 					<attribute id="Description" type="TranslatedString" handle="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="2" />
