@@ -6,8 +6,10 @@
 -- unexpected values. Although we should catch this in code
 -- review, an automated validation system would be superior.
 --]]
+local RARITY_COMMON         = 'common'
+local RARITY_RARE           = 'rare'
+local RARITY_LEGENDARY      = 'legendary'
 local DEFAULT_SUMMON_MESAGE = 'The book glows with power and opens a portal!'
-LC['integrations']          = {}
 
 LC['integrationManager'].addIntegration({
     ['name']  = 'FollowersOfZerthimon',
@@ -19,7 +21,7 @@ LC['integrationManager'].addIntegration({
             -- Names of the pages that when combined create the above book
             ['pages']           = {
                 'BOOK_LC_Githzerai_TornPage_01',
-                'BOOK_LC_Githzerai_TornPage_02'
+                'BOOK_LC_Githzerai_TornPage_02',
             },
             -- This message appears as a message box to inform the user what is going on
             ['summonMessage']   = DEFAULT_SUMMON_MESAGE,
@@ -30,7 +32,10 @@ LC['integrationManager'].addIntegration({
                     -- Name of the summoning spell in LC_Summons.txt
                     ['name']       = 'LC_Summon_Githzerai_Legendary',
                     -- This should match the UUID of the character
-                    ['entityUUID'] = '4973f064-fe29-4857-89fb-a18af7a5d02a'
+                    ['entityUUID'] = '4973f064-fe29-4857-89fb-a18af7a5d02a',
+                    -- This determines the power level and lifetime of the summoned
+                    -- companion
+                    ['rarity']     = RARITY_LEGENDARY,
                 },
             },
             -- When your companion is summoned, it will cast one of these spells on the party

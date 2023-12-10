@@ -25,7 +25,12 @@ local function OnEnteredLevel(object, objectRT, level)
     end
 end
 
+local function OnTurnEnded(object)
+    LC['log'].Debug('Turn ended: ' .. object)
+end
+
 Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['creatureManager'].OnWentOnStage)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
+Ext.Osiris.RegisterListener('TurnEnded', 1, 'after', OnTurnEnded)
 -- TODO add death handler that removes creatures and from buff table

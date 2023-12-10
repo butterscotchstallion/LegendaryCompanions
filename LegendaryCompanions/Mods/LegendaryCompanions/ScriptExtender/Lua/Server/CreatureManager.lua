@@ -52,14 +52,8 @@ local function AddPartyBuffs()
     end
 end
 
-local function HandleFriendlySpawn(creatureTplId)
+local function HandleFriendlySpawn()
     LC['log'].Debug('Handling friendly spawn')
-
-    -- Spells add them as a follower automatically
-    if creatureConfig['spawnStrategy'] == 'entityUUIDs' then
-        LC['log'].Debug('Adding ' .. creatureTplId .. ' as follower')
-        Osi.AddPartyFollower(creatureTplId, Osi.GetHostCharacter())
-    end
 
     AddPartyBuffs()
 end
@@ -77,7 +71,9 @@ local function CastPortalSpell()
 end
 
 local function ShowSummonMessage(message)
-    Osi.OpenMessageBox(GetHostGUID(), message)
+    if message then
+        Osi.OpenMessageBox(GetHostGUID(), message)
+    end
 end
 
 local function OnBeforeSpawn(book)
@@ -109,7 +105,7 @@ local function HandleCreatureSpawn()
         if creatureConfig['isHostile'] == true then
             HandleHostileSpawn(creatureConfig['spawnedGUID'])
         else
-            HandleFriendlySpawn(creatureConfig['spawnedGUID'])
+            HandleFriendlySpawn()
         end
 
         SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
@@ -163,24 +159,26 @@ local function SpawnCreatureUsingStrategy(book)
     if summonSpells and #summonSpells > 0 then
         local rndSpell = summonSpells[math.random(#summonSpells)]
         local caster   = tostring(Osi.GetHostCharacter())
+        local rarity   = rndSpell['rarity'] or 'common'
 
         LC['log'].Debug(string.format('Casting summoning spell: %s', rndSpell['name']))
 
         Osi.UseSpell(caster, rndSpell['name'], caster)
 
         -- Set creature info for this scenario
-        creatureConfig['spawnedGUID']   = rndSpell['entityUUID']
-        creatureConfig['handledSpawn']  = false
-        creatureConfig['book']          = book
-        creatureConfig['spawnStrategy'] = 'spells'
+        creatureConfig['spawnedGUID']  = rndSpell['entityUUID']
+        creatureConfig['handledSpawn'] = false
+        creatureConfig['book']         = book
+        creatureConfig['rarity']       = rarity
 
         -- This will be handled in EnteredLevel
-        CM['creatureConfig']            = creatureConfig
+        CM['creatureConfig']           = creatureConfig
     else
         LC['log'].Critical('No summoning spells!')
     end
 end
 
+-- Only used with CreateAt strategy
 local function OnWentOnStage(objectGUID, isOnStageNow)
     if isOnStageNow then
         if creatureConfig and creatureConfig['spawnedGUID'] then

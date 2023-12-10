@@ -1,4 +1,5 @@
-local intMgr = {}
+local intMgr       = {}
+LC['integrations'] = {}
 
 -- @param name string
 -- @param config table
