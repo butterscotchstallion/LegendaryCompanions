@@ -19,6 +19,27 @@
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
 					<children>
+						<node id="OnDeathActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="10" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="ApplyDeathTypeBloodCheck" type="bool" value="True" />
+											<attribute id="CellAtGrow" type="int32" value="10" />
+											<attribute id="Conditions" type="LSString" value="" />
+											<attribute id="ExternalCauseAsSurfaceOwner" type="bool" value="True" />
+											<attribute id="GrowTimer" type="float" value="0.02" />
+											<attribute id="LifeTime" type="float" value="60" />
+											<attribute id="SurfaceType" type="FixedString" value="SurfaceNone" />
+											<attribute id="Timeout" type="float" value="0" />
+											<attribute id="TotalCells" type="int32" value="15" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
 						<node id="StatusList">
 							<children>
 								<!--
@@ -240,6 +261,27 @@
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
 					<children>
+						<node id="OnDeathActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="10" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="ApplyDeathTypeBloodCheck" type="bool" value="True" />
+											<attribute id="CellAtGrow" type="int32" value="10" />
+											<attribute id="Conditions" type="LSString" value="" />
+											<attribute id="ExternalCauseAsSurfaceOwner" type="bool" value="True" />
+											<attribute id="GrowTimer" type="float" value="0.02" />
+											<attribute id="LifeTime" type="float" value="60" />
+											<attribute id="SurfaceType" type="FixedString" value="SurfaceNone" />
+											<attribute id="Timeout" type="float" value="0" />
+											<attribute id="TotalCells" type="int32" value="15" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
 						<node id="StatusList">
 							<children>
 								<!--
@@ -462,8 +504,8 @@
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
 					<attribute id="BloodSurfaceType" type="FixedString" value="SurfaceNone" />
-					<!-- GTZ -->
-					<attribute id="Icon" type="FixedString" value="49b8ba93-b465-5ed2-d243-25f986f040b6-_(Icon_Githyanki_Female)" />
+					<!-- Icon -->
+					<attribute id="Icon" type="FixedString" value="483fedd8-358b-50f0-2358-768851fbe3b1-SCL_VlaakithAvatar_(Icon_Githyanki_Female)" />
 					<attribute id="GeneratePortrait" type="LSString" value="Icon_Githyanki_Female" />
 
 					<children>
