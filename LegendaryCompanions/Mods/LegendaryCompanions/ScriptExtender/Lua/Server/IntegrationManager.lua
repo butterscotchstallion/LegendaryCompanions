@@ -9,7 +9,8 @@ local function addIntegration(config)
     if not LC['integrations'][name] then
         numBooks                 = #config['books']
         LC['integrations'][name] = config
-        LC['log'].Info(string.format('Integration loaded: %s (%s books)', name, numBooks))
+        local logMsg             = string.format('Integration loaded: %s (%s books)', name, numBooks)
+        table.insert(LC['integrationLogMessages'], logMsg)
     else
         LC['log'].Critical('Attempting to add config that exists')
     end

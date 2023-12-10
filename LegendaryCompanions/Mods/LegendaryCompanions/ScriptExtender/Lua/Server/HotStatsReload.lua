@@ -2,6 +2,8 @@ local MOD_PATH = 'Public/LegendaryCompanions/Stats/Generated/Data/'
 local FILES_TO_RELOAD = {
     'LC_Summons_Buffs.txt',
     'LC_Summons.txt',
+    'LC_Summons_Githzerai.txt',
+    'LC_Summons_RSO.txt',
     'LC_Books.txt',
 }
 

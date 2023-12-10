@@ -1,0 +1,4 @@
+new entry "LC_Summon_RSO_Legendary"
+	using "LC_Summon"
+		data "DisplayName" "h18580da7ge9b8g4f70g9864geee1b4b823dc;1"
+		data "SpellProperties" "GROUND:Summon(52db9322-b223-48fd-ac88-e465efa0c736,-1,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"

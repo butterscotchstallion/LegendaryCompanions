@@ -161,7 +161,11 @@ local function SpawnCreatureUsingStrategy(book)
         local caster   = tostring(Osi.GetHostCharacter())
         local rarity   = rndSpell['rarity'] or 'common'
 
-        LC['log'].Debug(string.format('Casting summoning spell: %s', rndSpell['name']))
+        LC['log'].Debug(string.format(
+            'Casting summoning spell: %s [%s]',
+            rndSpell['name'],
+            rndSpell['entityUUID']
+        ))
 
         Osi.UseSpell(caster, rndSpell['name'], caster)
 

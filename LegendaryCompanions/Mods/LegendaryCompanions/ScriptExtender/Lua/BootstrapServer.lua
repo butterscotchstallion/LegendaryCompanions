@@ -4,13 +4,14 @@
 --------------------------------------------------------------------
 --]]
 LC = {
-    ['logLevel']           = 'DEBUG',
-    ['integrations']       = {},
-    ['log']                = {},
-    ['configUtils']        = {},
-    ['bookEventHandler']   = {},
-    ['creatureManager']    = {},
-    ['integrationManager'] = {},
+    ['logLevel']               = 'DEBUG',
+    ['integrations']           = {},
+    ['log']                    = {},
+    ['configUtils']            = {},
+    ['bookEventHandler']       = {},
+    ['creatureManager']        = {},
+    ['integrationManager']     = {},
+    ['integrationLogMessages'] = {},
 }
 Ext.Require('Server/HotStatsReload.lua')
 Ext.Require('Server/SimoLoops.lua')
@@ -28,6 +29,12 @@ local function PrintStartUpMessage()
     local version    = mod.Info.ModVersion
     local versionMsg = string.format('LegendaryCompanions v%s.%s.%s', version[1], version[2], version[3])
     LC['log'].Info(versionMsg)
+
+    if #LC['integrationLogMessages'] > 0 then
+        for _, msg in pairs(LC['integrationLogMessages']) do
+            LC['log'].Info(msg)
+        end
+    end
 end
 
 local function OnSessionLoaded()

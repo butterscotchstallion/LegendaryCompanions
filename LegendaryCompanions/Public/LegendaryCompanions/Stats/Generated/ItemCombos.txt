@@ -1,3 +1,4 @@
+// Gith'zerai book //
 new ItemCombination "LC_gith_torn_page"
 		data "Type 1" "Object"
 		data "Object 1" "BOOK_LC_Githzerai_TornPage_01"
@@ -13,4 +14,22 @@ new ItemCombinationResult "LC_gith_torn_page_1"
 		data "ResultAmount 1" "1"
 		data "Result 1" "BOOK_LC_Githzerai_Combined_Tome_3"
 		data "PreviewStatsID" "BOOK_LC_Githzerai_Combined_Tome_3"
+		data "PreviewIcon" "Item_BOOK_GEN_Book_C"
+
+// RSO book //
+new ItemCombination "LC_RSO_torn_pages"
+		data "Type 1" "Object"
+		data "Object 1" "BOOK_LC_RSO_TornPage_01"
+		data "Combine 1" "Base"
+		data "Transform 1" "Transform"
+
+		data "Type 2" "Object"
+		data "Object 2" "BOOK_LC_RSO_TornPage_02"
+		data "Combine 2" "Base"
+		data "Transform 2" "Consume"
+
+new ItemCombinationResult "LC_RSO_torn_pages_1"
+		data "ResultAmount 1" "1"
+		data "Result 1" "BOOK_LC_RSO_Combined_Tome"
+		data "PreviewStatsID" "BOOK_LC_RSO_Combined_Tome"
 		data "PreviewIcon" "Item_BOOK_GEN_Book_C"
