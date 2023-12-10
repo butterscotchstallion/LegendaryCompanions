@@ -11,13 +11,13 @@ local commands = {
             local entity = Ext.Entity.Get(uuid)
             filename = (filename or uuid) .. '.json'
             Ext.IO.SaveFile(filename, Ext.DumpExport(entity:GetAllComponents()))
-            MuffinLogger.Debug(string.format('Saved dump file: %s', filename))
+            LC['log'].Debug(string.format('Saved dump file: %s', filename))
         end
     }
 }
 local function RegisterCommands()
     for _, command in ipairs(commands) do
-        MuffinLogger.Debug(string.format('Registered command %s', command.name))
+        LC['log'].Debug(string.format('Registered command %s', command.name))
         Ext.RegisterConsoleCommand(command.name, command.func)
     end
 end

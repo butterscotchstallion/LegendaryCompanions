@@ -1,4 +1,4 @@
-MuffinLogger = {}
+local MuffinLogger = {}
 local LOG_PREFIX = '[LC]'
 
 function MuffinLogger.Log(message, level)
@@ -29,3 +29,5 @@ end
 function MuffinLogger.Critical(message)
     MuffinLogger.Log(message, 'CRITICAL')
 end
+
+LC['log'] = MuffinLogger

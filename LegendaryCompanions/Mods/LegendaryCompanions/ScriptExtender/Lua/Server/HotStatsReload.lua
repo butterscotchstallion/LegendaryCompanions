@@ -9,11 +9,11 @@ local function OnReset()
     for _, filename in pairs(FILES_TO_RELOAD) do
         local filePath = string.format('%s%s', MOD_PATH, filename)
         if string.len(filename) > 0 then
-            MuffinLogger.Info(string.format('RELOADING %s', filePath))
+            LC['log'].Info(string.format('RELOADING %s', filePath))
             ---@diagnostic disable-next-line: undefined-field
             Ext.Stats.LoadStatsFile(filePath, false)
         else
-            MuffinLogger.Critical(string.format('Invalid file: %s', filePath))
+            LC['log'].Critical(string.format('Invalid file: %s', filePath))
         end
     end
 end

@@ -5,12 +5,7 @@
 -- item1, item2, item3, item4, item5, character, newItem
 local function OnCombined(item1, item2, _, _, _, _, newItem)
     -- Update me if we add books with more pages
-    LC['BookEventHandler'].HandleBookCreated(item1, item2, newItem)
-end
-
-local function OnItemOpened(itemTemplateId)
-    MuffinLogger.Info(string.format('Opened item %s', itemTemplateId))
-    LC['CreatureManager'].SpawnCreature()
+    LC['bookEventHandler'].HandleBookCreated(item1, item2, newItem)
 end
 
 --[[
@@ -18,20 +13,19 @@ end
 -- the GUID of the entity
 --]]
 local function OnEnteredLevel(object, objectRT, level)
-    local creatureConfig = LC['CreatureManager']['creatureConfig']
-    local objectGUID = LC['CreatureManager'].GetGUIDFromTpl(object)
+    local creatureConfig = LC['creatureManager']['creatureConfig']
+    local objectGUID     = LC['creatureManager'].GetGUIDFromTpl(object)
 
     if creatureConfig then
         if creatureConfig['spawnedGUID'] == objectRT then
-            MuffinLogger.Debug(string.format('%s (%s) entered level!', objectRT, level))
-            LC['CreatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
-            LC['CreatureManager'].HandleCreatureSpawn()
+            LC['log'].Debug(string.format('%s (%s) entered level!', objectRT, level))
+            LC['creatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
+            LC['creatureManager'].HandleCreatureSpawn()
         end
     end
 end
 
-Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['CreatureManager'].OnWentOnStage)
+Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['creatureManager'].OnWentOnStage)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
--- Ext.Osiris.RegisterListener('Opened', 1, 'after', OnItemOpened)
 -- TODO add death handler that removes creatures and from buff table

@@ -1,7 +1,7 @@
 --[[
 -- BookEventHandler!
 --]]
-local LCBookEventHandler = {}
+local handler = {}
 
 --[[
 -- When a book is created:
@@ -14,27 +14,27 @@ local LCBookEventHandler = {}
 -- @param bookTplId string
 -- @return void
 --]]
-function LCBookEventHandler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
-    local books = LCConfigUtils.GetBooksWithIntegrationName()
-    local book  = LCConfigUtils.GetBookByBookTplId(books, bookTplId)
+function handler.HandleBookCreated(item1TplId, item2TplId, bookTplId)
+    local books = LC['configUtils'].GetBooksWithIntegrationName()
+    local book  = LC['configUtils'].GetBookByBookTplId(books, bookTplId)
 
     if book then
         local pages = {
             item1TplId,
             item2TplId,
         }
-        local pagesMatch = LCConfigUtils.IsPageMatch(book, pages)
+        local pagesMatch = LC['configUtils'].IsPageMatch(book, pages)
         if pagesMatch then
-            MuffinLogger.Debug(string.format('"%s" created!', book['name']))
+            LC['log'].Debug(string.format('"%s" created!', book['name']))
 
-            LC['CreatureManager'].OnBeforeSpawn(book)
-            LC['CreatureManager'].SpawnCreatureUsingStrategy(book)
+            LC['creatureManager'].OnBeforeSpawn(book)
+            LC['creatureManager'].SpawnCreatureUsingStrategy(book)
         else
-            MuffinLogger.Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))
+            LC['log'].Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))
         end
     else
-        MuffinLogger.Debug(string.format('Book %s created but not found in config list', bookTplId))
+        LC['log'].Debug(string.format('Book %s created but not found in config list', bookTplId))
     end
 end
 
-LC['BookEventHandler'] = LCBookEventHandler
+LC['bookEventHandler'] = handler
