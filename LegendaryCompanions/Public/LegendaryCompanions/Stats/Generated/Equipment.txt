@@ -44,8 +44,15 @@ new equipment "EQP_Githzerai_Legendary"
 new equipment "EQP_RSO_Legendary"
     add initialweaponset "Melee"
     add equipmentgroup
-    add equipment entry "RS_Fitted_Clothing_Dark"
+    add equipment entry "RS_Fitted_Leather Armor"
     add equipmentgroup
     add equipment entry "MAG_Vicious_Shortsword"
+    add equipmentgroup
+    add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
+    add equipmentgroup
+    add equipment entry "ARM_Hat_Wizard_G"
+    add initialweaponset "Ranged"
+    add equipmentgroup
+    add equipment entry "WPN_LightCrossbow"
 
 
