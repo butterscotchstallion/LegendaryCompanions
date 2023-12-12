@@ -1,3 +1,7 @@
+--[[
+-- CreatureManager - Handles spawning of creatures and related
+-- functionality
+--]]
 local CM              = {}
 local creatureConfig  = {}
 local buffedCreatures = {}
@@ -182,23 +186,8 @@ local function SpawnCreatureUsingStrategy(book)
     end
 end
 
--- Only used with CreateAt strategy
-local function OnWentOnStage(objectGUID, isOnStageNow)
-    if isOnStageNow then
-        if creatureConfig and creatureConfig['spawnedGUID'] then
-            local alreadyBuffed = buffedCreatures[creatureConfig['spawnedGUID']] == objectGUID
-            if objectGUID == creatureConfig['spawnedGUID'] and not alreadyBuffed then
-                if creatureConfig and not creatureConfig['handledSpawn'] then
-                    LC['log'].Debug(creatureConfig['spawnedGUID'] .. ' is now on stage!')
-                    HandleCreatureSpawn()
-                end
-            end
-        end
-    end
-end
 
 -- External
-CM.OnWentOnStage              = OnWentOnStage
 CM.SpawnCreatureByTemplateId  = SpawnCreatureByTemplateId
 CM.SpawnCreatureUsingStrategy = SpawnCreatureUsingStrategy
 CM.HandleCreatureSpawn        = HandleCreatureSpawn

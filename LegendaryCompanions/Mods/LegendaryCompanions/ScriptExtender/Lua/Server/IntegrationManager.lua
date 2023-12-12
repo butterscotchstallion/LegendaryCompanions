@@ -12,7 +12,7 @@ local function AddIntegration(config)
         local logMsg             = string.format('Integration loaded: %s (%s books)', name, numBooks)
         table.insert(LC['integrationLogMessages'], logMsg)
     else
-        LC['log'].Critical('Attempting to add config that exists')
+        LC['log'].Critical('Attempting to add config that exists already!')
     end
 end
 
