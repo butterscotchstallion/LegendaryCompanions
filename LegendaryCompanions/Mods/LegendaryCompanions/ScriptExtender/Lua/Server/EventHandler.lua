@@ -26,9 +26,27 @@ local function OnEnteredLevel(object, objectRT, level)
 end
 
 local function OnTurnEnded(object)
-    LC['log'].Debug('Turn ended: ' .. object)
+    --LC['log'].Debug('Turn ended: ' .. object)
 end
 
+local function PrintStartUpMessage()
+    local mod        = Ext.Mod.GetMod(ModuleUUID)
+    local version    = mod.Info.ModVersion
+    local versionMsg = string.format('LegendaryCompanions v%s.%s.%s', version[1], version[2], version[3])
+    LC['log'].Info(versionMsg)
+
+    if #LC['integrationLogMessages'] > 0 then
+        for _, msg in pairs(LC['integrationLogMessages']) do
+            LC['log'].Info(msg)
+        end
+    end
+end
+
+local function OnSessionLoaded()
+    PrintStartUpMessage()
+end
+
+Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
 Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['creatureManager'].OnWentOnStage)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
