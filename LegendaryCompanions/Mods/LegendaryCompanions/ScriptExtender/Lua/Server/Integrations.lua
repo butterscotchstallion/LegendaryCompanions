@@ -12,7 +12,7 @@ local RARITY_LEGENDARY      = 'legendary'
 local DEFAULT_SUMMON_MESAGE = 'The book glows with power and opens a portal!'
 
 -- Gith'zerai
-LC['integrationManager'].addIntegration({
+LC['integrationManager'].AddIntegration({
     ['name']  = 'FollowersOfZerthimon',
     -- A list of lore books
     ['books'] = {
@@ -52,7 +52,7 @@ LC['integrationManager'].addIntegration({
 })
 
 -- RSO
-LC['integrationManager'].addIntegration({
+LC['integrationManager'].AddIntegration({
     ['name']  = 'RS_Slim_Outfit_Series',
     -- A list of lore books
     ['books'] = {

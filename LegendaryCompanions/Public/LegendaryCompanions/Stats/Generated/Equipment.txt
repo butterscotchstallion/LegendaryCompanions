@@ -50,7 +50,9 @@ new equipment "EQP_RSO_Legendary"
     add equipmentgroup
     add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
     add equipmentgroup
-    add equipment entry "ARM_Hat_Wizard_G"
+    add equipment entry "ARM_Hat_Wizard_H"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Leather_G"
     add initialweaponset "Ranged"
     add equipmentgroup
     add equipment entry "WPN_LightCrossbow"

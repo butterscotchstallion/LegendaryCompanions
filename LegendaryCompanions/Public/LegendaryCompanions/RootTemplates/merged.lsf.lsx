@@ -906,38 +906,23 @@
 				<!-- RSSlimOutfits -->
 				<!-- Legendary -->
 				<node id="GameObjects">
-					<!--
 					<attribute id="AiHint" type="guid" value="45a231e4-e94f-4b0e-a941-2daf1adf44b5" />
 					<attribute id="AnubisConfigName" type="FixedString" value="DefaultCombat" />
 					<attribute id="Archetype" type="FixedString" value="melee_smart" />
-					<attribute id="CharacterVisualResourceID" type="FixedString" value="56a1a028-ee25-136d-be76-2687fe5a3e46" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h408d65f5ge10bg4191g9b29g4c9e1394e8dc" version="1" />
-					<attribute id="Equipment" type="FixedString" value="EQP_Longsword_HalfPlate_Gith" />
-					<attribute id="Icon" type="FixedString" value="56a1a028-ee25-136d-be76-2687fe5a3e46-EQP_Longsword_HalfPlate_Gith_(Icon_Githyanki_Female)" />
-					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="LevelOverride" type="int32" value="5" />
-					<attribute id="MapKey" type="FixedString" value="7764910f-cfdd-4684-b1c2-11bd49d0079b" />
-					<attribute id="Name" type="LSString" value="Githyanki_Female_Gish" />
-					<attribute id="ParentTemplateId" type="FixedString" value="3fa051b0-ee9f-411e-940c-ffc886fc9a4d" />
-					<attribute id="Stats" type="FixedString" value="Githyanki_Gish" />
-					<attribute id="Type" type="FixedString" value="character" />
-					-->
 					<attribute id="DisplayName" type="TranslatedString" handle="h18580da7ge9b8g4f70g9864geee1b4b823dc" version="1" />
-					<attribute id="AiHint" type="guid" value="00000000-0000-0000-0000-000000000000" />
-					<attribute id="Archetype" type="FixedString" value="melee_smart" />
 					<attribute id="Equipment" type="FixedString" value="EQP_RSO_Legendary" />
 					<attribute id="MapKey" type="FixedString" value="52db9322-b223-48fd-ac88-e465efa0c736" />
 					<attribute id="Name" type="LSString" value="LC_RSO_Legendary" />
 					<attribute id="Stats" type="FixedString" value="DEN_Refugees_Tiefling_Ranger" />
 					<attribute id="Type" type="FixedString" value="character" />
-					<attribute id="ParentTemplateId" type="FixedString" value="fecb40db-3672-480a-a1d4-4439ffb031cd" />
+					<attribute id="Icon" type="FixedString" value="b2a2a57a-7690-681f-ad5c-61aa4c9754db-_(Icon_Tiefling_Female)" />
+					<attribute id="CharacterVisualResourceID" type="FixedString" value="b2a2a57a-7690-681f-ad5c-61aa4c9754db" />
+					<attribute id="ParentTemplateId" type="FixedString" value="3fa051b0-ee9f-411e-940c-ffc886fc9a4d" />
 					<children>
 						<node id="ItemList">
 							<children>
 								<node id="Item">
-									<!--
-										<attribute id="AIFlags" type="uint16" value="0" />
-									-->
+									<attribute id="AIFlags" type="uint16" value="0" />
 									<attribute id="Amount" type="int32" value="1" />
 									<attribute id="CanBePickpocketed" type="bool" value="True" />
 									<attribute id="FallbackStartRound" type="int32" value="-1" />

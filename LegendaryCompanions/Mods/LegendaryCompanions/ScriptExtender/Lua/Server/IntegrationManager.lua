@@ -3,7 +3,7 @@ LC['integrations'] = {}
 
 -- @param name string
 -- @param config table
-local function addIntegration(config)
+local function AddIntegration(config)
     local numBooks = 0
     local name     = config['name']
     if not LC['integrations'][name] then
@@ -16,5 +16,5 @@ local function addIntegration(config)
     end
 end
 
-intMgr.addIntegration    = addIntegration
+intMgr.AddIntegration    = AddIntegration
 LC['integrationManager'] = intMgr
