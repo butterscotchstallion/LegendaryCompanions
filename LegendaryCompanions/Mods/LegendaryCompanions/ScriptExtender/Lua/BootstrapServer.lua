@@ -8,7 +8,6 @@ LC = {
     ['integrations']           = {},
     ['log']                    = {},
     ['configUtils']            = {},
-    ['bookEventHandler']       = {},
     ['creatureManager']        = {},
     ['integrationManager']     = {},
     ['integrationLogMessages'] = {},

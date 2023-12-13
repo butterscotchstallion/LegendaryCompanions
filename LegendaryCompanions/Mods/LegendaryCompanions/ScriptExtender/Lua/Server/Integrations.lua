@@ -6,10 +6,10 @@
 -- unexpected values. Although we should catch this in code
 -- review, an automated validation system would be superior.
 --]]
-local RARITY_COMMON         = 'common'
-local RARITY_RARE           = 'rare'
-local RARITY_LEGENDARY      = 'legendary'
-local DEFAULT_SUMMON_MESAGE = 'The book glows with power and opens a portal!'
+local rarityCommon         = 'common'
+local rarityRare           = 'rare'
+local rarityLegendary      = 'rarityLegendary'
+local defaultSummonMessage = 'The book glows with power and opens a portal!'
 
 -- Gith'zerai
 LC['integrationManager'].AddIntegration({
@@ -25,7 +25,7 @@ LC['integrationManager'].AddIntegration({
                 'BOOK_LC_Githzerai_TornPage_02',
             },
             -- This message appears as a message box to inform the user what is going on
-            ['summonMessage']   = DEFAULT_SUMMON_MESAGE,
+            ['summonMessage']   = defaultSummonMessage,
             -- Upon combination of the pages, one of these summoning spells will be cast randomly
             -- to summon your companion
             ['summonSpells']    = {
@@ -36,7 +36,7 @@ LC['integrationManager'].AddIntegration({
                     ['entityUUID'] = '4973f064-fe29-4857-89fb-a18af7a5d02a',
                     -- This determines the power level and lifetime of the summoned
                     -- companion
-                    ['rarity']     = RARITY_LEGENDARY,
+                    ['rarity']     = rarityLegendary,
                 },
             },
             -- When your companion is summoned, it will cast one of these spells on the party
@@ -65,7 +65,7 @@ LC['integrationManager'].AddIntegration({
                 'BOOK_LC_RSO_TornPage_02',
             },
             -- This message appears as a message box to inform the user what is going on
-            ['summonMessage']   = DEFAULT_SUMMON_MESAGE,
+            ['summonMessage']   = defaultSummonMessage,
             -- Upon combination of the pages, one of these summoning spells will be cast randomly
             -- to summon your companion
             ['summonSpells']    = {
@@ -76,7 +76,7 @@ LC['integrationManager'].AddIntegration({
                     ['entityUUID'] = '52db9322-b223-48fd-ac88-e465efa0c736',
                     -- This determines the power level and lifetime of the summoned
                     -- companion
-                    ['rarity']     = RARITY_LEGENDARY,
+                    ['rarity']     = rarityLegendary,
                 },
             },
             -- When your companion is summoned, it will cast one of these spells on the party

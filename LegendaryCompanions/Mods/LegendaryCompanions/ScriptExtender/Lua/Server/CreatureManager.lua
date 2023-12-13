@@ -2,7 +2,7 @@
 -- CreatureManager - Handles spawning of creatures and related
 -- functionality
 --]]
-local CM              = {}
+local creatureManager = {}
 local creatureConfig  = {}
 local buffedCreatures = {}
 
@@ -10,16 +10,22 @@ local function GetHostGUID()
     return tostring(Osi.GetHostCharacter())
 end
 
+--@param tplId string
+--@return void
 local function GetGUIDFromTpl(tplId)
     return string.sub(tplId, -36)
 end
 
+--@param creatureTplId string
+--@return void
 local function SetCreatureHostile(creatureTplId)
-    local EVIL_FACTION_ID = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
-    Osi.SetFaction(creatureTplId, EVIL_FACTION_ID)
+    local evilFactionId = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
+    Osi.SetFaction(creatureTplId, evilFactionId)
     LC['log'].Info(string.format('Set hostile on %s', creatureTplId))
 end
 
+--@param creatureTplId string
+--@return void
 local function SetCreatureLevelEqualToHost(creatureTplId)
     local host = Osi.GetHostCharacter()
     if host then
@@ -31,13 +37,14 @@ local function SetCreatureLevelEqualToHost(creatureTplId)
     end
 end
 
+--@param creatureTplId string
 local function HandleHostileSpawn(creatureTplId)
     LC['log'].Debug('Handling hostile spawn')
     SetCreatureHostile(creatureTplId)
     -- TODO maybe they buff themselves or debuff player here?
 end
 
--- @return nil
+-- @return void
 local function AddPartyBuffs()
     LC['log'].Info('Adding buffs to party')
     local host       = tostring(Osi.GetHostCharacter())
@@ -56,12 +63,14 @@ local function AddPartyBuffs()
     end
 end
 
+--@return void
 local function HandleFriendlySpawn()
     LC['log'].Debug('Handling friendly spawn')
 
     AddPartyBuffs()
 end
 
+--@return void
 local function CastPortalSpell()
     LC['log'].Debug('Opening a portal!')
     local spells = {
@@ -74,6 +83,7 @@ local function CastPortalSpell()
     Osi.ApplyStatus(GetHostGUID(), spell, 1, 1, GetHostGUID())
 end
 
+--@param message string
 local function ShowSummonMessage(message)
     if message then
         Osi.OpenMessageBox(GetHostGUID(), message)
@@ -81,10 +91,11 @@ local function ShowSummonMessage(message)
 end
 
 local function OnBeforeSpawn(book)
-    ShowSummonMessage(book['summonMessage'])
     CastPortalSpell()
+    --ShowSummonMessage(book['summonMessage'])
 end
 
+--@return void
 local function ApplySpawnSelfStatus()
     local rndStatus = LC['configUtils'].GetRandomSelfStatusFromConfig(creatureConfig['book'])
     if creatureConfig and rndStatus then
@@ -98,6 +109,7 @@ local function ApplySpawnSelfStatus()
     end
 end
 
+--@return void
 local function HandleCreatureSpawn()
     if creatureConfig then
         LC['log'].Debug('Handling creature spawn')
@@ -118,8 +130,9 @@ local function HandleCreatureSpawn()
     end
 end
 
--- @param creatureTplId string
--- @param book table
+--@param creatureTplId string
+--@param book table
+--@return void
 local function SpawnCreatureByTemplateId(creatureTplId, book)
     local x, y, z     = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
     local numericXPos = tonumber(x)
@@ -153,11 +166,11 @@ local function SpawnCreatureByTemplateId(creatureTplId, book)
 end
 
 --[[
--- Spawn creature based on book config
--- @param book table
--- @return void
+--Spawn creature based on book config
+--@param book table
+--@return void
 --]]
-local function SpawnCreatureUsingStrategy(book)
+local function SpawnCreatureWithBook(book)
     local summonSpells = book['summonSpells']
 
     if summonSpells and #summonSpells > 0 then
@@ -174,23 +187,22 @@ local function SpawnCreatureUsingStrategy(book)
         Osi.UseSpell(caster, rndSpell['name'], caster)
 
         -- Set creature info for this scenario
-        creatureConfig['spawnedGUID']  = rndSpell['entityUUID']
-        creatureConfig['handledSpawn'] = false
-        creatureConfig['book']         = book
-        creatureConfig['rarity']       = rarity
+        creatureConfig['spawnedGUID']     = rndSpell['entityUUID']
+        creatureConfig['handledSpawn']    = false
+        creatureConfig['book']            = book
+        creatureConfig['rarity']          = rarity
 
         -- This will be handled in EnteredLevel
-        CM['creatureConfig']           = creatureConfig
+        creatureManager['creatureConfig'] = creatureConfig
     else
         LC['log'].Critical('No summoning spells!')
     end
 end
 
-
 -- External
-CM.SpawnCreatureByTemplateId  = SpawnCreatureByTemplateId
-CM.SpawnCreatureUsingStrategy = SpawnCreatureUsingStrategy
-CM.HandleCreatureSpawn        = HandleCreatureSpawn
-CM.GetGUIDFromTpl             = GetGUIDFromTpl
-CM.OnBeforeSpawn              = OnBeforeSpawn
-LC['creatureManager']         = CM
+creatureManager.SpawnCreatureByTemplateId = SpawnCreatureByTemplateId
+creatureManager.SpawnCreatureWithBook     = SpawnCreatureWithBook
+creatureManager.HandleCreatureSpawn       = HandleCreatureSpawn
+creatureManager.GetGUIDFromTpl            = GetGUIDFromTpl
+creatureManager.OnBeforeSpawn             = OnBeforeSpawn
+creatureManager['creatureManager']        = creatureManager

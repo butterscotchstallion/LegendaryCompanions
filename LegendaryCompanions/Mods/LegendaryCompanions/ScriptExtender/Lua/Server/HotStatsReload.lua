@@ -1,5 +1,5 @@
-local MOD_PATH = 'Public/LegendaryCompanions/Stats/Generated/Data/'
-local FILES_TO_RELOAD = {
+local modPath = 'Public/LegendaryCompanions/Stats/Generated/Data/'
+local filesToReload = {
     'LC_Summons_Buffs.txt',
     --'LC_Summons.txt',
     --'LC_Summons_Githzerai.txt',
@@ -8,9 +8,9 @@ local FILES_TO_RELOAD = {
 }
 
 local function OnReset()
-    for _, filename in pairs(FILES_TO_RELOAD) do
+    for _, filename in pairs(filesToReload) do
         if filename then
-            local filePath = string.format('%s%s', MOD_PATH, filename)
+            local filePath = string.format('%s%s', modPath, filename)
             if string.len(filename) > 0 then
                 LC['log'].Info(string.format('RELOADING %s', filePath))
                 ---@diagnostic disable-next-line: undefined-field

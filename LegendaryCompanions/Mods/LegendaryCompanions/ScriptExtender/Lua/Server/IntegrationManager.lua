@@ -1,8 +1,8 @@
 local intMgr       = {}
 LC['integrations'] = {}
 
--- @param name string
--- @param config table
+--@param name string
+--@param config table
 local function AddIntegration(config)
     local numBooks = 0
     local name     = config['name']

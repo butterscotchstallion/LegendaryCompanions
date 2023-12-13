@@ -1,33 +1,33 @@
-local MuffinLogger = {}
-local LOG_PREFIX = '[LC]'
+local muffinLogger = {}
+local logPrefix    = '[LC]'
 
-function MuffinLogger.Log(message, level)
-    local fmt_msg = string.format('%s[%s] %s', LOG_PREFIX, level, message)
+function muffinLogger.Log(message, level)
+    local fmtMsg = string.format('%s[%s] %s', logPrefix, level, message)
     if level == 'CRITICAL' then
-        Ext.Utils.PrintError(fmt_msg)
+        Ext.Utils.PrintError(fmtMsg)
     elseif level == 'WARN' then
-        Ext.Utils.PrintWarning(fmt_msg)
+        Ext.Utils.PrintWarning(fmtMsg)
     elseif level == 'INFO' or level == 'DEBUG' or not level then
-        _P(fmt_msg)
+        _P(fmtMsg)
     end
 end
 
-function MuffinLogger.Debug(message)
+function muffinLogger.Debug(message)
     if LC['logLevel'] == 'DEBUG' then
-        MuffinLogger.Log(message, 'DEBUG')
+        muffinLogger.Log(message, 'DEBUG')
     end
 end
 
-function MuffinLogger.Info(message)
-    MuffinLogger.Log(message, 'INFO')
+function muffinLogger.Info(message)
+    muffinLogger.Log(message, 'INFO')
 end
 
-function MuffinLogger.Warn(message)
-    MuffinLogger.Log(message, 'WARN')
+function muffinLogger.Warn(message)
+    muffinLogger.Log(message, 'WARN')
 end
 
-function MuffinLogger.Critical(message)
-    MuffinLogger.Log(message, 'CRITICAL')
+function muffinLogger.Critical(message)
+    muffinLogger.Log(message, 'CRITICAL')
 end
 
-LC['log'] = MuffinLogger
+LC['log'] = muffinLogger

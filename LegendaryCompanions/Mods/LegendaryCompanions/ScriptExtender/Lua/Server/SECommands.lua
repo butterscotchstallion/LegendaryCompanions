@@ -6,7 +6,7 @@ local commands = {
     {
         name = 'dumpentity',
         params = 'uuid, filename',
-        func = function (_, uuid, filename)
+        func = function (cmd, uuid, filename)
             if uuid == 'host' then uuid = Osi.GetHostCharacter() end
             local entity = Ext.Entity.Get(uuid)
             filename = (filename or uuid) .. '.json'
