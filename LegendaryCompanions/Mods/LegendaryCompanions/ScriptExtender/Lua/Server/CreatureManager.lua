@@ -205,4 +205,4 @@ creatureManager.SpawnCreatureWithBook     = SpawnCreatureWithBook
 creatureManager.HandleCreatureSpawn       = HandleCreatureSpawn
 creatureManager.GetGUIDFromTpl            = GetGUIDFromTpl
 creatureManager.OnBeforeSpawn             = OnBeforeSpawn
-creatureManager['creatureManager']        = creatureManager
+LC['creatureManager']                     = creatureManager

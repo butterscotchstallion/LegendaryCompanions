@@ -90,7 +90,6 @@ local function OnCombined(item1, item2, item3, item4, item5, item6, newItem)
 end
 
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
-Ext.Osiris.RegisterListener('WentOnStage', 2, 'after', LC['creatureManager'].OnWentOnStage)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
 Ext.Osiris.RegisterListener('TurnEnded', 1, 'after', OnTurnEnded)
