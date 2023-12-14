@@ -87,8 +87,8 @@ end
 
 --@param input string
 --@param position number
-local function IsLikelyMatch(input, position)
-    return string.sub(input, string.len(position)) == position
+local function IsLikelyMatch(input, startPosition)
+    return string.sub(input, 1, string.len(startPosition)) == startPosition
 end
 
 --@param books table
@@ -102,6 +102,8 @@ function configUtils.GetBookByBookTplId(books, bookTplId)
                 -- Used to get other templates based on rarity
                 book['integrationName'] = integrationName
                 return book
+            else
+                LC['Debug'](book['name'] .. ' not likely match for ' .. bookTplId)
             end
         end
     end
