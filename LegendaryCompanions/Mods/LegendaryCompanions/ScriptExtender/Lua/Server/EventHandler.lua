@@ -70,7 +70,9 @@ local function PrintStartUpMessages()
     )
 
     LC['Info'](versionMsg)
+end
 
+local function PrintIntegrationMessages()
     for _, msg in pairs(LC['integrationLogMessages']['Info']) do
         LC['Info'](msg)
     end
@@ -96,6 +98,7 @@ end
 
 local function OnSessionLoaded()
     PrintStartUpMessages()
+    PrintIntegrationMessages()
 end
 
 --@param item1 string
