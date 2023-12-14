@@ -5,10 +5,11 @@ and validating the supplied configuration
 local intMgr                 = {}
 LC['integrations']           = {}
 LC['integrationLogMessages'] = {
-    ['Info']     = {},
-    ['Warn']     = {},
-    ['Critical'] = {},
-    ['Debug']    = {},
+    ['totalIntegrations'] = 0,
+    ['Info']              = {},
+    ['Warn']              = {},
+    ['Critical']          = {},
+    ['Debug']             = {},
 }
 
 --Validates configuration
@@ -38,11 +39,18 @@ local function IsValidConfiguration(config)
                 table.insert(messages['errors'], 'Integration must have at least one book')
             else
                 for _, book in pairs(config['books']) do
+                    if not book['name'] or string.len(book['name']) == 0 then
+                        table.insert(
+                            messages['errors'],
+                            'Integration book name must not be empty'
+                        )
+                    end
+
                     local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
                     if hasNoSpells then
                         table.insert(
                             messages['errors'],
-                            string.format('Integration must have at least one summoning spells for book "%s"!',
+                            string.format('Integration must have at least one summoning spell for book "%s"!',
                                 book['name'])
                         )
                     end
@@ -63,15 +71,17 @@ end
 --@param name string
 --@param config table
 local function AddIntegration(config)
-    local numBooks = 0
-    local name     = config['name']
-    local messages = {
+    local numBooks                                    = 0
+    local name                                        = config['name']
+    local messages                                    = {
         Info     = {},
         Warn     = {},
         Critical = {},
         Debug    = {},
     }
-    numBooks       = #config['books']
+    numBooks                                          = #config['books']
+    --Used in the start up messages for debugging
+    LC['integrationLogMessages']['totalIntegrations'] = LC['integrationLogMessages']['totalIntegrations'] + 1
 
     --[[
         This is stored here instead of directly logging because I want
@@ -119,7 +129,11 @@ local function AddIntegration(config)
 
     for severity, _ in pairs(messages) do
         for _, msg in pairs(messages[severity]) do
-            table.insert(LC['integrationLogMessages'][severity], msg)
+            local messagesBySeverity = LC['integrationLogMessages'][severity]
+
+            if type(messagesBySeverity) == 'table' then
+                table.insert(messagesBySeverity, msg)
+            end
         end
     end
 end

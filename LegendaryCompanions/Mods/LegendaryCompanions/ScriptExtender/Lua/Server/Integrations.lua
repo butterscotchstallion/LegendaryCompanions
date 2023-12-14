@@ -94,3 +94,34 @@ LC['integrationManager'].AddIntegration({
         }
     }
 })
+
+-- Invalid config for testing errors
+LC['integrationManager'].AddIntegration({
+    ['name']    = 'LC_Debug_Integration',
+    --This will be set to false if validation fails
+    ['enabled'] = true,
+    -- A list of lore books
+    ['books']   = {
+        {
+            -- Name of this book item from the root template
+            ['name']            = 'LC_Book_of_Debugging',
+            -- Names of the pages that when combined create the above book
+            ['pages']           = {
+
+            },
+            -- Upon combination of the pages, one of these summoning spells will be cast randomly
+            -- to summon your companion
+            ['summonSpells']    = {
+
+            },
+            -- When your companion is summoned, it will cast one of these spells on the party
+            ['buffPartySpells'] = {
+
+            },
+            -- When your companion is summoned, one of these statuses will be applied to the companion
+            ['selfStatus']      = {
+
+            }
+        }
+    }
+})

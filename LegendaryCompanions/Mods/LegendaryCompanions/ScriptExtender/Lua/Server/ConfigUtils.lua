@@ -25,7 +25,7 @@ end
 function configUtils.GetRandomSelfStatusFromConfig(config)
     local statuses = config['selfStatus']
     if not statuses or #statuses == 0 then
-        LC['log'].Warn('Warning: no self statuses in config!')
+        LC['log'].Debug('Warning: no self statuses in config!')
     else
         return statuses[math.random(1, #statuses)]
     end
@@ -71,7 +71,7 @@ end
 function configUtils.GetConfigTotals()
     return {
         ['enabledCount'] = #configUtils.GetConfigs(),
-        ['totalCount']   = configUtils.GetTotalConfigs(),
+        ['totalCount']   = LC['integrationLogMessages']['totalIntegrations'],
     }
 end
 
