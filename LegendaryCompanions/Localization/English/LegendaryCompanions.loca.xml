@@ -42,4 +42,21 @@
   <content contentuid="hb04b795bgee49g4efeg8285g3c591db0b08a" version="1">Bard Lore Book</content>
   <content contentuid="h66259cfagee64g4e7agba99gbca89bf5f5b5" version="1">Bard Lore book description here</content>
   <content contentuid="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1">The legend of Bard Babe has yet to be written, but whispers say the tale is riveting</content>
+
+  <!--
+    Muffin
+  -->
+  <content contentuid="h06c7146eg3e10g45a2g99efga7cc3af432ba" version="1">Chip Chocolate</content>
+  <content contentuid="hbb4b62beg2c67g48c5gaceeg30b67840aa98" version="1">Legendary Muffin</content>
+
+  <!-- Tattered page 1 -->
+  <content contentuid="h07fde134g2789g4d4eg8bd2g1a5b9a3bcc9e" version="1">Tattered Page of Muffin Lore 1</content>
+
+  <!-- Tattered page 2 -->
+  <content contentuid="h1f612d34gc0a4g4525g8cdcgff9db4421b65" version="1">Tattered Page of Muffin Lore 2</content>
+
+  <!-- Tattered Page 1+2 Combined book -->
+  <content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Choolate, Legendary Muffin</content>
+  <content contentuid="hb021d620gb23fg4b05ga445g9d8d1d6e7253" version="1">Chip Chocolate is a famous wizard known for transforming himself into a chocolate chip muffin</content>
+  <content contentuid="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1">Add muffin legend here</content>
 </contentList>

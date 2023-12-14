@@ -95,6 +95,50 @@ LC['integrationManager'].AddIntegration({
     }
 })
 
+-- Muffin
+LC['integrationManager'].AddIntegration({
+    ['name']    = 'LC_Muffin_Integration',
+    --This will be set to false if validation fails
+    ['enabled'] = true,
+    -- A list of lore books
+    ['books']   = {
+        {
+            -- Name of this book item from the root template
+            ['name']            = 'BOOK_LC_Muffin_Combined_Tome',
+            -- Names of the pages that when combined create the above book
+            ['pages']           = {
+                'BOOK_LC_Muffin_TornPage_01',
+                'BOOK_LC_Muffin_TornPage_02',
+            },
+            -- This message appears as a message box to inform the user what is going on
+            ['summonMessage']   = defaultSummonMessage,
+            -- Upon combination of the pages, one of these summoning spells will be cast randomly
+            -- to summon your companion
+            ['summonSpells']    = {
+                {
+                    -- Name of the summoning spell in LC_Summons.txt
+                    ['name']       = 'LC_Summon_Muffin_Legendary',
+                    -- This should match the UUID of the character
+                    ['entityUUID'] = '82ffc8c7-644c-40a8-b4b7-2d73b1a1049b',
+                    -- This determines the power level and lifetime of the summoned
+                    -- companion
+                    ['rarity']     = rarityLegendary,
+                },
+            },
+            -- When your companion is summoned, it will cast one of these spells on the party
+            ['buffPartySpells'] = {
+                'LC_Target_Longstrider_AOE',
+            },
+            -- When your companion is summoned, one of these statuses will be applied to the companion
+            ['selfStatus']      = {
+
+            }
+        }
+    }
+})
+
+--Do not change below.
+
 -- Invalid config for testing errors
 LC['integrationManager'].AddIntegration({
     ['name']    = 'LC_Debug_Integration',

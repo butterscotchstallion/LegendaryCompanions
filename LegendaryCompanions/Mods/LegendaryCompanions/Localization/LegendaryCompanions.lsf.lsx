@@ -55,7 +55,35 @@
 					<attribute id="Stub" type="bool" value="True" />
 					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
 				</node>
-            </children>
-        </node>
-    </region>
+
+				<!-- Muffin -->
+				<!--
+				<node id="TranslatedStringKey"> Torn page 1
+					<attribute id="Content" type="TranslatedString" handle="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="1" />
+					<attribute id="UUID" type="FixedString" value="BOOK_LC_Muffin_TornPage_01_Contents" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+
+				<node id="TranslatedStringKey"> Torn page 2
+					<attribute id="Content" type="TranslatedString" handle="h8b179b4fg7d27g40f2g9b12g89b34b1f180b" version="1" />
+					<attribute id="UUID" type="FixedString" value="BOOK_LC_Muffin_TornPage_02_Contents" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+				</node>
+				-->
+
+				<node id="TranslatedStringKey"> Muffin combined tome
+					<attribute id="Content" type="TranslatedString" handle="h8e9c5c27g3cedg4dc9gab8bg893c1a99a881" version="1" />
+					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Tome" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+				</node>
+			</children>
+		</node>
+	</region>
 </save>
