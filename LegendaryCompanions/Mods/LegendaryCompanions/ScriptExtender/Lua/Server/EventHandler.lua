@@ -1,18 +1,20 @@
 --[[
--- Legendary Companions - Event Handler
---]]
+Event Handler
+]]
 
 --[[
--- When summoning via spell, we have to listen for this event to get
--- the GUID of the entity
---]]
-local function OnEnteredLevel(object, objectRT, level)
+When summoning via spell, we have to listen for this event to get
+the GUID of the entity
+]]
+--@param object string
+--@param objectRT string
+--@param levelName string
+local function OnEnteredLevel(object, objectRT, levelName)
     local creatureConfig = LC['creatureManager']['creatureConfig']
     local objectGUID     = LC['creatureManager'].GetGUIDFromTpl(object)
-
     if creatureConfig then
         if creatureConfig['spawnedGUID'] == objectRT then
-            LC['log'].Debug(string.format('%s (%s) entered level!', objectRT, level))
+            LC['log'].Debug(string.format('%s entered (%s)!', objectRT, levelName))
             LC['creatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
             LC['creatureManager'].HandleCreatureSpawn()
         end
@@ -20,16 +22,15 @@ local function OnEnteredLevel(object, objectRT, level)
 end
 
 --[[
--- When a book is created:
-------------------------------------------------
--- 1. Check if it's one of ours
--- 2. Check if the pages match the ones we have
--- 3. Get book based on this information
+When a book is created:
+1. Check if it's referenced in the config
+2. Check if the pages match
+3. Return book if everything matches
+]]
 --@param item1TplId string
 --@param item2TplId string
 --@param bookTplId string
 --@return void
---]]
 local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
     local books = LC['configUtils'].GetBooksWithIntegrationName()
     local book  = LC['configUtils'].GetBookByBookTplId(books, bookTplId)
@@ -58,22 +59,43 @@ local function OnTurnEnded(object)
     --LC['log'].Debug('Turn ended: ' .. object)
 end
 
---@return void
-local function PrintStartUpMessage()
+local function PrintStartUpMessages()
     local mod        = Ext.Mod.GetMod(ModuleUUID)
     local version    = mod.Info.ModVersion
-    local versionMsg = string.format('LegendaryCompanions v%s.%s.%s', version[1], version[2], version[3])
-    LC['log'].Info(versionMsg)
+    local versionMsg = string.format(
+        'LegendaryCompanions v%s.%s.%s',
+        version[1],
+        version[2],
+        version[3]
+    )
 
-    if #LC['integrationLogMessages'] > 0 then
-        for _, msg in pairs(LC['integrationLogMessages']) do
-            LC['log'].Info(msg)
-        end
+    LC['Info'](versionMsg)
+
+    for _, msg in pairs(LC['integrationLogMessages']['Info']) do
+        LC['Info'](msg)
     end
+    for _, msg in pairs(LC['integrationLogMessages']['Warn']) do
+        LC['Warning'](msg)
+    end
+    for _, msg in pairs(LC['integrationLogMessages']['Critical']) do
+        LC['Critical'](msg)
+    end
+    for _, msg in pairs(LC['integrationLogMessages']['Debug']) do
+        LC['Debug'](msg)
+    end
+
+    local configTotals = LC['configUtils'].GetConfigTotals()
+    LC['Info'](
+        string.format(
+            'Integrations: %s/%s configs enabled',
+            configTotals['enabledCount'],
+            configTotals['totalCount']
+        )
+    )
 end
 
 local function OnSessionLoaded()
-    PrintStartUpMessage()
+    PrintStartUpMessages()
 end
 
 --@param item1 string

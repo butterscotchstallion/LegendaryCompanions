@@ -1,4 +1,5 @@
 local modPath = 'Public/LegendaryCompanions/Stats/Generated/Data/'
+--@type table
 local filesToReload = {
     'LC_Summons_Buffs.txt',
     --'LC_Summons.txt',

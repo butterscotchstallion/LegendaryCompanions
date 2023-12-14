@@ -1,21 +1,23 @@
 --[[
--- Possible refactor idea to make this harder to break:
--- Add methods for introducing new integrations that check
--- whether this name exists or other duplicate/invalid data.
--- These methods could also throw errors upon encountering
--- unexpected values. Although we should catch this in code
--- review, an automated validation system would be superior.
---]]
+Integrations
+
+Adds integrations via IntegrationManager and
+validates each added configuration
+
+]]
 local rarityCommon         = 'common'
 local rarityRare           = 'rare'
-local rarityLegendary      = 'rarityLegendary'
+local rarityLegendary      = 'legendary'
 local defaultSummonMessage = 'The book glows with power and opens a portal!'
 
 -- Gith'zerai
 LC['integrationManager'].AddIntegration({
-    ['name']  = 'FollowersOfZerthimon',
+    -- This should be the name of your mod
+    ['name']    = 'FollowersOfZerthimon',
+    --This will be set to false if validation fails
+    ['enabled'] = true,
     -- A list of lore books
-    ['books'] = {
+    ['books']   = {
         {
             -- Name of this book item from the root template
             ['name']            = 'BOOK_LC_Githzerai_Combined_Tome_3',
@@ -53,9 +55,11 @@ LC['integrationManager'].AddIntegration({
 
 -- RSO
 LC['integrationManager'].AddIntegration({
-    ['name']  = 'RS_Slim_Outfit_Series',
+    ['name']    = 'RS_Slim_Outfit_Series',
+    --This will be set to false if validation fails
+    ['enabled'] = true,
     -- A list of lore books
-    ['books'] = {
+    ['books']   = {
         {
             -- Name of this book item from the root template
             ['name']            = 'BOOK_LC_RSO_Combined_Tome',

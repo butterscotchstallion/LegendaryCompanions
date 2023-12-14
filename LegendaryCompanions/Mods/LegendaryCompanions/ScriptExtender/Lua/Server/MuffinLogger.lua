@@ -30,4 +30,9 @@ function muffinLogger.Critical(message)
     muffinLogger.Log(message, 'CRITICAL')
 end
 
-LC['log'] = muffinLogger
+LC['log']      = muffinLogger
+--Shortcuts
+LC['Debug']    = muffinLogger.Debug
+LC['Info']     = muffinLogger.Info
+LC['Warn']     = muffinLogger.Warn
+LC['Critical'] = muffinLogger.Critical

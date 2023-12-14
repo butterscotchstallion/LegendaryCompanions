@@ -1,18 +1,126 @@
-local intMgr       = {}
-LC['integrations'] = {}
+--[[
+IntegrationManager - Handles adding of new integrations
+and validating the supplied configuration
+]]
+local intMgr                 = {}
+LC['integrations']           = {}
+LC['integrationLogMessages'] = {
+    ['Info']     = {},
+    ['Warn']     = {},
+    ['Critical'] = {},
+    ['Debug']    = {},
+}
 
+--Validates configuration
+--Check if name is blank
+--If name is not blank, check if name is unique
+--If name is valid, check if there is at least one book
+--If books are valid, check if each book has at least one spell
+--@param config
+--@return table
+local function IsValidConfiguration(config)
+    local messages = {
+        ['errors']   = {},
+        ['warnings'] = {},
+    }
+    local isInvalidConfigName = not config['name'] or string.len(config['name']) == 0
+    if isInvalidConfigName then
+        table.insert(messages['errors'], 'Integration name must not be empty')
+    else
+        local configExists = LC['configUtils'].getConfigByName(config['name'])
+
+        if configExists then
+            table.insert(messages['errors'], 'Integration name must be unique')
+        else
+            --Check books, and if we have any then check book contents
+            local hasNoBooks = not config['books'] or #config['books'] == 0
+            if hasNoBooks then
+                table.insert(messages['errors'], 'Integration must have at least one book')
+            else
+                for _, book in pairs(config['books']) do
+                    local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
+                    if hasNoSpells then
+                        table.insert(
+                            messages['errors'],
+                            string.format('Integration must have at least one summoning spells for book "%s"!',
+                                book['name'])
+                        )
+                    end
+                end
+            end
+        end
+    end
+
+    return {
+        ['isValid']  = #messages['errors'] == 0,
+        ['errors']   = messages['errors'],
+        ['warnings'] = messages['warnings'],
+    }
+end
+
+--Validates and adds config, with log messages
+--where applicable
 --@param name string
 --@param config table
 local function AddIntegration(config)
     local numBooks = 0
     local name     = config['name']
-    if not LC['integrations'][name] then
-        numBooks                 = #config['books']
-        LC['integrations'][name] = config
-        local logMsg             = string.format('Integration loaded: %s (%s books)', name, numBooks)
-        table.insert(LC['integrationLogMessages'], logMsg)
+    local messages = {
+        Info     = {},
+        Warn     = {},
+        Critical = {},
+        Debug    = {},
+    }
+    numBooks       = #config['books']
+
+    --[[
+        This is stored here instead of directly logging because I want
+        to delay printing of the log messages until the first one, after
+        all the bootstrap stuff. This is so all the messages are grouped
+        together where I can see them.
+        ]]
+    local validityInfo = IsValidConfiguration(config)
+
+    if validityInfo['isValid'] then
+        --Integration valid; add it!
+        table.insert(LC['integrations'], config)
+
+        local booksWord = 'books'
+        if numBooks == 1 then
+            booksWord = 'book'
+        end
+        local logMsg = string.format(
+            'Integration loaded: %s (%s %s)',
+            name,
+            numBooks,
+            booksWord
+        )
+        --Add log message
+        table.insert(messages['Info'], logMsg)
     else
-        LC['log'].Critical('Attempting to add config that exists already!')
+        config['enabled'] = false
+        table.insert(
+            messages['Critical'],
+            string.format('%s has been disabled! Errors below:', name)
+        )
+
+        if validityInfo['errors'] then
+            for _, error in pairs(validityInfo['errors']) do
+                table.insert(messages['Critical'], error)
+            end
+        end
+
+        if validityInfo['warnings'] then
+            for _, warning in pairs(validityInfo['warnings']) do
+                table.insert(messages['Warn'], warning)
+            end
+        end
+    end
+
+    for severity, _ in pairs(messages) do
+        for _, msg in pairs(messages[severity]) do
+            table.insert(LC['integrationLogMessages'][severity], msg)
+        end
     end
 end
 

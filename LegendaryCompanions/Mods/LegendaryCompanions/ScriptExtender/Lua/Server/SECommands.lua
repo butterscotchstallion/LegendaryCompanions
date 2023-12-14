@@ -1,13 +1,21 @@
 --[[
-    The below code is based on code provided by FallenStar.
-    Thanks!
---]]
+Commands for SE console
+
+Credit: The below code is based on code provided by FallenStar.
+]]
 local commands = {
     {
         name = 'dumpentity',
         params = 'uuid, filename',
+        --@param cmd string
+        --@param uuid string
+        --@param filename string
         func = function (cmd, uuid, filename)
-            if uuid == 'host' then uuid = Osi.GetHostCharacter() end
+            local hostGUID = tostring(Osi.GetHostCharacter())
+            --@type string
+            if uuid == 'host' then
+                uuid = hostGUID
+            end
             local entity = Ext.Entity.Get(uuid)
             filename = (filename or uuid) .. '.json'
             Ext.IO.SaveFile(filename, Ext.DumpExport(entity:GetAllComponents()))

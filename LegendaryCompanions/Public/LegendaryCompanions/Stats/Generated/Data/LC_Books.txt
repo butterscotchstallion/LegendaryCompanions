@@ -1,3 +1,4 @@
+// Gith'zerai  //
 // Book combos //
 new entry "BOOK_LC_Githzerai_TornPage_01"
 	type "Object"
@@ -26,7 +27,7 @@ new entry "BOOK_LC_Githzerai_Combined_Tome_3"
 		data "MaxAmount" "1"
 		data "Priority" "1"
 
-// RSO Books //
+// RSO //
 // Book combos //
 new entry "BOOK_LC_RSO_TornPage_01"
 	type "Object"

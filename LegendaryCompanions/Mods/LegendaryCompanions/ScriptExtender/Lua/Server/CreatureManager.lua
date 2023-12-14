@@ -1,11 +1,17 @@
 --[[
--- CreatureManager - Handles spawning of creatures and related
--- functionality
---]]
+CreatureManager - Handles spawning of creatures and related
+functionality
+]]
 local creatureManager = {}
-local creatureConfig  = {}
+local creatureConfig  = {
+    ['book']         = {},
+    ['handledSpawn'] = false,
+    ['isHostile']    = false,
+    ['spawnedGUID']  = '',
+}
 local buffedCreatures = {}
 
+--@return string
 local function GetHostGUID()
     return tostring(Osi.GetHostCharacter())
 end
@@ -27,7 +33,7 @@ end
 --@param creatureTplId string
 --@return void
 local function SetCreatureLevelEqualToHost(creatureTplId)
-    local host = Osi.GetHostCharacter()
+    local host = GetHostGUID()
     if host then
         local level = Osi.GetLevel(host)
         if level then
@@ -44,11 +50,11 @@ local function HandleHostileSpawn(creatureTplId)
     -- TODO maybe they buff themselves or debuff player here?
 end
 
--- @return void
 local function AddPartyBuffs()
-    LC['log'].Info('Adding buffs to party')
-    local host       = tostring(Osi.GetHostCharacter())
+    local host       = GetHostGUID()
     local randomBuff = LC['configUtils'].GetRandomPartyBuff(creatureConfig['book'])
+
+    LC['log'].Info('Adding buffs to party')
 
     if randomBuff then
         LC['log'].Debug(
@@ -63,14 +69,12 @@ local function AddPartyBuffs()
     end
 end
 
---@return void
 local function HandleFriendlySpawn()
     LC['log'].Debug('Handling friendly spawn')
 
     AddPartyBuffs()
 end
 
---@return void
 local function CastPortalSpell()
     LC['log'].Debug('Opening a portal!')
     local spells = {
@@ -90,12 +94,12 @@ local function ShowSummonMessage(message)
     end
 end
 
+--@param book table
 local function OnBeforeSpawn(book)
     CastPortalSpell()
     --ShowSummonMessage(book['summonMessage'])
 end
 
---@return void
 local function ApplySpawnSelfStatus()
     local rndStatus = LC['configUtils'].GetRandomSelfStatusFromConfig(creatureConfig['book'])
     if creatureConfig and rndStatus then
@@ -104,37 +108,40 @@ local function ApplySpawnSelfStatus()
             rndStatus,
             creatureConfig['spawnedGUID']
         ))
-        Osi.RemoveStatus(creatureConfig['spawnedGUID'], rndStatus)
+        --TODO: set stackId on spell to prevent needing to do this
+        --Osi.RemoveStatus(creatureConfig['spawnedGUID'], rndStatus)
         Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
     end
 end
 
---@return void
 local function HandleCreatureSpawn()
-    if creatureConfig then
-        LC['log'].Debug('Handling creature spawn')
+    LC['log'].Debug('Handling creature spawn')
 
-        buffedCreatures[creatureConfig['spawnedGUID']] = 1
+    buffedCreatures[creatureConfig['spawnedGUID']] = 1
 
-        ApplySpawnSelfStatus()
+    ApplySpawnSelfStatus()
 
-        if creatureConfig['isHostile'] == true then
-            HandleHostileSpawn(creatureConfig['spawnedGUID'])
-        else
-            HandleFriendlySpawn()
-        end
-
-        SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
-
-        creatureConfig['handledSpawn'] = true
+    if creatureConfig['isHostile'] == true then
+        HandleHostileSpawn(creatureConfig['spawnedGUID'])
+    else
+        HandleFriendlySpawn()
     end
+
+    SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
+
+    creatureConfig['handledSpawn'] = true
 end
 
+--Previous strategy for summoning companions. This has a number of
+--disadvantages, including having to manually implement spell effects
+--and how the game classifies the companion, like whether it will be
+--summoned by TeleportToMe. When created this way, the creature is not
+--considered a player summon so TeleportToMe will not work.
 --@param creatureTplId string
 --@param book table
---@return void
+--@deprecated
 local function SpawnCreatureByTemplateId(creatureTplId, book)
-    local x, y, z     = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
+    local x, y, z     = Osi.GetPosition(GetHostGUID())
     local numericXPos = tonumber(x)
     local isHostile   = false
 
@@ -165,17 +172,16 @@ local function SpawnCreatureByTemplateId(creatureTplId, book)
     end
 end
 
---[[
 --Spawn creature based on book config
 --@param book table
 --@return void
---]]
 local function SpawnCreatureWithBook(book)
+    --@type table
     local summonSpells = book['summonSpells']
 
     if summonSpells and #summonSpells > 0 then
         local rndSpell = summonSpells[math.random(#summonSpells)]
-        local caster   = tostring(Osi.GetHostCharacter())
+        local caster   = GetHostGUID()
         local rarity   = rndSpell['rarity'] or 'common'
 
         LC['log'].Debug(string.format(
@@ -199,10 +205,19 @@ local function SpawnCreatureWithBook(book)
     end
 end
 
--- External
-creatureManager.SpawnCreatureByTemplateId = SpawnCreatureByTemplateId
-creatureManager.SpawnCreatureWithBook     = SpawnCreatureWithBook
-creatureManager.HandleCreatureSpawn       = HandleCreatureSpawn
-creatureManager.GetGUIDFromTpl            = GetGUIDFromTpl
-creatureManager.OnBeforeSpawn             = OnBeforeSpawn
-LC['creatureManager']                     = creatureManager
+--@return table|nil
+local function GetCreatureConfig()
+
+end
+
+--@param config table
+local function SetCreatureConfig(config)
+
+end
+
+--External
+creatureManager.SpawnCreatureWithBook = SpawnCreatureWithBook
+creatureManager.HandleCreatureSpawn   = HandleCreatureSpawn
+creatureManager.GetGUIDFromTpl        = GetGUIDFromTpl
+creatureManager.OnBeforeSpawn         = OnBeforeSpawn
+LC['creatureManager']                 = creatureManager
