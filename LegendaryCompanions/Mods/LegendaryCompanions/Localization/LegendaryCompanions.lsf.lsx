@@ -5,22 +5,6 @@
 		<node id="TranslatedStringKeys">
 			<children>
 				<!-- Gith'zerai -->
-				<node id="TranslatedStringKey"> Torn page 1
-					<attribute id="Content" type="TranslatedString" handle="h6bbd35f1g59b2g467ag8498g62dfb1d6655b" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_Githzerai_TornPage_01_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-
-				<node id="TranslatedStringKey"> Torn page 2
-					<attribute id="Content" type="TranslatedString" handle="he4da7caag1b2ag410cgbbfcgf4c289f8accf" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_Githzerai_TornPage_02_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-
 				<node id="TranslatedStringKey"> Gith'zerai combined tome
 					<attribute id="Content" type="TranslatedString" handle="h2c03a7e3g463fg42b1g861ag748be71bf4f8" version="1" />
 					<attribute id="UUID" type="FixedString" value="LC_Githzerai_Combined_Tome" />
@@ -31,22 +15,6 @@
 				</node>
 
 				<!-- RSO -->
-				<node id="TranslatedStringKey"> Torn page 1
-					<attribute id="Content" type="TranslatedString" handle="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_RSO_TornPage_01_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-
-				<node id="TranslatedStringKey"> Torn page 2
-					<attribute id="Content" type="TranslatedString" handle="h8b179b4fg7d27g40f2g9b12g89b34b1f180b" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_RSO_TornPage_02_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-
 				<node id="TranslatedStringKey"> RSO combined tome
 					<attribute id="Content" type="TranslatedString" handle="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1" />
 					<attribute id="UUID" type="FixedString" value="LC_RSO_Combined_Tome" />
@@ -57,26 +25,9 @@
 				</node>
 
 				<!-- Muffin -->
-				<!--
-				<node id="TranslatedStringKey"> Torn page 1
-					<attribute id="Content" type="TranslatedString" handle="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_Muffin_TornPage_01_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-
-				<node id="TranslatedStringKey"> Torn page 2
-					<attribute id="Content" type="TranslatedString" handle="h8b179b4fg7d27g40f2g9b12g89b34b1f180b" version="1" />
-					<attribute id="UUID" type="FixedString" value="BOOK_LC_Muffin_TornPage_02_Contents" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-				</node>
-				-->
 
 				<node id="TranslatedStringKey"> Muffin combined tome
-					<attribute id="Content" type="TranslatedString" handle="h8e9c5c27g3cedg4dc9gab8bg893c1a99a881" version="1" />
+					<attribute id="Content" type="TranslatedString" handle="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1" />
 					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Tome" />
 					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
 					<attribute id="ExtraData" type="LSString" value="" />

@@ -3,8 +3,6 @@
   <content contentuid="h78e6ba11gea6ag4627g983fg592126b8f047" version="1">Automated</content>
 
   <!-- Gith'zerai -->
-  <content contentuid="he9970b22gfd51g418cgb50agfa567ac24fd2" version="1">Gith'zerai Common</content>
-  <content contentuid="h42adc026gce94g4264ga59fg856a3857d2f6" version="1">Gith'zerai Rare</content>
   <content contentuid="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1">Gith'zerai Legendary</content>
   <content contentuid="h428f14efgf3b5g4536ga265g86a0bce69d11" version="1">A loyal follower of the Gith'zerai</content>
 
@@ -51,12 +49,14 @@
 
   <!-- Tattered page 1 -->
   <content contentuid="h07fde134g2789g4d4eg8bd2g1a5b9a3bcc9e" version="1">Tattered Page of Muffin Lore 1</content>
+  <content contentuid="h869ae85dg80a3g438egb7d9g1bcab175c508" version="1">The first page of a lore book about Chip Chocolate, Legendary Muffin</content>
 
   <!-- Tattered page 2 -->
   <content contentuid="h1f612d34gc0a4g4525g8cdcgff9db4421b65" version="1">Tattered Page of Muffin Lore 2</content>
+  <content contentuid="he0bc99c3gcb12g404bg8272gf1cc9d5588f0" version="1">The second page of a lore book about Chip Chocolate, Legendary Muffin</content>
 
   <!-- Tattered Page 1+2 Combined book -->
-  <content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Choolate, Legendary Muffin</content>
+  <content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Chocolate, Legendary Muffin</content>
   <content contentuid="hb021d620gb23fg4b05ga445g9d8d1d6e7253" version="1">Chip Chocolate is a famous wizard known for transforming himself into a chocolate chip muffin</content>
   <content contentuid="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1">Add muffin legend here</content>
 </contentList>
