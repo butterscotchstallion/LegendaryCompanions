@@ -102,8 +102,6 @@ function configUtils.GetBookByBookTplId(books, bookTplId)
                 -- Used to get other templates based on rarity
                 book['integrationName'] = integrationName
                 return book
-            else
-                LC['Debug'](book['name'] .. ' not likely match for ' .. bookTplId)
             end
         end
     end

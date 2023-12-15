@@ -71,14 +71,25 @@ end
 --@param name string
 --@param config table
 local function AddIntegration(config)
-    local numBooks                                    = 0
-    local name                                        = config['name']
-    local messages                                    = {
+    local isDebugMode   = LC['logLevel'] == 'DEBUG'
+    local isDebugConfig = isDebugMode and config['name'] == 'LC_Debug_Integration'
+    local numBooks      = 0
+    local name          = config['name']
+    local messages      = {
         Info     = {},
         Warn     = {},
         Critical = {},
         Debug    = {},
     }
+
+    --[[
+    Don't print debug messages about the debug configuration
+    if we're not debugging. We don't want to confuse anyone
+    ]]
+    if not isDebugMode and isDebugConfig then
+        return false
+    end
+
     numBooks                                          = #config['books']
     --Used in the start up messages for debugging
     LC['integrationLogMessages']['totalIntegrations'] = LC['integrationLogMessages']['totalIntegrations'] + 1

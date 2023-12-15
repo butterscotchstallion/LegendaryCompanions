@@ -61,13 +61,11 @@ new equipment "EQP_RSO_Legendary"
 new equipment "EQP_Muffin_Legendary"
     add initialweaponset "Melee"
     add equipmentgroup
-    add equipment entry "RS_Fitted_Leather Armor"
-    add equipmentgroup
-    add equipment entry "MAG_Vicious_Shortsword"
+    add equipment entry "GOB_PainPriest_Scourge"
     add equipmentgroup
     add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
     add equipmentgroup
-    add equipment entry "ARM_Hat_Wizard_H"
+    add equipment entry "ARM_Hat_Wizard_B"
     add equipmentgroup
     add equipment entry "ARM_Boots_Leather_G"
     add initialweaponset "Ranged"

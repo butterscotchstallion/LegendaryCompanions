@@ -858,13 +858,14 @@
 					<attribute id="Equipment" type="FixedString" value="EQP_Muffin_Legendary" />
 					<attribute id="MapKey" type="FixedString" value="82ffc8c7-644c-40a8-b4b7-2d73b1a1049b" />
 					<attribute id="Name" type="LSString" value="LC_Muffin_Legendary" />
-					<attribute id="Stats" type="FixedString" value="DEN_Refugees_Tiefling_Ranger" />
 					<attribute id="Type" type="FixedString" value="character" />
-					<attribute id="Icon" type="FixedString" value="b2a2a57a-7690-681f-ad5c-61aa4c9754db-_(Icon_Tiefling_Female)" />
-					<attribute id="CharacterVisualResourceID" type="FixedString" value="b2a2a57a-7690-681f-ad5c-61aa4c9754db" />
+					<attribute id="Stats" type="FixedString" value="LC_Legendary_Muffin" />
+					<attribute id="Title" type="TranslatedString" handle="hbb4b62beg2c67g48c5gaceeg30b67840aa98" version="1" />
+					<attribute id="Icon" type="FixedString" value="00c4641c-574f-3514-226d-ff47b2eb422e-EQP_Dagger_(Icon_Kobold)" />
+					<attribute id="CharacterVisualResourceID" type="FixedString" value="00c4641c-574f-3514-226d-ff47b2eb422e" />
 					<attribute id="ParentTemplateId" type="FixedString" value="3fa051b0-ee9f-411e-940c-ffc886fc9a4d" />
 					<children>
-						<node id="ItemList">
+						<node id="StatusList">
 							<children>
 
 							</children>

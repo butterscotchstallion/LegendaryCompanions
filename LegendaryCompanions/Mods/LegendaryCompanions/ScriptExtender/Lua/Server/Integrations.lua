@@ -127,11 +127,11 @@ LC['integrationManager'].AddIntegration({
             },
             -- When your companion is summoned, it will cast one of these spells on the party
             ['buffPartySpells'] = {
-                'LC_Target_Longstrider_AOE',
+                'LC_Target_FalseLife_AOE',
             },
             -- When your companion is summoned, one of these statuses will be applied to the companion
             ['selfStatus']      = {
-
+                'Target_ShieldOfFaith'
             }
         }
     }
