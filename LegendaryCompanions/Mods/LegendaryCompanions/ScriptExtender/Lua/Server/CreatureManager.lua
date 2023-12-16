@@ -75,6 +75,12 @@ local function HandleFriendlySpawn()
     AddPartyBuffs()
 end
 
+---@param statusName string
+local function ApplyStatusToHost(statusName)
+    Osi.ApplyStatus(GetHostGUID(), statusName, 1, 1, GetHostGUID())
+end
+
+--Opens portal when a companion is summoned
 local function CastPortalSpell()
     LC['log'].Debug('Opening a portal!')
     local spells = {
@@ -84,22 +90,66 @@ local function CastPortalSpell()
         'LOW_SORCEROUSSUNDRIES_PORTAL_PURPLE',
     }
     local spell  = spells[math.random(#spells)]
-    Osi.ApplyStatus(GetHostGUID(), spell, 1, 1, GetHostGUID())
+    ApplyStatusToHost(spell)
 end
 
---@param message string
+---@param message string
 local function ShowSummonMessage(message)
     if message then
         Osi.OpenMessageBox(GetHostGUID(), message)
     end
 end
 
---@param book table
+---@param entityUUID string
+---@param passives table
+local function ApplyBookPassives(entityUUID, passives)
+    for _, passiveName in pairs(passives) do
+        LC['Debug'](string.format(
+            'Applying passive "%s" to %s',
+            passiveName,
+            entityUUID
+        ))
+        Osi.AddPassive(entityUUID, passiveName)
+    end
+end
+
+---@param book table
+local function ApplyUpgradeEffects(book)
+    local entityUUID       = book['upgrade']['entityUUID']
+    local passives         = book['upgrade']['passives']
+    local statusEffectName = 'GHOST_FX_RED'
+
+    --TODO: maybe add effects to book config
+    LC['Debug'](string.format(
+        'Applying upgrade status effect %s to %s',
+        statusEffectName,
+        book['entityUUID']
+    ))
+    Osi.ApplyStatus(entityUUID, statusEffectName, 1, 1, entityUUID)
+
+    ApplyBookPassives(entityUUID, passives)
+end
+
+---@param book table
+local function OnUpgradeBookCreated(book)
+    LC['Debug'](string.format('Handling upgrade book %s', book['name']))
+    ApplyUpgradeEffects(book)
+end
+
+---@param book table
+local function OnSummonBookCreated(book)
+    LC['Debug'](string.format('Handling summon book %s', book['name']))
+    LC['creatureManager'].OnBeforeSpawn(book)
+    LC['creatureManager'].SpawnCreatureWithBook(book)
+end
+
+---@param book table
 local function OnBeforeSpawn(book)
     CastPortalSpell()
     --ShowSummonMessage(book['summonMessage'])
 end
 
+--Applies self status buff from config, if any
 local function ApplySpawnSelfStatus()
     local rndStatus = LC['configUtils'].GetRandomSelfStatusFromConfig(creatureConfig['book'])
     if creatureConfig and rndStatus then
@@ -108,8 +158,6 @@ local function ApplySpawnSelfStatus()
             rndStatus,
             creatureConfig['spawnedGUID']
         ))
-        --TODO: set stackId on spell to prevent needing to do this
-        --Osi.RemoveStatus(creatureConfig['spawnedGUID'], rndStatus)
         Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
     end
 end
@@ -137,9 +185,9 @@ end
 --and how the game classifies the companion, like whether it will be
 --summoned by TeleportToMe. When created this way, the creature is not
 --considered a player summon so TeleportToMe will not work.
---@param creatureTplId string
---@param book table
---@deprecated
+---@param creatureTplId string
+---@param book table
+---@deprecated
 local function SpawnCreatureByTemplateId(creatureTplId, book)
     local x, y, z     = Osi.GetPosition(GetHostGUID())
     local numericXPos = tonumber(x)
@@ -173,8 +221,7 @@ local function SpawnCreatureByTemplateId(creatureTplId, book)
 end
 
 --Spawn creature based on book config
---@param book table
---@return void
+---@param book table
 local function SpawnCreatureWithBook(book)
     --@type table
     local summonSpells = book['summonSpells']
@@ -205,12 +252,12 @@ local function SpawnCreatureWithBook(book)
     end
 end
 
---@return table|nil
+---@return table|nil
 local function GetCreatureConfig()
 
 end
 
---@param config table
+---@param config table
 local function SetCreatureConfig(config)
 
 end
@@ -220,4 +267,6 @@ creatureManager.SpawnCreatureWithBook = SpawnCreatureWithBook
 creatureManager.HandleCreatureSpawn   = HandleCreatureSpawn
 creatureManager.GetGUIDFromTpl        = GetGUIDFromTpl
 creatureManager.OnBeforeSpawn         = OnBeforeSpawn
+creatureManager.OnUpgradeBookCreated  = OnUpgradeBookCreated
+creatureManager.OnSummonBookCreated   = OnSummonBookCreated
 LC['creatureManager']                 = creatureManager

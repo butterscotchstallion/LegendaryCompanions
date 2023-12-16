@@ -59,4 +59,19 @@
   <content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Chocolate, Legendary Muffin</content>
   <content contentuid="hb021d620gb23fg4b05ga445g9d8d1d6e7253" version="1">Chip Chocolate is a famous wizard known for transforming himself into a chocolate chip muffin</content>
   <content contentuid="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1">Add muffin legend here</content>
+
+  <!-- Upgrade book -->
+
+  <!-- Left page 1 -->
+  <content contentuid="h8f208074gd2c5g4030g8235g9795b1bca320" version="1">Left Ripped Page of Chip Chocolate Revelations</content>
+  <content contentuid="hab372d69g47ecg4861g9181g9934bf0ac2ed" version="1">The page details a powerful transformation</content>
+
+  <!-- Right page 2 -->
+  <content contentuid="ha4410059gded6g4bf9gab40g3a401e636cbc" version="1">Right Ripped Page of Chip Chocolate Revelations</content>
+  <content contentuid="h64bcce1ag3123g4fc8gab9bg37187a5cc0c1" version="1">The ripped page contains references to arcane revelations</content>
+
+  <!-- Tattered Page 1+2 Combined book -->
+  <content contentuid="h57708a66ge50cg461fgb6d2g66bc2c4e5340" version="1">Revelations of Chip Chocolate, Legendary Muffin</content>
+  <content contentuid="h6fc7e346g7198g4384g99cbg2123b95e098b" version="1">The tome is thick and heavy, its binding made of rich leather</content>
+  <content contentuid="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1">Upgrade lore here</content>
 </contentList>

@@ -5,27 +5,29 @@ Handle operations involving the integration config
 ]]
 local configUtils = {}
 
---@param config table
---@return table
+---@param config table
+---@return table
 function configUtils.GetPartyBuffsFromConfig(config)
     return config['buffPartySpells']
 end
 
---@param config table
---@return string
+---@param config table
+---@return string|nil
 function configUtils.GetRandomPartyBuff(config)
     local buffs = configUtils.GetPartyBuffsFromConfig(config)
     if buffs and #buffs > 0 then
         return buffs[math.random(1, #buffs)]
     end
+    return nil
 end
 
---@param config table
---@return string
+---@param config table
+---@return string|nil
 function configUtils.GetRandomSelfStatusFromConfig(config)
     local statuses = config['selfStatus']
     if not statuses or #statuses == 0 then
         LC['log'].Debug('Warning: no self statuses in config!')
+        return nil
     else
         return statuses[math.random(1, #statuses)]
     end
@@ -35,8 +37,8 @@ end
 Get configs, optionally all. This is a flat
 table of configs (which are also tables).
 ]]
---@param options table
---@return table
+---@param options? table
+---@return table
 function configUtils.GetConfigs(options)
     local opts        = options or {}
     local enabledOnly = opts['enabledOnly'] == nil
@@ -49,8 +51,8 @@ function configUtils.GetConfigs(options)
     return enabled
 end
 
---@param name string
---@return string|nil
+---@param name string
+---@return string|nil
 function configUtils.getConfigByName(name)
     local configs = configUtils.GetConfigs()
     for _, cfg in pairs(configs) do
@@ -60,6 +62,7 @@ function configUtils.getConfigByName(name)
     end
 end
 
+---@return number
 function configUtils.GetTotalConfigs()
     local total = 0
     for _ in pairs(LC['integrations']) do
@@ -75,7 +78,7 @@ function configUtils.GetConfigTotals()
     }
 end
 
---@return table books
+---@return table books
 function configUtils.GetBooksWithIntegrationName()
     local configs = configUtils.GetConfigs()
     local books   = {}
@@ -85,15 +88,15 @@ function configUtils.GetBooksWithIntegrationName()
     return books
 end
 
---@param input string
---@param position number
+---@param input string
+---@param startPosition number
 local function IsLikelyMatch(input, startPosition)
     return string.sub(input, 1, string.len(startPosition)) == startPosition
 end
 
---@param books table
---@param bookTplId string
---@return book|void
+---@param books table
+---@param bookTplId string
+---@return table|nil
 function configUtils.GetBookByBookTplId(books, bookTplId)
     for integrationName, _ in pairs(books) do
         for _, book in pairs(books[integrationName]) do
@@ -107,10 +110,17 @@ function configUtils.GetBookByBookTplId(books, bookTplId)
     end
 end
 
+--Returns true if this is an upgrade book
+---@param book table
+---@return boolean
+function configUtils.IsUpgradeBook(book)
+    return type(book['upgrade']) == 'table'
+end
+
 --Check if the pages in the supplied book
 --match all the pages passed in.
---@param book table
---@param pages table
+---@param book table
+---@param pages table
 function configUtils.IsPageMatch(book, pages)
     local bookPages       = book['pages']
     local allPagesPresent = false

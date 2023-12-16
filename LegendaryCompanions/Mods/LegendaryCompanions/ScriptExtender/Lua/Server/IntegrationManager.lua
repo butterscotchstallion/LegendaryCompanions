@@ -25,6 +25,7 @@ local function IsValidConfiguration(config)
         ['warnings'] = {},
     }
     local isInvalidConfigName = not config['name'] or string.len(config['name']) == 0
+
     if isInvalidConfigName then
         table.insert(messages['errors'], 'Integration name must not be empty')
     else
@@ -39,6 +40,7 @@ local function IsValidConfiguration(config)
                 table.insert(messages['errors'], 'Integration must have at least one book')
             else
                 for _, book in pairs(config['books']) do
+                    local isUpgradeBook = LC['configUtils'].IsUpgradeBook(book)
                     if not book['name'] or string.len(book['name']) == 0 then
                         table.insert(
                             messages['errors'],
@@ -46,13 +48,41 @@ local function IsValidConfiguration(config)
                         )
                     end
 
-                    local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
-                    if hasNoSpells then
+                    local pages = book['pages']
+                    if not pages or #pages < 2 then
                         table.insert(
                             messages['errors'],
-                            string.format('Integration must have at least one summoning spell for book "%s"!',
-                                book['name'])
+                            'Integration book name must have at least one two pages'
                         )
+                    end
+
+                    --If this is an upgrade book, check out those options
+                    if isUpgradeBook then
+                        local upgradeInfo    = book['upgrade']
+                        local bookEntityUUID = upgradeInfo['entityUUID']
+                        local passives       = upgradeInfo['passives']
+                        if not bookEntityUUID or string.len(bookEntityUUID) == 0 then
+                            table.insert(
+                                messages['errors'],
+                                'Integration upgrade book must have an entityUUID'
+                            )
+                        end
+                        if not passives or #passives == 0 then
+                            table.insert(
+                                messages['errors'],
+                                'Integration upgrade book must have at least one passive'
+                            )
+                        end
+                    else
+                        --Regular book - check spells
+                        local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
+                        if hasNoSpells then
+                            table.insert(
+                                messages['errors'],
+                                string.format('Integration must have at least one summoning spell for book "%s"!',
+                                    book['name'])
+                            )
+                        end
                     end
                 end
             end
@@ -68,8 +98,7 @@ end
 
 --Validates and adds config, with log messages
 --where applicable
---@param name string
---@param config table
+---@param config table
 local function AddIntegration(config)
     local isDebugMode   = LC['logLevel'] == 'DEBUG'
     local isDebugConfig = isDebugMode and config['name'] == 'LC_Debug_Integration'
@@ -99,7 +128,7 @@ local function AddIntegration(config)
         to delay printing of the log messages until the first one, after
         all the bootstrap stuff. This is so all the messages are grouped
         together where I can see them.
-        ]]
+    ]]
     local validityInfo = IsValidConfiguration(config)
 
     if validityInfo['isValid'] then

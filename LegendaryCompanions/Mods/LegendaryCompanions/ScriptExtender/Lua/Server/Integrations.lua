@@ -49,7 +49,7 @@ LC['integrationManager'].AddIntegration({
             ['selfStatus']      = {
                 'WARMAGIC_GITHYANKI',
             }
-        }
+        },
     }
 })
 
@@ -96,6 +96,7 @@ LC['integrationManager'].AddIntegration({
 })
 
 -- Muffin
+local muffinLegendaryUUID = '82ffc8c7-644c-40a8-b4b7-2d73b1a1049b'
 LC['integrationManager'].AddIntegration({
     ['name']    = 'LC_Muffin_Integration',
     --This will be set to false if validation fails
@@ -119,7 +120,7 @@ LC['integrationManager'].AddIntegration({
                     -- Name of the summoning spell in LC_Summons.txt
                     ['name']       = 'LC_Summon_Muffin_Legendary',
                     -- This should match the UUID of the character
-                    ['entityUUID'] = '82ffc8c7-644c-40a8-b4b7-2d73b1a1049b',
+                    ['entityUUID'] = muffinLegendaryUUID,
                     -- This determines the power level and lifetime of the summoned
                     -- companion
                     ['rarity']     = rarityLegendary,
@@ -133,6 +134,27 @@ LC['integrationManager'].AddIntegration({
             ['selfStatus']      = {
                 'Target_ShieldOfFaith'
             }
+        },
+        --Upgrade book
+        {
+            -- Name of this book item from the root template
+            ['name']    = 'BOOK_LC_Muffin_Combined_Upgrade_Tome',
+            -- Names of the pages that when combined create the above book
+            ['pages']   = {
+                'BOOK_LC_Muffin_Upgrade_TornPage_01',
+                'BOOK_LC_Muffin_Upgrade_TornPage_02',
+            },
+            --If this field is here, this is an upgrade book
+            ['upgrade'] = {
+                --This should match the UUID of the character
+                ['entityUUID'] = muffinLegendaryUUID,
+                ['message']    = 'Your companion has been upgraded!',
+                ['setLevelTo'] = 5,
+                ['passives']   = {
+                    'FastMovement',
+                    'KeenMind_AbilityIncrease',
+                }
+            },
         }
     }
 })

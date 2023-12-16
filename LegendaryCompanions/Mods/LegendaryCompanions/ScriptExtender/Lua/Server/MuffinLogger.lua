@@ -12,20 +12,24 @@ function muffinLogger.Log(message, level)
     end
 end
 
+---@param message string
 function muffinLogger.Debug(message)
     if LC['logLevel'] == 'DEBUG' then
         muffinLogger.Log(message, 'DEBUG')
     end
 end
 
+---@param message string
 function muffinLogger.Info(message)
     muffinLogger.Log(message, 'INFO')
 end
 
+---@param message string
 function muffinLogger.Warn(message)
     muffinLogger.Log(message, 'WARN')
 end
 
+---@param message string
 function muffinLogger.Critical(message)
     muffinLogger.Log(message, 'CRITICAL')
 end
