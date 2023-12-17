@@ -17,8 +17,8 @@ LC['integrationLogMessages'] = {
 --If name is not blank, check if name is unique
 --If name is valid, check if there is at least one book
 --If books are valid, check if each book has at least one spell
---@param config
---@return table
+---@param config table
+---@return table
 local function IsValidConfiguration(config)
     local messages = {
         ['errors']   = {},
@@ -96,8 +96,7 @@ local function IsValidConfiguration(config)
     }
 end
 
---Validates and adds config, with log messages
---where applicable
+--Validates and adds config if valid, with log messages
 ---@param config table
 local function AddIntegration(config)
     local isDebugMode   = LC['logLevel'] == 'DEBUG'

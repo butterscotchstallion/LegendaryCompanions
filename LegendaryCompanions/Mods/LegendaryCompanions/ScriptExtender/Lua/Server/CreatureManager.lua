@@ -3,35 +3,39 @@ CreatureManager - Handles spawning of creatures and related
 functionality
 ]]
 local creatureManager = {}
+---@class creatureConfig Handles creatures summoned by integrations
+---@field book table
+---@field handledSpawn boolean
+---@field isHostile boolean
+---@field spawnedGUID string
+---@field rarity string
 local creatureConfig  = {
     ['book']         = {},
     ['handledSpawn'] = false,
     ['isHostile']    = false,
     ['spawnedGUID']  = '',
+    ['rarity']       = 'common',
 }
 local buffedCreatures = {}
 
---@return string
+---@return string
 local function GetHostGUID()
     return tostring(Osi.GetHostCharacter())
 end
 
---@param tplId string
---@return void
+---@param tplId string
 local function GetGUIDFromTpl(tplId)
     return string.sub(tplId, -36)
 end
 
---@param creatureTplId string
---@return void
+---@param creatureTplId string
 local function SetCreatureHostile(creatureTplId)
     local evilFactionId = 'Evil_NPC_64321d50-d516-b1b2-cfac-2eb773de1ff6'
     Osi.SetFaction(creatureTplId, evilFactionId)
     LC['log'].Info(string.format('Set hostile on %s', creatureTplId))
 end
 
---@param creatureTplId string
---@return void
+---@param creatureTplId string
 local function SetCreatureLevelEqualToHost(creatureTplId)
     local host = GetHostGUID()
     if host then
@@ -43,7 +47,7 @@ local function SetCreatureLevelEqualToHost(creatureTplId)
     end
 end
 
---@param creatureTplId string
+---@param creatureTplId string
 local function HandleHostileSpawn(creatureTplId)
     LC['log'].Debug('Handling hostile spawn')
     SetCreatureHostile(creatureTplId)
@@ -132,8 +136,18 @@ end
 
 ---@param book table
 local function OnUpgradeBookCreated(book)
+    local upgradeTargetEntityUUID   = book['upgrade']['entityUUID']
+    local upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID)
+
     LC['Debug'](string.format('Handling upgrade book %s', book['name']))
-    ApplyUpgradeEffects(book)
+
+    if upgradeTargetEntityExists then
+        ApplyUpgradeEffects(book)
+    else
+        LC['Critical'](
+            string.format('Upgrade target entity %s does not exist!', upgradeTargetEntityUUID)
+        )
+    end
 end
 
 ---@param book table
@@ -180,50 +194,10 @@ local function HandleCreatureSpawn()
     creatureConfig['handledSpawn'] = true
 end
 
---Previous strategy for summoning companions. This has a number of
---disadvantages, including having to manually implement spell effects
---and how the game classifies the companion, like whether it will be
---summoned by TeleportToMe. When created this way, the creature is not
---considered a player summon so TeleportToMe will not work.
----@param creatureTplId string
----@param book table
----@deprecated
-local function SpawnCreatureByTemplateId(creatureTplId, book)
-    local x, y, z     = Osi.GetPosition(GetHostGUID())
-    local numericXPos = tonumber(x)
-    local isHostile   = false
-
-    if creatureTplId then
-        LC['log'].Debug(string.format('Attempting to spawn a %s at %s, %s, %s', creatureTplId, x, y, z))
-
-        -- Give some space if this is a hostile creature
-        if isHostile then
-            x = x + 10
-            y = y + 10
-        end
-
-        if numericXPos then
-            local createdGUID = Osi.CreateAt(creatureTplId, numericXPos, y, z, 0, 1, '')
-            if createdGUID then
-                LC['log'].Debug(string.format('Successfully spawned %s [%s]', creatureTplId, createdGUID))
-
-                creatureConfig['spawnedGUID']  = createdGUID
-                creatureConfig['handledSpawn'] = false
-                creatureConfig['book']         = book
-                -- Creature spawn will be handled in OnWentOnStage
-            else
-                LC['log'].Critical(string.format('Failed to spawn %s', creatureTplId))
-            end
-        end
-    else
-        LC['log'].Critical('Invalid template id!')
-    end
-end
-
 --Spawn creature based on book config
 ---@param book table
 local function SpawnCreatureWithBook(book)
-    --@type table
+    ---@type table
     local summonSpells = book['summonSpells']
 
     if summonSpells and #summonSpells > 0 then
@@ -240,7 +214,8 @@ local function SpawnCreatureWithBook(book)
         Osi.UseSpell(caster, rndSpell['name'], caster)
 
         -- Set creature info for this scenario
-        creatureConfig['spawnedGUID']     = rndSpell['entityUUID']
+        ---@type string
+        creatureConfig['spawnedGUID']     = tostring(rndSpell['entityUUID'])
         creatureConfig['handledSpawn']    = false
         creatureConfig['book']            = book
         creatureConfig['rarity']          = rarity

@@ -71,6 +71,7 @@ function configUtils.GetTotalConfigs()
     return total
 end
 
+---@return table
 function configUtils.GetConfigTotals()
     return {
         ['enabledCount'] = #configUtils.GetConfigs(),

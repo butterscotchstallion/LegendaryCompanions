@@ -113,7 +113,6 @@ end
 ---@param item5 string
 ---@param item6 string
 ---@param newItem string
----@return nil
 local function OnCombined(item1, item2, item3, item4, item5, item6, newItem)
     -- Update me if we add books with more pages
     HandleBookCreated(item1, item2, newItem)
