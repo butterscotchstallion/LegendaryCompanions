@@ -868,9 +868,11 @@
 					-->
 					<attribute id="ParentTemplateId" type="FixedString" value="ba20ee39-92ed-4aad-830d-4871103f48c2" />
 					<children>
-						<node id="StatusList">
+						<node id="Tags">
 							<children>
-
+								<node id="Tag">
+									<attribute id="Object" type="guid" value="6d6d37a2-95be-4841-b97f-c59e2b4a8f49" />
+								</node>
 							</children>
 						</node>
 						<node id="OnDeathActions">
@@ -1081,7 +1083,7 @@
 					<attribute id="DisplayName" type="TranslatedString" handle="h8f208074gd2c5g4030g8235g9795b1bca320" version="1" />
 					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="f849891b-cc6f-4c5d-8ed9-393fa2dc17f6" />
+					<attribute id="MapKey" type="FixedString" value="25f8c0a2-c841-4d9c-9ade-e836895115ec" />
 					<attribute id="Name" type="LSString" value="BOOK_LC_Muffin_Upgrade_TornPage_01" />
 					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />

@@ -13,6 +13,8 @@ local function OnEnteredLevel(object, objectRT, levelName)
     local creatureConfig = LC['creatureManager']['creatureConfig']
     local objectGUID     = LC['creatureManager'].GetGUIDFromTpl(object)
     if creatureConfig then
+        _D(object)
+        _D(objectRT)
         if creatureConfig['spawnedGUID'] == objectRT then
             LC['log'].Debug(string.format('%s entered (%s)!', objectRT, levelName))
             LC['creatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
@@ -41,7 +43,7 @@ local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
         }
         local pagesMatch = LC['configUtils'].IsPageMatch(book, pages)
         if pagesMatch then
-            LC['log'].Debug(string.format('Book "%s" has been created!', book['name']))
+            LC['log'].Debug(string.format('Book "%s" created!', book['name']))
 
             --Handle different book types
             local isUpgradeBook = LC['configUtils'].IsUpgradeBook(book)
@@ -51,10 +53,14 @@ local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
                 LC['creatureManager'].OnSummonBookCreated(book)
             end
         else
-            LC['log'].Debug(string.format('%s and %s not found in pages', item1TplId, item2TplId))
+            LC['log'].Debug(
+                string.format('%s and %s not found in book %s', item1TplId, item2TplId, book)
+            )
         end
     else
-        LC['log'].Debug(string.format('Book "%s" created but not found in config list', bookTplId))
+        LC['log'].Debug(
+            string.format('Book "%s" created but not found in config list', bookTplId)
+        )
     end
 end
 
@@ -103,6 +109,8 @@ end
 local function OnSessionLoaded()
     PrintStartUpMessages()
     PrintIntegrationMessages()
+
+    --LC['creatureManager'].GetTags()
 end
 
 ---@param item1 string

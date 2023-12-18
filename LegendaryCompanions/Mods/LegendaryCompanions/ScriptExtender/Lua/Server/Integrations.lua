@@ -151,7 +151,7 @@ LC['integrationManager'].AddIntegration({
                 ['message']    = 'Your companion has been upgraded!',
                 ['setLevelTo'] = 5,
                 ['passives']   = {
-                    'Bloodlust_Redcap',
+                    'HAG_HAIR_CHA',
                     'FastMovement',
                     'KeenMind_AbilityIncrease',
                 }

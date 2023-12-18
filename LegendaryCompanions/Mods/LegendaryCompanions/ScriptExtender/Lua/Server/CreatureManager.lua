@@ -116,6 +116,14 @@ local function ApplyBookPassives(entityUUID, passives)
             entityUUID
         ))
         Osi.AddPassive(entityUUID, passiveName)
+
+        local success = Osi.HasPassive(entityUUID, passiveName)
+
+        if success == 1 then
+            LC['Debug'](string.format('%s applied successfully', passiveName))
+        else
+            LC['Critical'](string.format('%s application FAILED', passiveName))
+        end
     end
 end
 
@@ -139,7 +147,7 @@ end
 ---@param book table
 local function OnUpgradeBookCreated(book)
     local upgradeTargetEntityUUID   = book['upgrade']['entityUUID']
-    local upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID)
+    local upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID) == 1
 
     LC['Debug'](string.format('Handling upgrade book %s', book['name']))
 
@@ -176,6 +184,24 @@ local function ApplySpawnSelfStatus()
         ))
         Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
     end
+end
+
+--Gets all tags for a given entityUUID
+---@param entityUUID string
+---@return table
+local function GetTags(entityUUID)
+    local entity = Osi.GetEntity(entityUUID)
+    local tags   = {}
+
+    if entity then
+        ---@diagnostic disable-next-line: undefined-field
+        local components = entity.GetAllComponents()
+        _D(components)
+    else
+        LC['Critical']('Could not get entity for ' .. entityUUID)
+    end
+
+    return tags
 end
 
 local function HandleCreatureSpawn()
@@ -246,4 +272,5 @@ creatureManager.GetGUIDFromTpl        = GetGUIDFromTpl
 creatureManager.OnBeforeSpawn         = OnBeforeSpawn
 creatureManager.OnUpgradeBookCreated  = OnUpgradeBookCreated
 creatureManager.OnSummonBookCreated   = OnSummonBookCreated
+creatureManager.GetTags               = GetTags
 LC['creatureManager']                 = creatureManager

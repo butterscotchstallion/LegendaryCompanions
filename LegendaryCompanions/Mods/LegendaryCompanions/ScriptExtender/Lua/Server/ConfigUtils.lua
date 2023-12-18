@@ -136,6 +136,7 @@ function configUtils.IsPageMatch(book, pages)
         end
         allPagesPresent = pageMatches == #bookPages
     end
+
     return allPagesPresent
 end
 
