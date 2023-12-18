@@ -132,7 +132,7 @@ LC['integrationManager'].AddIntegration({
             },
             -- When your companion is summoned, one of these statuses will be applied to the companion
             ['selfStatus']      = {
-                'Target_ShieldOfFaith'
+                'UND_GLUT_ENRAGE'
             }
         },
         --Upgrade book
@@ -153,7 +153,7 @@ LC['integrationManager'].AddIntegration({
                 ['passives']   = {
                     'DangerSense',
                     'FastMovement',
-                    'Parry_Githyanki',
+                    'FiendishBlessing',
                 }
             },
         }

@@ -43,14 +43,16 @@ local function SetCreatureHostile(creatureTplId)
     LC['log'].Info(string.format('Set hostile on %s', creatureTplId))
 end
 
----@param creatureTplId string
-local function SetCreatureLevelEqualToHost(creatureTplId)
+---@param creatureUUID string
+local function SetCreatureLevelEqualToHost(creatureUUID)
     local host = GetHostGUID()
     if host then
         local level = Osi.GetLevel(host)
         if level then
-            LC['log'].Debug(string.format('Setting %s level to %s', creatureTplId, level))
-            Osi.SetLevel(creatureTplId, tonumber(level))
+            Ext.OnNextTick(function ()
+                LC['log'].Debug(string.format('Setting %s level to %s', creatureUUID, level))
+                Osi.SetLevel(creatureUUID, tonumber(level))
+            end)
         end
     end
 end
@@ -123,6 +125,10 @@ local function ApplyBookPassives(entityUUID, passives)
             passiveName,
             entityUUID
         ))
+        --[[
+        Must use OnNextTick here or subsequent application
+        of passives will not work!
+        ]]
         Ext.OnNextTick(function ()
             Osi.AddPassive(entityUUID, passiveName)
         end)
@@ -276,7 +282,7 @@ end
 ---@param object string
 ---@param objectRT string
 local function HandleCreatureSpawn(object, objectRT)
-    LC['log'].Debug('Handling creature spawn')
+    LC['Debug']('Handling creature spawn: ' .. object)
 
     buffedCreatures[creatureConfig['spawnedUUID']] = 1
 

@@ -867,6 +867,7 @@
 					<attribute id="CharacterVisualResourceID" type="FixedString" value="00c4641c-574f-3514-226d-ff47b2eb422e" />
 					-->
 					<attribute id="ParentTemplateId" type="FixedString" value="ba20ee39-92ed-4aad-830d-4871103f48c2" />
+					<attribute id="LevelOverride" type="int32" value="" />
 					<children>
 						<node id="Tags">
 							<children>
