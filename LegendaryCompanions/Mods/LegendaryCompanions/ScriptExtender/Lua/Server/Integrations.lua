@@ -151,9 +151,9 @@ LC['integrationManager'].AddIntegration({
                 ['message']    = 'Your companion has been upgraded!',
                 ['setLevelTo'] = 5,
                 ['passives']   = {
-                    'HAG_HAIR_CHA',
+                    'DangerSense',
                     'FastMovement',
-                    'KeenMind_AbilityIncrease',
+                    'Parry_Githyanki',
                 }
             },
         }

@@ -6,19 +6,18 @@ Event Handler
 When summoning via spell, we have to listen for this event to get
 the GUID of the entity
 ]]
----@param object string
----@param objectRT string
+---@param objectTemplate string
+---@param originalUUID string
 ---@param levelName string
-local function OnEnteredLevel(object, objectRT, levelName)
+local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
     local creatureConfig = LC['creatureManager']['creatureConfig']
-    local objectGUID     = LC['creatureManager'].GetGUIDFromTpl(object)
     if creatureConfig then
-        _D(object)
-        _D(objectRT)
-        if creatureConfig['spawnedGUID'] == objectRT then
-            LC['log'].Debug(string.format('%s entered (%s)!', objectRT, levelName))
-            LC['creatureManager']['creatureConfig']['spawnedGUID'] = objectGUID
-            LC['creatureManager'].HandleCreatureSpawn()
+        local objectUUID = LC['creatureManager'].GetGUIDFromTpl(objectTemplate)
+
+        if objectUUID and creatureConfig['originalUUID'] == originalUUID then
+            LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
+            LC['creatureManager'].SetSpawnedUUID(objectUUID)
+            LC['creatureManager'].HandleCreatureSpawn(tostring(objectUUID), originalUUID)
         end
     end
 end

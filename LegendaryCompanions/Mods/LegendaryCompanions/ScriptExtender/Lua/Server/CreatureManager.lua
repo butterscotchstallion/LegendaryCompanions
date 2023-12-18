@@ -2,21 +2,29 @@
 CreatureManager - Handles spawning of creatures and related
 functionality
 ]]
+---@diagnostic disable-next-line: redundant-parameter
+Ext.Vars.RegisterModVariable(ModuleUUID, 'companions', {})
+
 local creatureManager = {}
 ---@class creatureConfig Handles creatures summoned by integrations
 ---@field book table
----@field handledSpawn boolean
 ---@field isHostile boolean
----@field spawnedGUID string
+---@field spawnedUUID string
+---@field originalUUID string
 ---@field rarity string
 local creatureConfig  = {
     ['book']         = {},
-    ['handledSpawn'] = false,
     ['isHostile']    = false,
-    ['spawnedGUID']  = '',
+    ['originalUUID'] = '',
+    ['spawnedUUID']  = '',
     ['rarity']       = 'common',
 }
 local buffedCreatures = {}
+
+---@param spawnedUUID string
+local function SetSpawnedUUID(spawnedUUID)
+    creatureConfig['spawnedUUID'] = spawnedUUID
+end
 
 ---@return string
 local function GetHostGUID()
@@ -63,13 +71,13 @@ local function AddPartyBuffs()
     if randomBuff then
         LC['log'].Debug(
             string.format(
-                '%s is casting party buff: %s on %s',
-                creatureConfig['spawnedGUID'],
+                '%s is casting party buff: %s on host %s',
+                creatureConfig['spawnedUUID'],
                 randomBuff,
-                host
+                creatureConfig['spawnedUUID']
             )
         )
-        Osi.UseSpell(creatureConfig['spawnedGUID'], randomBuff, host)
+        Osi.UseSpell(creatureConfig['spawnedUUID'], randomBuff, creatureConfig['spawnedUUID'])
     end
 end
 
@@ -115,45 +123,84 @@ local function ApplyBookPassives(entityUUID, passives)
             passiveName,
             entityUUID
         ))
-        Osi.AddPassive(entityUUID, passiveName)
-
-        local success = Osi.HasPassive(entityUUID, passiveName)
-
-        if success == 1 then
-            LC['Debug'](string.format('%s applied successfully', passiveName))
-        else
-            LC['Critical'](string.format('%s application FAILED', passiveName))
-        end
+        Ext.OnNextTick(function ()
+            Osi.AddPassive(entityUUID, passiveName)
+        end)
     end
+
+    Ext.OnNextTick(function (_)
+        for _, passiveName in pairs(passives) do
+            if Osi.HasPassive(entityUUID, passiveName) == 1 then
+                LC['Debug'](string.format('%s applied successfully', passiveName))
+            else
+                LC['Critical'](string.format('%s application FAILED', passiveName))
+            end
+        end
+    end)
+end
+
+--Initializes and saves all summon info
+--@return table
+local function InitializeCompanionsTableAndReturnModVars()
+    local modVars = Ext.Vars.GetModVariables(ModuleUUID)
+    if not modVars then
+        LC['Debug']('Initializing companions table')
+        modVars['companions'] = {}
+    end
+    return modVars
+end
+
+--Get persistent companions mod var
+---@return table
+local function GetCompanionsModVar()
+    local modVars = InitializeCompanionsTableAndReturnModVars()
+    return modVars['companions']
+end
+
+--Finds companion UUID in ModVars using original UUID
+---@param originalUUID string
+---@return string|nil
+local function GetCompanionUUIDByRT(originalUUID)
+    local companions = GetCompanionsModVar()
+
+    return companions[originalUUID]
 end
 
 ---@param book table
 local function ApplyUpgradeEffects(book)
-    local entityUUID       = book['upgrade']['entityUUID']
+    local entityUUID       = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
     local passives         = book['upgrade']['passives']
     local statusEffectName = 'GHOST_FX_RED'
 
-    --TODO: maybe add effects to book config
-    LC['Debug'](string.format(
-        'Applying upgrade status effect %s to %s',
-        statusEffectName,
-        entityUUID
-    ))
-    Osi.ApplyStatus(entityUUID, statusEffectName, 1, 1, entityUUID)
+    if entityUUID then
+        --TODO: maybe add effects to book config
+        LC['Debug'](string.format(
+            'Applying upgrade status effect %s to %s',
+            statusEffectName,
+            entityUUID
+        ))
+        Osi.ApplyStatus(entityUUID, statusEffectName, 1, 1, entityUUID)
 
-    ApplyBookPassives(entityUUID, passives)
+        ApplyBookPassives(entityUUID, passives)
+    end
 end
 
 ---@param book table
 local function OnUpgradeBookCreated(book)
-    local upgradeTargetEntityUUID   = book['upgrade']['entityUUID']
-    local upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID) == 1
+    local upgradeTargetEntityUUID   = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
+    local upgradeTargetEntityExists = false
 
-    LC['Debug'](string.format('Handling upgrade book %s', book['name']))
+    if upgradeTargetEntityUUID then
+        upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID) == 1
 
-    if upgradeTargetEntityExists then
-        ApplyUpgradeEffects(book)
-    else
+        LC['Debug'](string.format('Handling upgrade book %s', book['name']))
+
+        if upgradeTargetEntityExists then
+            ApplyUpgradeEffects(book)
+        end
+    end
+
+    if not upgradeTargetEntityExists then
         LC['Critical'](
             string.format('Upgrade target entity %s does not exist!', upgradeTargetEntityUUID)
         )
@@ -180,46 +227,70 @@ local function ApplySpawnSelfStatus()
         LC['log'].Debug(string.format(
             'Applying creature self status %s to %s',
             rndStatus,
-            creatureConfig['spawnedGUID']
+            creatureConfig['spawnedUUID']
         ))
-        Osi.ApplyStatus(creatureConfig['spawnedGUID'], rndStatus, -1, 1, tostring(creatureConfig['spawnedGUID']))
+        Osi.ApplyStatus(
+            creatureConfig['spawnedUUID'],
+            rndStatus,
+            -1,
+            1,
+            tostring(creatureConfig['spawnedUUID'])
+        )
     end
 end
 
---Gets all tags for a given entityUUID
----@param entityUUID string
+--Removes all companions from table with the supplied UUID
+--to prevent stale data from remaining
+---@param companions table
+---@param originalUUID string
 ---@return table
-local function GetTags(entityUUID)
-    local entity = Osi.GetEntity(entityUUID)
-    local tags   = {}
+local function FilterCompanionsByUUID(companions, originalUUID)
+    local filtered = {}
 
-    if entity then
-        ---@diagnostic disable-next-line: undefined-field
-        local components = entity.GetAllComponents()
-        _D(components)
-    else
-        LC['Critical']('Could not get entity for ' .. entityUUID)
+    for _, companionRT in pairs(companions) do
+        if companions[companionRT] ~= originalUUID then
+            filtered[originalUUID] = companionRT
+        end
     end
 
-    return tags
+    return filtered
 end
 
-local function HandleCreatureSpawn()
+---@param companionUUID string Template string for new companion
+---@param originalUUID string
+--Remembers what summons we have, removing old ones
+local function SaveCompanionRecord(companionUUID, originalUUID)
+    local modVars              = InitializeCompanionsTableAndReturnModVars()
+    local companionMap         = {}
+    companionMap[originalUUID] = companionUUID
+    --Filters out old companions with the same UUID
+    --local filteredCompanionMap = FilterCompanionsByUUID(companionMap, originalUUID)
+    modVars['companions']      = companionMap
+
+    LC['Debug'](
+        string.format('Saved companion record: %s -> %s', originalUUID, companionUUID)
+    )
+end
+
+--Handles creature spawn, passing along object info from the event handler
+---@param object string
+---@param objectRT string
+local function HandleCreatureSpawn(object, objectRT)
     LC['log'].Debug('Handling creature spawn')
 
-    buffedCreatures[creatureConfig['spawnedGUID']] = 1
+    buffedCreatures[creatureConfig['spawnedUUID']] = 1
 
     ApplySpawnSelfStatus()
 
     if creatureConfig['isHostile'] == true then
-        HandleHostileSpawn(creatureConfig['spawnedGUID'])
+        HandleHostileSpawn(creatureConfig['spawnedUUID'])
     else
         HandleFriendlySpawn()
     end
 
-    SetCreatureLevelEqualToHost(creatureConfig['spawnedGUID'])
+    SetCreatureLevelEqualToHost(creatureConfig['spawnedUUID'])
 
-    creatureConfig['handledSpawn'] = true
+    SaveCompanionRecord(object, objectRT)
 end
 
 --Spawn creature based on book config
@@ -242,11 +313,9 @@ local function SpawnCreatureWithBook(book)
         Osi.UseSpell(caster, rndSpell['name'], caster)
 
         -- Set creature info for this scenario
-        ---@type string
-        creatureConfig['spawnedGUID']     = tostring(rndSpell['entityUUID'])
-        creatureConfig['handledSpawn']    = false
         creatureConfig['book']            = book
         creatureConfig['rarity']          = rarity
+        creatureConfig['originalUUID']    = rndSpell['entityUUID']
 
         -- This will be handled in EnteredLevel
         creatureManager['creatureConfig'] = creatureConfig
@@ -272,5 +341,5 @@ creatureManager.GetGUIDFromTpl        = GetGUIDFromTpl
 creatureManager.OnBeforeSpawn         = OnBeforeSpawn
 creatureManager.OnUpgradeBookCreated  = OnUpgradeBookCreated
 creatureManager.OnSummonBookCreated   = OnSummonBookCreated
-creatureManager.GetTags               = GetTags
+creatureManager.SetSpawnedUUID        = SetSpawnedUUID
 LC['creatureManager']                 = creatureManager
