@@ -63,11 +63,6 @@ local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
     end
 end
 
----@param object string
-local function OnTurnEnded(object)
-    --LC['log'].Debug('Turn ended: ' .. object)
-end
-
 local function PrintStartUpMessages()
     local mod        = Ext.Mod.GetMod(ModuleUUID)
     local version    = mod.Info.ModVersion
@@ -124,21 +119,6 @@ local function OnCombined(item1, item2, item3, item4, item5, item6, newItem)
     HandleBookCreated(item1, item2, newItem)
 end
 
----@param object GUIDSTRING
----@param status string
----@param causee GUIDSTRING
----@param storyActionID integer
-local function OnStatusApplied(object, status, causee, storyActionID)
-    LC['Debug'](string.format(
-        'Status "%s" applied to object %s',
-        status,
-        object
-    ))
-end
-
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
---Ext.Osiris.RegisterListener('StatusApplied', 4, 'after', OnStatusApplied)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
-Ext.Osiris.RegisterListener('TurnEnded', 1, 'after', OnTurnEnded)
---TODO: add death handler that removes creatures and from buff table

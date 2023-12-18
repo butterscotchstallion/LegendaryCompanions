@@ -134,6 +134,12 @@ local function ApplyBookPassives(entityUUID, passives)
         end)
     end
 
+    --[[
+    Failure to apply passive error is not 100% reliable:
+    After first loading a save the application fails, but all
+    subsequent applications are successfully. Also, despite the error
+    application of the passive still works.
+    ]]
     Ext.OnNextTick(function (_)
         for _, passiveName in pairs(passives) do
             if Osi.HasPassive(entityUUID, passiveName) == 1 then
@@ -245,34 +251,14 @@ local function ApplySpawnSelfStatus()
     end
 end
 
---Removes all companions from table with the supplied UUID
---to prevent stale data from remaining
----@param companions table
----@param originalUUID string
----@return table
-local function FilterCompanionsByUUID(companions, originalUUID)
-    local filtered = {}
-
-    for _, companionRT in pairs(companions) do
-        if companions[companionRT] ~= originalUUID then
-            filtered[originalUUID] = companionRT
-        end
-    end
-
-    return filtered
-end
-
 ---@param companionUUID string Template string for new companion
 ---@param originalUUID string
---Remembers what summons we have, removing old ones
+--Remembers what summons we have
 local function SaveCompanionRecord(companionUUID, originalUUID)
     local modVars              = InitializeCompanionsTableAndReturnModVars()
-    local companionMap         = {}
+    local companionMap         = modVars['companions']
     companionMap[originalUUID] = companionUUID
-    --Filters out old companions with the same UUID
-    --local filteredCompanionMap = FilterCompanionsByUUID(companionMap, originalUUID)
     modVars['companions']      = companionMap
-
     LC['Debug'](
         string.format('Saved companion record: %s -> %s', originalUUID, companionUUID)
     )
