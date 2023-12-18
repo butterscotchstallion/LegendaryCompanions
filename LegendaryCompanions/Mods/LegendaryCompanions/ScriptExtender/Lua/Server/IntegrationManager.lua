@@ -44,7 +44,10 @@ local function IsValidConfiguration(config)
                     if not book['name'] or string.len(book['name']) == 0 then
                         table.insert(
                             messages['errors'],
-                            'Integration book name must not be empty'
+                            string.format(
+                                'Integration book name must not be empty',
+                                book['name']
+                            )
                         )
                     end
 
@@ -52,7 +55,10 @@ local function IsValidConfiguration(config)
                     if not pages or #pages < 2 then
                         table.insert(
                             messages['errors'],
-                            'Integration book name must have at least one two pages'
+                            string.format(
+                                'Integration book "%s" must have at least two pages',
+                                book['name']
+                            )
                         )
                     end
 
@@ -64,13 +70,19 @@ local function IsValidConfiguration(config)
                         if not bookEntityUUID or string.len(bookEntityUUID) == 0 then
                             table.insert(
                                 messages['errors'],
-                                'Integration upgrade book must have an entityUUID'
+                                string.format(
+                                    'Integration upgrade book %s must have an entityUUID',
+                                    book['name']
+                                )
                             )
                         end
                         if not passives or #passives == 0 then
                             table.insert(
                                 messages['errors'],
-                                'Integration upgrade book must have at least one passive'
+                                string.format(
+                                    'Integration upgrade book "%s" must have at least one passive',
+                                    book['name']
+                                )
                             )
                         end
                     else
@@ -79,8 +91,10 @@ local function IsValidConfiguration(config)
                         if hasNoSpells then
                             table.insert(
                                 messages['errors'],
-                                string.format('Integration must have at least one summoning spell for book "%s"!',
-                                    book['name'])
+                                string.format(
+                                    'Integration book "%s" must have at least one summoning spell!',
+                                    book['name']
+                                )
                             )
                         end
                     end
@@ -99,16 +113,22 @@ end
 --Validates and adds config if valid, with log messages
 ---@param config table
 local function AddIntegration(config)
-    local isDebugMode   = LC['logLevel'] == 'DEBUG'
-    local isDebugConfig = isDebugMode and config['name'] == 'LC_Debug_Integration'
-    local numBooks      = 0
-    local name          = config['name']
-    local messages      = {
+    local integrationDisabled = config['enabled'] == false
+    local isDebugMode         = LC['logLevel'] == 'DEBUG'
+    local isDebugConfig       = isDebugMode and config['name'] == 'LC_Debug_Integration'
+    local numBooks            = 0
+    local name                = config['name']
+    local messages            = {
         Info     = {},
         Warn     = {},
         Critical = {},
         Debug    = {},
     }
+
+    -- Do not add disabled integrations
+    if integrationDisabled then
+        return false
+    end
 
     --[[
     Don't print debug messages about the debug configuration

@@ -57,7 +57,7 @@ LC['integrationManager'].AddIntegration({
 LC['integrationManager'].AddIntegration({
     ['name']    = 'RS_Slim_Outfit_Series',
     --This will be set to false if validation fails
-    ['enabled'] = true,
+    ['enabled'] = false,
     -- A list of lore books
     ['books']   = {
         {
@@ -151,6 +151,7 @@ LC['integrationManager'].AddIntegration({
                 ['message']    = 'Your companion has been upgraded!',
                 ['setLevelTo'] = 5,
                 ['passives']   = {
+                    'Bloodlust_Redcap',
                     'FastMovement',
                     'KeenMind_AbilityIncrease',
                 }

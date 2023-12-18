@@ -41,11 +41,11 @@ table of configs (which are also tables).
 ---@return table
 function configUtils.GetConfigs(options)
     local opts        = options or {}
-    local enabledOnly = opts['enabledOnly'] == nil
+    local enabledOnly = not opts['enabledOnly']
     local enabled     = {}
-    for _, int in pairs(LC['integrations']) do
-        if enabledOnly and int['enabled'] then
-            table.insert(enabled, int)
+    for _, integration in pairs(LC['integrations']) do
+        if enabledOnly and integration['enabled'] then
+            table.insert(enabled, integration)
         end
     end
     return enabled

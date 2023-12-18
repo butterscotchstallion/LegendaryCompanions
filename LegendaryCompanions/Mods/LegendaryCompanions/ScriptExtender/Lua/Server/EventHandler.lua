@@ -30,7 +30,6 @@ When a book is created:
 ---@param item1TplId string
 ---@param item2TplId string
 ---@param bookTplId string
---@return void
 local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
     local books = LC['configUtils'].GetBooksWithIntegrationName()
     local book  = LC['configUtils'].GetBookByBookTplId(books, bookTplId)
@@ -131,7 +130,7 @@ local function OnStatusApplied(object, status, causee, storyActionID)
 end
 
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
-Ext.Osiris.RegisterListener('StatusApplied', 4, 'after', OnStatusApplied)
+--Ext.Osiris.RegisterListener('StatusApplied', 4, 'after', OnStatusApplied)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
 Ext.Osiris.RegisterListener('TurnEnded', 1, 'after', OnTurnEnded)

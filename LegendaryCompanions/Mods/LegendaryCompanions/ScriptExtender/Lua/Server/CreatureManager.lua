@@ -86,7 +86,6 @@ end
 
 --Opens portal when a companion is summoned
 local function CastPortalSpell()
-    LC['log'].Debug('Opening a portal!')
     local spells = {
         'LOW_SORCEROUSSUNDRIES_PORTAL_BLUE',
         'LOW_SORCEROUSSUNDRIES_PORTAL_GREEN',
@@ -94,6 +93,9 @@ local function CastPortalSpell()
         'LOW_SORCEROUSSUNDRIES_PORTAL_PURPLE',
     }
     local spell  = spells[math.random(#spells)]
+
+    LC['log'].Debug(string.format('Opening a portal: %s!', spell))
+
     ApplyStatusToHost(spell)
 end
 
@@ -127,7 +129,7 @@ local function ApplyUpgradeEffects(book)
     LC['Debug'](string.format(
         'Applying upgrade status effect %s to %s',
         statusEffectName,
-        book['entityUUID']
+        entityUUID
     ))
     Osi.ApplyStatus(entityUUID, statusEffectName, 1, 1, entityUUID)
 
