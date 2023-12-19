@@ -28,9 +28,9 @@ When a book is created:
 2. Check if the pages match
 3. Return book if everything matches
 ]]
----@param item1TplId string
----@param item2TplId string
----@param bookTplId string
+---@param item1TplId string First combination ingredient
+---@param item2TplId string Second combination ingredient
+---@param bookTplId string The combined item
 local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
     local books = LC['configUtils'].GetBooksWithIntegrationName()
     local book  = LC['configUtils'].GetBookByBookTplId(books, bookTplId)
@@ -105,18 +105,19 @@ local function OnSessionLoaded()
     PrintIntegrationMessages()
 end
 
----@param item1 string
----@param item2 string
----@param item3 string
----@param item4 string
----@param item5 string
----@param item6 string
----@param newItem string
+---@param item1 string First combination item
+---@param item2 string Second combination item
+---@param item3 string Third combination item
+---@param item4 string Fourth combination item
+---@param item5 string Fifth combination item
+---@param item6 string Sixth combination item
+---@param newItem string Created item
 local function OnCombined(item1, item2, item3, item4, item5, item6, newItem)
     -- Update me if we add books with more pages
     HandleBookCreated(item1, item2, newItem)
 end
 
+--Listeners
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
 Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)

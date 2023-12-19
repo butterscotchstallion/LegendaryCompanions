@@ -21,17 +21,17 @@ local creatureConfig  = {
 }
 local buffedCreatures = {}
 
----@param spawnedUUID string
+---@param spawnedUUID string Instance UUID
 local function SetSpawnedUUID(spawnedUUID)
     creatureConfig['spawnedUUID'] = spawnedUUID
 end
 
----@return string
+---@return string Returns host UUID as a string
 local function GetHostGUID()
     return tostring(Osi.GetHostCharacter())
 end
 
----@param tplId string
+---@param tplId string Root Template string
 local function GetGUIDFromTpl(tplId)
     return string.sub(tplId, -36)
 end
@@ -92,7 +92,7 @@ local function HandleFriendlySpawn()
     AddPartyBuffs()
 end
 
----@param statusName string
+---@param statusName string Name of status
 local function ApplyStatusToHost(statusName)
     Osi.ApplyStatus(GetHostGUID(), statusName, 1, 1, GetHostGUID())
 end
@@ -119,8 +119,8 @@ local function ShowSummonMessage(message)
     end
 end
 
----@param entityUUID string
----@param passives table
+---@param entityUUID string UUID string of entity
+---@param passives table passives from config
 local function ApplyBookPassives(entityUUID, passives)
     for _, passiveName in pairs(passives) do
         LC['Debug'](string.format(
@@ -156,7 +156,7 @@ local function ApplyBookPassives(entityUUID, passives)
 end
 
 --Initializes and saves all summon info
----@return table
+---@return table Companions or empty table if uninitialized
 local function InitializeCompanionsTableAndReturnModVars()
     local modVars = Ext.Vars.GetModVariables(ModuleUUID)
     if not modVars then
@@ -174,14 +174,14 @@ local function GetCompanionsModVar()
 end
 
 --Finds companion UUID in ModVars using original UUID
----@param originalUUID string
----@return string|nil
+---@param originalUUID string Original UUID from Root Template
+---@return string|nil Returns UUID string or nil
 local function GetCompanionUUIDByRT(originalUUID)
     local companions = GetCompanionsModVar()
     return companions[originalUUID]
 end
 
----@param book table
+---@param book table Integration book from config
 local function ApplyUpgradeEffects(book)
     local entityUUID       = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
     local passives         = book['upgrade']['passives']
@@ -200,13 +200,13 @@ local function ApplyUpgradeEffects(book)
     end
 end
 
----@param message string
+---@param message string Message to show in message box
 local function ShowUpgradeMessage(message)
     Osi.OpenMessageBox(GetHostGUID(), message)
 end
 
----@param entityUUID string
----@param level number
+---@param entityUUID string Original UUID from Root Template
+---@param level number Set companion to this level (number)
 local function SetCompanionLevel(entityUUID, level)
     if level and entityUUID then
         local entityLevel = Osi.GetLevel(entityUUID)
@@ -226,7 +226,7 @@ local function SetCompanionLevel(entityUUID, level)
     end
 end
 
----@param book table
+---@param book table Integration book
 local function OnUpgradeBookCreated(book)
     local upgradeInfo               = book['upgrade']
     local upgradeTargetEntityUUID   = GetCompanionUUIDByRT(upgradeInfo['entityUUID'])
@@ -251,7 +251,7 @@ local function OnUpgradeBookCreated(book)
     end
 end
 
----@param book table
+---@param book table Integration book
 local function OnSummonBookCreated(book)
     LC['Debug'](string.format('Handling summon book %s', book['name']))
     LC['creatureManager'].OnBeforeSpawn(book)
@@ -284,7 +284,7 @@ local function ApplySpawnSelfStatus()
 end
 
 ---@param companionUUID string Template string for new companion
----@param originalUUID string
+---@param originalUUID string Root template UUID
 --Remembers what summons we have
 local function SaveCompanionRecord(companionUUID, originalUUID)
     local modVars              = InitializeCompanionsTableAndReturnModVars()
@@ -297,8 +297,8 @@ local function SaveCompanionRecord(companionUUID, originalUUID)
 end
 
 --Handles creature spawn, passing along object info from the event handler
----@param object string
----@param objectRT string
+---@param object string Creature instance UUID
+---@param objectRT string Root template string
 local function HandleCreatureSpawn(object, objectRT)
     LC['Debug']('Handling creature spawn: ' .. object)
 
@@ -318,7 +318,7 @@ local function HandleCreatureSpawn(object, objectRT)
 end
 
 --Spawn creature based on book config
----@param book table
+---@param book table Book from config
 local function SpawnCreatureWithBook(book)
     local summonSpells = book['summonSpells']
 

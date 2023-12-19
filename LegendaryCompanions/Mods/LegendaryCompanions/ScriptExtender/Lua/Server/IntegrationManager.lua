@@ -17,8 +17,8 @@ LC['integrationLogMessages'] = {
 --If name is not blank, check if name is unique
 --If name is valid, check if there is at least one book
 --If books are valid, check if each book has at least one spell
----@param config table
----@return table
+---@param config table Integration config
+---@return table errors
 local function IsValidConfiguration(config)
     local messages = {
         ['errors']   = {},
@@ -111,7 +111,8 @@ local function IsValidConfiguration(config)
 end
 
 --Validates and adds config if valid, with log messages
----@param config table
+---@param config table Integration config
+---@return boolean Returns true if integration is valid
 local function AddIntegration(config)
     local integrationDisabled = config['enabled'] == false
     local isDebugMode         = LC['logLevel'] == 'DEBUG'
@@ -137,6 +138,12 @@ local function AddIntegration(config)
     if not isDebugMode and isDebugConfig then
         return false
     end
+
+    --[[
+
+    END EARLY RETURNS
+
+    ]]
 
     numBooks                                          = #config['books']
     --Used in the start up messages for debugging
@@ -195,6 +202,8 @@ local function AddIntegration(config)
             end
         end
     end
+
+    return validityInfo['isValid']
 end
 
 intMgr.AddIntegration    = AddIntegration
