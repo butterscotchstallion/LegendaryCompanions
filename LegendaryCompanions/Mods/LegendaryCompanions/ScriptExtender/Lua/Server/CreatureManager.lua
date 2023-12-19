@@ -65,27 +65,30 @@ local function HandleHostileSpawn(creatureTplId)
 end
 
 local function AddPartyBuffs()
-    local host       = GetHostGUID()
     local randomBuff = LC['configUtils'].GetRandomPartyBuff(creatureConfig['book'])
-
-    LC['log'].Info('Adding buffs to party')
-
     if randomBuff then
+        local buffTarget = GetHostGUID()
         LC['log'].Debug(
             string.format(
-                '%s is casting party buff: %s on host %s',
-                creatureConfig['spawnedUUID'],
+                'Casting party buff: %s on host %s',
                 randomBuff,
-                creatureConfig['spawnedUUID']
+                buffTarget
             )
         )
-        Osi.UseSpell(creatureConfig['spawnedUUID'], randomBuff, creatureConfig['spawnedUUID'])
+        Ext.OnNextTick(function ()
+            Osi.ApplyStatus(
+                buffTarget,
+                randomBuff,
+                -1,
+                1,
+                creatureConfig['spawnedUUID']
+            )
+        end)
     end
 end
 
 local function HandleFriendlySpawn()
     LC['log'].Debug('Handling friendly spawn')
-
     AddPartyBuffs()
 end
 
@@ -139,7 +142,7 @@ local function ApplyBookPassives(entityUUID, passives)
     After first loading a save the application fails, but all
     subsequent applications are successfully. Also, despite the error
     application of the passive still works.
-    ]]
+
     Ext.OnNextTick(function (_)
         for _, passiveName in pairs(passives) do
             if Osi.HasPassive(entityUUID, passiveName) == 1 then
@@ -149,10 +152,11 @@ local function ApplyBookPassives(entityUUID, passives)
             end
         end
     end)
+    ]]
 end
 
 --Initializes and saves all summon info
---@return table
+---@return table
 local function InitializeCompanionsTableAndReturnModVars()
     local modVars = Ext.Vars.GetModVariables(ModuleUUID)
     if not modVars then
@@ -174,7 +178,6 @@ end
 ---@return string|nil
 local function GetCompanionUUIDByRT(originalUUID)
     local companions = GetCompanionsModVar()
-
     return companions[originalUUID]
 end
 
@@ -197,9 +200,36 @@ local function ApplyUpgradeEffects(book)
     end
 end
 
+---@param message string
+local function ShowUpgradeMessage(message)
+    Osi.OpenMessageBox(GetHostGUID(), message)
+end
+
+---@param entityUUID string
+---@param level number
+local function SetCompanionLevel(entityUUID, level)
+    if level and entityUUID then
+        local entityLevel = Osi.GetLevel(entityUUID)
+
+        if level > entityLevel then
+            LC['Debug']('Upgrade setting entity level to ' .. level)
+            Osi.SetLevel(entityUUID, level)
+        else
+            LC['Debug'](
+                string.format(
+                    'Not setting level because current level is not less than config level: %s <= %s',
+                    entityLevel,
+                    level
+                )
+            )
+        end
+    end
+end
+
 ---@param book table
 local function OnUpgradeBookCreated(book)
-    local upgradeTargetEntityUUID   = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
+    local upgradeInfo               = book['upgrade']
+    local upgradeTargetEntityUUID   = GetCompanionUUIDByRT(upgradeInfo['entityUUID'])
     local upgradeTargetEntityExists = false
 
     if upgradeTargetEntityUUID then
@@ -208,7 +238,9 @@ local function OnUpgradeBookCreated(book)
         LC['Debug'](string.format('Handling upgrade book %s', book['name']))
 
         if upgradeTargetEntityExists then
+            ShowUpgradeMessage(upgradeInfo['message'])
             ApplyUpgradeEffects(book)
+            SetCompanionLevel(upgradeTargetEntityUUID, upgradeInfo['setLevelTo'])
         end
     end
 
@@ -288,7 +320,6 @@ end
 --Spawn creature based on book config
 ---@param book table
 local function SpawnCreatureWithBook(book)
-    ---@type table
     local summonSpells = book['summonSpells']
 
     if summonSpells and #summonSpells > 0 then

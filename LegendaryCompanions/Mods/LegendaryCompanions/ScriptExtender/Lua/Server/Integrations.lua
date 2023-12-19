@@ -5,10 +5,11 @@ Adds integrations via IntegrationManager and
 validates each added configuration
 
 ]]
-local rarityCommon         = 'common'
-local rarityRare           = 'rare'
-local rarityLegendary      = 'legendary'
-local defaultSummonMessage = 'The book glows with power and opens a portal!'
+local rarityCommon          = 'common'
+local rarityRare            = 'rare'
+local rarityLegendary       = 'legendary'
+local defaultSummonMessage  = 'The book glows with power and opens a portal!'
+local defaultUpgradeMessage = 'Your companion has been upgraded!'
 
 -- Gith'zerai
 LC['integrationManager'].AddIntegration({
@@ -128,7 +129,7 @@ LC['integrationManager'].AddIntegration({
             },
             -- When your companion is summoned, it will cast one of these spells on the party
             ['buffPartySpells'] = {
-                'LC_Target_FalseLife_AOE',
+                'MAG_CHARGED_LIGHTNING_AURA',
             },
             -- When your companion is summoned, one of these statuses will be applied to the companion
             ['selfStatus']      = {
@@ -148,8 +149,11 @@ LC['integrationManager'].AddIntegration({
             ['upgrade'] = {
                 --This should match the UUID of the character
                 ['entityUUID'] = muffinLegendaryUUID,
-                ['message']    = 'Your companion has been upgraded!',
+                --This message is displayed informing the player an upgrade has occurred
+                ['message']    = defaultUpgradeMessage,
+                --Entity's level will be set to this number if their level is lower
                 ['setLevelTo'] = 5,
+                --These passives will be applied to the companion
                 ['passives']   = {
                     'DangerSense',
                     'FastMovement',

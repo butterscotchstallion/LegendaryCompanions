@@ -103,8 +103,6 @@ end
 local function OnSessionLoaded()
     PrintStartUpMessages()
     PrintIntegrationMessages()
-
-    --LC['creatureManager'].GetTags()
 end
 
 ---@param item1 string

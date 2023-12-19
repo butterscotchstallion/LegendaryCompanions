@@ -1,6 +1,9 @@
 local muffinLogger = {}
 local logPrefix    = '[LC]'
 
+--The annotations for the print functions are NYI
+---@param message string
+---@param level string
 function muffinLogger.Log(message, level)
     local fmtMsg = string.format('%s[%s] %s', logPrefix, level, message)
     if level == 'CRITICAL' then
