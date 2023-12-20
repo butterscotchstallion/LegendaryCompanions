@@ -13,16 +13,16 @@ new entry "LC_Summon"
 new entry "LC_Summon_RSO_Legendary"
 	using "LC_Summon"
 		data "DisplayName" "h18580da7ge9b8g4f70g9864geee1b4b823dc;1"
-		data "SpellProperties" "GROUND:Summon(52db9322-b223-48fd-ac88-e465efa0c736,-1,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+		data "SpellProperties" "GROUND:Summon(52db9322-b223-48fd-ac88-e465efa0c736,Permanent,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
 
 // Gith'zerai //
 new entry "LC_Summon_Githzerai_Legendary"
 	using "LC_Summon"
 		data "DisplayName" "h2f47ac41g21efg4789ga2e2ge351173cc9b2;1"
-		data "SpellProperties" "GROUND:Summon(4973f064-fe29-4857-89fb-a18af7a5d02a,-1,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+		data "SpellProperties" "GROUND:Summon(4973f064-fe29-4857-89fb-a18af7a5d02a,Permanent,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
 
 // Muffin //
 new entry "LC_Summon_Muffin_Legendary"
 	using "LC_Summon"
 		data "DisplayName" "h06c7146eg3e10g45a2g99efga7cc3af432ba;1"
-		data "SpellProperties" "GROUND:Summon(82ffc8c7-644c-40a8-b4b7-2d73b1a1049b,-1,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+		data "SpellProperties" "GROUND:Summon(82ffc8c7-644c-40a8-b4b7-2d73b1a1049b,Permanent,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
