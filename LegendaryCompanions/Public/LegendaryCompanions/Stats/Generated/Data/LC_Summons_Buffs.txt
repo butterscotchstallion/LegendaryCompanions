@@ -4,7 +4,7 @@ new entry "LC_AUTOMATED"
 		data "Icon" "GenericIcon_DamageType_Psychic"
 		data "DisplayName" "h78e6ba11gea6ag4627g983fg592126b8f047"
 		data "Description" "h78e6ba11gea6ag4627g983fg592126b8f047"
-		data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;LoseControl;LoseControlFriendly"
+		data "StatusPropertyFlags" "DisableOverhead;DisableCombatlog;LoseControl;LoseControlFriendly;IgnoreResting"
 		data "Boosts" "IncreaseMaxHP(5)"
 
 new entry "LC_Target_Enlarge_AOE"

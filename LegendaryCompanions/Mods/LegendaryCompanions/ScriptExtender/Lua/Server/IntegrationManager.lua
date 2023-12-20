@@ -92,7 +92,7 @@ local function IsValidConfiguration(config)
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration book "%s" must have at least one summoning spell!',
+                                    'Integration book "%s" must have at least one summoning spell',
                                     book['name']
                                 )
                             )
@@ -117,13 +117,13 @@ local function AddIntegration(config)
     local integrationDisabled = config['enabled'] == false
     local isDebugMode         = LC['logLevel'] == 'DEBUG'
     local isDebugConfig       = isDebugMode and config['name'] == 'LC_Debug_Integration'
-    local numBooks            = 0
+    local numBooks            = #config['books']
     local name                = config['name']
     local messages            = {
-        Info     = {},
-        Warn     = {},
-        Critical = {},
-        Debug    = {},
+        ['Info']     = {},
+        ['Warn']     = {},
+        ['Critical'] = {},
+        ['Debug']    = {},
     }
 
     -- Do not add disabled integrations
@@ -145,7 +145,6 @@ local function AddIntegration(config)
 
     ]]
 
-    numBooks                                          = #config['books']
     --Used in the start up messages for debugging
     LC['integrationLogMessages']['totalIntegrations'] = LC['integrationLogMessages']['totalIntegrations'] + 1
 
@@ -171,7 +170,6 @@ local function AddIntegration(config)
             numBooks,
             booksWord
         )
-        --Add log message
         table.insert(messages['Info'], logMsg)
     else
         config['enabled'] = false
@@ -180,13 +178,13 @@ local function AddIntegration(config)
             string.format('%s has been disabled! Errors below:', name)
         )
 
-        if validityInfo['errors'] then
+        if #validityInfo['errors'] > 0 then
             for _, error in pairs(validityInfo['errors']) do
                 table.insert(messages['Critical'], error)
             end
         end
 
-        if validityInfo['warnings'] then
+        if #validityInfo['warnings'] > 0 then
             for _, warning in pairs(validityInfo['warnings']) do
                 table.insert(messages['Warn'], warning)
             end

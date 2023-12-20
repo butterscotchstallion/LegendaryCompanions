@@ -343,6 +343,7 @@ local function SpawnCreatureWithBook(book)
         -- This will be handled in EnteredLevel
         creatureManager['creatureConfig'] = creatureConfig
     else
+        --This should not be possible if the integration validation is working
         LC['log'].Critical('No summoning spells!')
     end
 end
