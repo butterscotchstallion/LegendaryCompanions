@@ -21,6 +21,30 @@ local commands = {
             Ext.IO.SaveFile(filename, Ext.DumpExport(entity:GetAllComponents()))
             LC['log'].Debug(string.format('Saved dump file: %s', filename))
         end
+    },
+    {
+        name = 'createhere',
+        params = 'uuid',
+        ---@param cmd string
+        ---@param uuid string
+        func = function (cmd, uuid)
+            if uuid then
+                local x, y, z = Osi.GetPosition(tostring(Osi.GetHostCharacter()))
+                x = tonumber(x)
+                if x and y and z then
+                    LC['log'].Debug(string.format('Creating %s at position %s %s %s', uuid, x, y, z))
+                    local spawnUUID = Osi.CreateAt(uuid, x, y, z, 0, 1, '')
+                    if spawnUUID then
+                        LC['Debug']('Create successful: UUID = ' .. spawnUUID)
+                        Osi.RequestPing(x, y, z, spawnUUID, Osi.GetHostCharacter())
+                    else
+                        LC['Debug']('Failed to create ' .. uuid)
+                    end
+                end
+            else
+                LC['Critical']('No UUID specified')
+            end
+        end
     }
 }
 local function RegisterCommands()

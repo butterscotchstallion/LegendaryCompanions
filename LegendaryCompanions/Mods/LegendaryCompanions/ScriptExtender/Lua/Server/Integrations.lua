@@ -129,7 +129,7 @@ LC['integrationManager'].AddIntegration({
             },
             -- When your companion is summoned, it will cast one of these spells on the party
             ['buffPartySpells'] = {
-                'MAG_CHARGED_LIGHTNING_AURA',
+                'LC_Target_Longstrider_AOE',
             },
             -- When your companion is summoned, one of these statuses will be applied to the companion
             ['selfStatus']      = {
