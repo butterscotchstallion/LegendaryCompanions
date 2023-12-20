@@ -861,6 +861,7 @@
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Stats" type="FixedString" value="LC_Legendary_Muffin" />
 					<attribute id="ShowEquipmentVisuals" type="bool" value="True" />
+					<attribute id="Floating" type="bool" value="True" />
 					<attribute id="Title" type="TranslatedString" handle="hbb4b62beg2c67g48c5gaceeg30b67840aa98" version="1" />
 					<!--
 					<attribute id="Icon" type="FixedString" value="00c4641c-574f-3514-226d-ff47b2eb422e-EQP_Dagger_(Icon_Kobold)" />
