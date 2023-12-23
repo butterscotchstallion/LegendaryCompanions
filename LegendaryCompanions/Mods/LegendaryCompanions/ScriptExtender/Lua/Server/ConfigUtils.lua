@@ -5,10 +5,27 @@ Handle operations involving the integration config
 ]]
 local configUtils = {
     ['bookTypes'] = {
+        ['SUMMON_COMPANION']  = 'SUMMON_COMPANION',
         ['PARTY_BUFFS']       = 'PARTY_BUFFS',
         ['COMPANION_UPGRADE'] = 'COMPANION_UPGRADE',
     }
 }
+
+function configUtils.GetBookTypeByName(name)
+    return configUtils['bookTypes'][name]
+end
+
+function configUtils.GetPartyBuffBookType()
+    return configUtils.getBookTypeByName('PARTY_BUFFS')
+end
+
+function configUtils.GetCompanionUpgradeBookType()
+    return configUtils.getBookTypeByName('COMPANION_UPGRADE')
+end
+
+function configUtils.GetSummonBookType()
+    return configUtils.getBookTypeByName('SUMMON_COMPANION')
+end
 
 ---@param book table
 ---@return string|nil
@@ -134,6 +151,13 @@ end
 ---@return boolean
 function configUtils.IsPartyBuffsBook(book)
     return book['type'] == configUtils['bookTypes']['PARTY_BUFFS']
+end
+
+--Returns true if this is a summon book
+---@param book table
+---@return boolean
+function configUtils.IsSummonBook(book)
+    return book['type'] == configUtils['bookTypes']['SUMMON_COMPANION']
 end
 
 --Check if the pages in the supplied book

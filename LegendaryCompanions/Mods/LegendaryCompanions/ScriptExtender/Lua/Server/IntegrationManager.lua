@@ -64,6 +64,7 @@ local function IsValidConfiguration(config)
                     --Check book type specific features
                     local isUpgradeBook    = LC['configUtils'].IsUpgradeBook(book)
                     local isPartyBuffsBook = LC['configUtils'].IsPartyBuffsBook(book)
+                    local isSummonBook     = LC['configUtils'].IsSummonBook(book)
                     if isPartyBuffsBook then
                         --Must have at least one party buff
                         if not book['partyBuffs'] or #book['partyBuffs'] then
@@ -101,7 +102,7 @@ local function IsValidConfiguration(config)
                                 )
                             )
                         end
-                    else
+                    elseif isSummonBook then
                         --Regular book - check spells
                         local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
                         if hasNoSpells then
@@ -113,6 +114,15 @@ local function IsValidConfiguration(config)
                                 )
                             )
                         end
+                    else
+                        table.insert(
+                            messages['errors'],
+                            string.format(
+                                'Integration book "%s" has an invalid type: %s',
+                                book['name'],
+                                book['type']
+                            )
+                        )
                     end
                 end
             end

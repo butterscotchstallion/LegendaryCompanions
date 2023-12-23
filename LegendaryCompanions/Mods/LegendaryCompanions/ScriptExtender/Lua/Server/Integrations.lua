@@ -22,6 +22,7 @@ LC['integrationManager'].AddIntegration({
         {
             -- Name of this book item from the root template
             ['name']            = 'BOOK_LC_Githzerai_Combined_Tome_3',
+            ['type']            = LC['configUtils'].GetSummonBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']           = {
                 'BOOK_LC_Githzerai_TornPage_01',
@@ -64,6 +65,7 @@ LC['integrationManager'].AddIntegration({
         {
             -- Name of this book item from the root template
             ['name']            = 'BOOK_LC_RSO_Combined_Tome',
+            ['type']            = LC['configUtils'].GetSummonBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']           = {
                 'BOOK_LC_RSO_TornPage_01',
@@ -107,6 +109,7 @@ LC['integrationManager'].AddIntegration({
         {
             -- Name of this book item from the root template
             ['name']            = 'BOOK_LC_Muffin_Combined_Tome',
+            ['type']            = LC['configUtils'].GetSummonBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']           = {
                 'BOOK_LC_Muffin_TornPage_01',
@@ -147,7 +150,7 @@ LC['integrationManager'].AddIntegration({
             },
             --If this field is here, this is an upgrade book
             ['upgrade'] = {
-                ['type']       = LC['integrationTypes']['COMPANION_UPGRADE'],
+                ['type']       = LC['configUtils'].GetCompanionUpgradeBookType(),
                 --This should match the UUID of the character
                 ['entityUUID'] = muffinLegendaryUUID,
                 --This message is displayed informing the player an upgrade has occurred
@@ -176,7 +179,7 @@ LC['integrationManager'].AddIntegration({
         {
             -- Name of this book item from the root template
             ['name']            = 'LC_PartyBuffs_DeathWard',
-            ['type']            = LC['integrationTypes']['PARTY_BUFFS'],
+            ['type']            = LC['configUtils'].GetPartyBuffBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']           = {
 
@@ -196,6 +199,7 @@ LC['integrationManager'].AddIntegration({
     -- A list of lore books
     ['books']   = {
         {
+            ['type']            = 'made up book type',
             -- Name of this book item from the root template
             ['name']            = 'LC_Book_of_Debugging',
             -- Names of the pages that when combined create the above book

@@ -77,4 +77,19 @@
   <content contentuid="h57708a66ge50cg461fgb6d2g66bc2c4e5340" version="1">Revelations of Chip Chocolate, Legendary Muffin</content>
   <content contentuid="h6fc7e346g7198g4384g99cbg2123b95e098b" version="1">The tome is thick and heavy, its binding made of rich leather</content>
   <content contentuid="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1">Upgrade lore here</content>
+
+  <!-- PartyBuffs Book -->
+
+  <!-- Left page 1 -->
+  <content contentuid="h5e21d670g32bag4fc9g9184gfb14a351f122" version="1">First Tattered Scrap of a Prayer Book</content>
+  <content contentuid="h6860af51gb6c1g4df9g937bgac1eae2e9805" version="1">This appears to be part of a prayer book</content>
+
+  <!-- Right page 2 -->
+  <content contentuid="h22afee6cg75b5g4a1cgb80cg70a0eb7365cd" version="1">Second Tattered Scrap of a Prayer Book</content>
+  <content contentuid="hcf7d9d8bgd07cg4f59gb986g737386fc0169" version="1">This appears to be part of a prayer book</content>
+
+  <!-- Tattered Page 1+2 Combined book -->
+  <content contentuid="hcc990375ge2cag4bc2ga82egb30134bc0db3" version="1">Desperate Prayers</content>
+  <content contentuid="h33a3949eg3e2ag4e29g8d0eg3f1f057f6b80" version="1">A blessed tome brimming with power</content>
+  <content contentuid="hb7bfb8dcg7e3fg4febg91eeg0dd1affe901f" version="1">We beseech thee!</content>
 </contentList>
