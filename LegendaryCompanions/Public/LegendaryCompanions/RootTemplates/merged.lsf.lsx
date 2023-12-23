@@ -851,9 +851,11 @@
 				<!-- Chip Chocolate, Legendary Muffin-->
 				<!-- Legendary -->
 				<node id="GameObjects">
+					<!--
 					<attribute id="AiHint" type="guid" value="45a231e4-e94f-4b0e-a941-2daf1adf44b5" />
 					<attribute id="AnubisConfigName" type="FixedString" value="DefaultCombat" />
-					<attribute id="Archetype" type="FixedString" value="melee_smart" />
+					-->
+					<attribute id="Archetype" type="FixedString" value="mindflayer" />
 					<attribute id="DisplayName" type="TranslatedString" handle="h06c7146eg3e10g45a2g99efga7cc3af432ba" version="1" />
 					<attribute id="Equipment" type="FixedString" value="EQP_Muffin_Legendary" />
 					<attribute id="MapKey" type="FixedString" value="82ffc8c7-644c-40a8-b4b7-2d73b1a1049b" />

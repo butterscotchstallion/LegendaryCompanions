@@ -12,7 +12,7 @@ LC['integrationLogMessages'] = {
     ['Debug']             = {},
 }
 
---Validates configuration
+--Validates configuration.
 --Check if name is blank
 --If name is not blank, check if name is unique
 --If name is valid, check if there is at least one book
@@ -21,6 +21,7 @@ LC['integrationLogMessages'] = {
 ---@return table errors
 local function IsValidConfiguration(config)
     local messages = {
+        ['isValid']  = false,
         ['errors']   = {},
         ['warnings'] = {},
     }
@@ -67,7 +68,7 @@ local function IsValidConfiguration(config)
                     local isSummonBook     = LC['configUtils'].IsSummonBook(book)
                     if isPartyBuffsBook then
                         --Must have at least one party buff
-                        if not book['partyBuffs'] or #book['partyBuffs'] then
+                        if not book['buffPartySpells'] or #book['buffPartySpells'] == 0 then
                             table.insert(
                                 messages['errors'],
                                 string.format(
@@ -129,11 +130,9 @@ local function IsValidConfiguration(config)
         end
     end
 
-    return {
-        ['isValid']  = #messages['errors'] == 0,
-        ['errors']   = messages['errors'],
-        ['warnings'] = messages['warnings'],
-    }
+    messages['isValid'] = #messages['errors'] == 0
+
+    return messages
 end
 
 --Validates and adds config if valid, with log messages

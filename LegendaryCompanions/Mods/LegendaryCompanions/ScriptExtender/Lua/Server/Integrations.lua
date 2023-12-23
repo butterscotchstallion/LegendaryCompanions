@@ -143,6 +143,7 @@ LC['integrationManager'].AddIntegration({
         {
             -- Name of this book item from the root template
             ['name']    = 'BOOK_LC_Muffin_Combined_Upgrade_Tome',
+            ['type']    = LC['configUtils'].GetCompanionUpgradeBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']   = {
                 'BOOK_LC_Muffin_Upgrade_TornPage_01',
@@ -150,7 +151,6 @@ LC['integrationManager'].AddIntegration({
             },
             --If this field is here, this is an upgrade book
             ['upgrade'] = {
-                ['type']       = LC['configUtils'].GetCompanionUpgradeBookType(),
                 --This should match the UUID of the character
                 ['entityUUID'] = muffinLegendaryUUID,
                 --This message is displayed informing the player an upgrade has occurred
@@ -182,7 +182,8 @@ LC['integrationManager'].AddIntegration({
             ['type']            = LC['configUtils'].GetPartyBuffBookType(),
             -- Names of the pages that when combined create the above book
             ['pages']           = {
-
+                'BOOK_LC_Muffin_PartyBuffs_DeathWard_TornPage_01',
+                'BOOK_LC_Muffin_PartyBuffs_DeathWard_TornPage_02'
             },
             ['buffPartySpells'] = {
                 'LC_Target_DeathWard_AOE',

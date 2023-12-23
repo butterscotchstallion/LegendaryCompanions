@@ -16,15 +16,15 @@ function configUtils.GetBookTypeByName(name)
 end
 
 function configUtils.GetPartyBuffBookType()
-    return configUtils.getBookTypeByName(configUtils['bookTypes']['PARTY_BUFFS'])
+    return configUtils.GetBookTypeByName(configUtils['bookTypes']['PARTY_BUFFS'])
 end
 
 function configUtils.GetCompanionUpgradeBookType()
-    return configUtils.getBookTypeByName(configUtils['bookTypes']['COMPANION_UPGRADE'])
+    return configUtils.GetBookTypeByName(configUtils['bookTypes']['COMPANION_UPGRADE'])
 end
 
 function configUtils.GetSummonBookType()
-    return configUtils.getBookTypeByName(configUtils['bookTypes']['SUMMON_COMPANION'])
+    return configUtils.GetBookTypeByName(configUtils['bookTypes']['SUMMON_COMPANION'])
 end
 
 ---@param book table
