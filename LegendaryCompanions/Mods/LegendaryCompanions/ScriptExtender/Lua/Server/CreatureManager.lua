@@ -155,7 +155,7 @@ local function ApplyBookPassives(entityUUID, passives)
     ]]
 end
 
---Initializes and saves all summon info
+--Initializes companions table if necessary and returns Modvars
 ---@return table Companions or empty table if uninitialized
 local function InitializeCompanionsTableAndReturnModVars()
     local modVars = Ext.Vars.GetModVariables(ModuleUUID)

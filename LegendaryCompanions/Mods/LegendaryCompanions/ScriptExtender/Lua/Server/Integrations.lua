@@ -58,7 +58,7 @@ LC['integrationManager'].AddIntegration({
 LC['integrationManager'].AddIntegration({
     ['name']    = 'RS_Slim_Outfit_Series',
     --This will be set to false if validation fails
-    ['enabled'] = false,
+    ['enabled'] = true,
     -- A list of lore books
     ['books']   = {
         {
@@ -147,6 +147,7 @@ LC['integrationManager'].AddIntegration({
             },
             --If this field is here, this is an upgrade book
             ['upgrade'] = {
+                ['type']       = LC['integrationTypes']['COMPANION_UPGRADE'],
                 --This should match the UUID of the character
                 ['entityUUID'] = muffinLegendaryUUID,
                 --This message is displayed informing the player an upgrade has occurred
@@ -165,6 +166,27 @@ LC['integrationManager'].AddIntegration({
 })
 
 --Do not change below.
+
+LC['integrationManager'].AddIntegration({
+    ['name']    = 'LC_PartyBuffs',
+    --This will be set to false if validation fails
+    ['enabled'] = true,
+    -- A list of lore books
+    ['books']   = {
+        {
+            -- Name of this book item from the root template
+            ['name']            = 'LC_PartyBuffs_DeathWard',
+            ['type']            = LC['integrationTypes']['PARTY_BUFFS'],
+            -- Names of the pages that when combined create the above book
+            ['pages']           = {
+
+            },
+            ['buffPartySpells'] = {
+                'LC_Target_DeathWard_AOE',
+            },
+        }
+    }
+})
 
 -- Invalid config for testing errors
 LC['integrationManager'].AddIntegration({

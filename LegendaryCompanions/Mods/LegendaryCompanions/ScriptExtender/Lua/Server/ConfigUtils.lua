@@ -3,7 +3,18 @@ ConfigUtils
 
 Handle operations involving the integration config
 ]]
-local configUtils = {}
+local configUtils = {
+    ['bookTypes'] = {
+        ['PARTY_BUFFS']       = 'PARTY_BUFFS',
+        ['COMPANION_UPGRADE'] = 'COMPANION_UPGRADE',
+    }
+}
+
+---@param book table
+---@return string|nil
+function configUtils.GetBookType(book)
+    return book['type']
+end
 
 ---@param config table
 ---@return table
@@ -53,7 +64,7 @@ end
 
 ---@param name string
 ---@return string|nil
-function configUtils.getConfigByName(name)
+function configUtils.GetConfigByName(name)
     local configs = configUtils.GetConfigs()
     for _, cfg in pairs(configs) do
         if cfg['name'] == name then
@@ -115,7 +126,14 @@ end
 ---@param book table
 ---@return boolean
 function configUtils.IsUpgradeBook(book)
-    return type(book['upgrade']) == 'table'
+    return book['type'] == configUtils['bookTypes']['COMPANION_UPGRADE']
+end
+
+--Returns true if this is a party buffs book
+---@param book table
+---@return boolean
+function configUtils.IsPartyBuffsBook(book)
+    return book['type'] == configUtils['bookTypes']['PARTY_BUFFS']
 end
 
 --Check if the pages in the supplied book
@@ -136,7 +154,6 @@ function configUtils.IsPageMatch(book, pages)
         end
         allPagesPresent = pageMatches == #bookPages
     end
-
     return allPagesPresent
 end
 

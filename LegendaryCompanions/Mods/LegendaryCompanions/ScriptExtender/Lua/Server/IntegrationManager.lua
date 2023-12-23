@@ -29,7 +29,7 @@ local function IsValidConfiguration(config)
     if isInvalidConfigName then
         table.insert(messages['errors'], 'Integration name must not be empty')
     else
-        local configExists = LC['configUtils'].getConfigByName(config['name'])
+        local configExists = LC['configUtils'].GetConfigByName(config['name'])
 
         if configExists then
             table.insert(messages['errors'], 'Integration name must be unique')
@@ -40,7 +40,6 @@ local function IsValidConfiguration(config)
                 table.insert(messages['errors'], 'Integration must have at least one book')
             else
                 for _, book in pairs(config['books']) do
-                    local isUpgradeBook = LC['configUtils'].IsUpgradeBook(book)
                     if not book['name'] or string.len(book['name']) == 0 then
                         table.insert(
                             messages['errors'],
@@ -62,11 +61,26 @@ local function IsValidConfiguration(config)
                         )
                     end
 
-                    --If this is an upgrade book, check out those options
-                    if isUpgradeBook then
-                        local upgradeInfo    = book['upgrade']
+                    --Check book type specific features
+                    local isUpgradeBook    = LC['configUtils'].IsUpgradeBook(book)
+                    local isPartyBuffsBook = LC['configUtils'].IsPartyBuffsBook(book)
+                    if isPartyBuffsBook then
+                        --Must have at least one party buff
+                        if not book['partyBuffs'] or #book['partyBuffs'] then
+                            table.insert(
+                                messages['errors'],
+                                string.format(
+                                    'Integration upgrade book "%s" must have at least one party buff',
+                                    book['name']
+                                )
+                            )
+                        end
+                    elseif isUpgradeBook then
+                        local upgradeInfo    = book['upgrade'] or {}
                         local bookEntityUUID = upgradeInfo['entityUUID']
                         local passives       = upgradeInfo['passives']
+
+                        --Check entityUUID
                         if not bookEntityUUID or string.len(bookEntityUUID) == 0 then
                             table.insert(
                                 messages['errors'],
@@ -76,6 +90,8 @@ local function IsValidConfiguration(config)
                                 )
                             )
                         end
+
+                        --Check passives
                         if not passives or #passives == 0 then
                             table.insert(
                                 messages['errors'],
