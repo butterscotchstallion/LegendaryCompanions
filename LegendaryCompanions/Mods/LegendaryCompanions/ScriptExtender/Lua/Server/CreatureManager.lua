@@ -2,10 +2,11 @@
 CreatureManager - Handles spawning of creatures and related
 functionality
 ]]
+local creatureManager = {}
+
 ---@diagnostic disable-next-line: redundant-parameter
 Ext.Vars.RegisterModVariable(ModuleUUID, 'companions', {})
 
-local creatureManager = {}
 ---@class creatureConfig Handles creatures summoned by integrations
 ---@field book table
 ---@field isHostile boolean

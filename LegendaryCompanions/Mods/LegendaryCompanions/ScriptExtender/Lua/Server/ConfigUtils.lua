@@ -160,8 +160,10 @@ function configUtils.IsSummonBook(book)
     return book['type'] == configUtils['bookTypes']['SUMMON_COMPANION']
 end
 
---Check if the pages in the supplied book
---match all the pages passed in.
+--[[
+Check if the pages in the supplied book
+match all the pages passed in.
+]]
 ---@param book table
 ---@param pages table
 function configUtils.IsPageMatch(book, pages)

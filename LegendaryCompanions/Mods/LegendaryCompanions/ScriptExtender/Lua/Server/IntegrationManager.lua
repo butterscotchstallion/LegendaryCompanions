@@ -12,11 +12,14 @@ LC['integrationLogMessages'] = {
     ['Debug']             = {},
 }
 
---Validates configuration.
---Check if name is blank
---If name is not blank, check if name is unique
---If name is valid, check if there is at least one book
---If books are valid, check if each book has at least one spell
+--[[
+Validates configuration.
+
+1. Check if name is blank
+2. If name is not blank, check if name is unique
+3. If name is valid, check if there is at least one book
+4. If books are valid, check if each book has at least one spell
+]]
 ---@param config table Integration config
 ---@return table errors
 local function IsValidConfiguration(config)
@@ -174,10 +177,10 @@ local function AddIntegration(config)
     LC['integrationLogMessages']['totalIntegrations'] = LC['integrationLogMessages']['totalIntegrations'] + 1
 
     --[[
-        This is stored here instead of directly logging because I want
-        to delay printing of the log messages until the first one, after
-        all the bootstrap stuff. This is so all the messages are grouped
-        together where I can see them.
+    This is stored here instead of directly logging because I want
+    to delay printing of the log messages until the first one, after
+    all the bootstrap stuff. This is so all the messages are grouped
+    together where I can see them.
     ]]
     local validityInfo = IsValidConfiguration(config)
 
