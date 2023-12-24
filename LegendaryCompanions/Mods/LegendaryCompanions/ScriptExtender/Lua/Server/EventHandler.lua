@@ -16,7 +16,6 @@ local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
 
         if objectUUID and creatureConfig['originalUUID'] == originalUUID then
             LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
-            LC['creatureManager'].SetSpawnedUUID(objectUUID)
             LC['creatureManager'].HandleCreatureSpawn(tostring(objectUUID), originalUUID)
         end
     end

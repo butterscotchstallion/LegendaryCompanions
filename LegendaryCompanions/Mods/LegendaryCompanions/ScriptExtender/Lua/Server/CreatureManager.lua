@@ -13,19 +13,12 @@ Ext.Vars.RegisterModVariable(ModuleUUID, 'companions', {})
 ---@field spawnedUUID string
 ---@field originalUUID string
 ---@field rarity string
-local creatureConfig  = {
+local creatureConfig = {
     ['book']         = {},
     ['isHostile']    = false,
     ['originalUUID'] = '',
-    ['spawnedUUID']  = '',
     ['rarity']       = 'common',
 }
-local buffedCreatures = {}
-
----@param spawnedUUID string Instance UUID
-local function SetSpawnedUUID(spawnedUUID)
-    creatureConfig['spawnedUUID'] = spawnedUUID
-end
 
 ---@return string Returns host UUID as a string
 local function GetHostGUID()
@@ -65,7 +58,8 @@ local function HandleHostileSpawn(creatureTplId)
     -- TODO maybe they buff themselves or debuff player here?
 end
 
-local function AddPartyBuffs()
+---@param spawnedUUID string
+local function AddPartyBuffs(spawnedUUID)
     local randomBuff = LC['configUtils'].GetRandomPartyBuff(creatureConfig['book'])
     if randomBuff then
         local buffTarget = GetHostGUID()
@@ -82,15 +76,16 @@ local function AddPartyBuffs()
                 randomBuff,
                 -1,
                 1,
-                creatureConfig['spawnedUUID']
+                spawnedUUID
             )
         end)
     end
 end
 
-local function HandleFriendlySpawn()
+---@param spawnedUUID string
+local function HandleFriendlySpawn(spawnedUUID)
     LC['log'].Debug('Handling friendly spawn')
-    AddPartyBuffs()
+    AddPartyBuffs(spawnedUUID)
 end
 
 ---@param statusName string Name of status
@@ -261,20 +256,21 @@ local function OnBeforeSpawn(book)
 end
 
 --Applies self status buff from config, if any
-local function ApplySpawnSelfStatus()
+---@param spawnedUUID string
+local function ApplySpawnSelfStatus(spawnedUUID)
     local rndStatus = LC['configUtils'].GetRandomSelfStatusFromConfig(creatureConfig['book'])
-    if creatureConfig and rndStatus then
+    if rndStatus then
         LC['log'].Debug(string.format(
             'Applying creature self status %s to %s',
             rndStatus,
-            creatureConfig['spawnedUUID']
+            spawnedUUID
         ))
         Osi.ApplyStatus(
-            creatureConfig['spawnedUUID'],
+            spawnedUUID,
             rndStatus,
             -1,
             1,
-            tostring(creatureConfig['spawnedUUID'])
+            tostring(spawnedUUID)
         )
     end
 end
@@ -293,24 +289,23 @@ local function SaveCompanionRecord(companionUUID, originalUUID)
 end
 
 --Handles creature spawn, passing along object info from the event handler
----@param object string Creature instance UUID
----@param objectRT string Root template string
-local function HandleCreatureSpawn(object, objectRT)
-    LC['Debug']('Handling creature spawn: ' .. object)
+---@param spawnedUUID string Creature instance UUID
+---@param spawnedRT string Root template string
+local function HandleCreatureSpawn(spawnedUUID, spawnedRT)
+    LC['Debug']('Handling creature spawn: ' .. spawnedUUID)
 
-    buffedCreatures[creatureConfig['spawnedUUID']] = 1
+    ApplySpawnSelfStatus(spawnedUUID)
 
-    ApplySpawnSelfStatus()
-
+    --Nil by default
     if creatureConfig['isHostile'] == true then
-        HandleHostileSpawn(creatureConfig['spawnedUUID'])
+        HandleHostileSpawn(spawnedUUID)
     else
-        HandleFriendlySpawn()
+        HandleFriendlySpawn(spawnedUUID)
     end
 
-    SetCreatureLevelEqualToHost(creatureConfig['spawnedUUID'])
+    SetCreatureLevelEqualToHost(spawnedUUID)
 
-    SaveCompanionRecord(object, objectRT)
+    SaveCompanionRecord(spawnedUUID, spawnedRT)
 end
 
 --Spawn creature based on book config
@@ -331,12 +326,12 @@ local function SpawnCreatureWithBook(book)
 
         Osi.UseSpell(caster, rndSpell['name'], caster)
 
-        -- Set creature info for this scenario
+        --Set creature info for this scenario
         creatureConfig['book']            = book
         creatureConfig['rarity']          = rarity
         creatureConfig['originalUUID']    = rndSpell['entityUUID']
 
-        -- This will be handled in EnteredLevel
+        --This will be handled in EnteredLevel
         creatureManager['creatureConfig'] = creatureConfig
     else
         --This should not be possible if the integration validation is working
@@ -361,5 +356,4 @@ creatureManager.GetGUIDFromTpl        = GetGUIDFromTpl
 creatureManager.OnBeforeSpawn         = OnBeforeSpawn
 creatureManager.OnUpgradeBookCreated  = OnUpgradeBookCreated
 creatureManager.OnSummonBookCreated   = OnSummonBookCreated
-creatureManager.SetSpawnedUUID        = SetSpawnedUUID
 LC['creatureManager']                 = creatureManager

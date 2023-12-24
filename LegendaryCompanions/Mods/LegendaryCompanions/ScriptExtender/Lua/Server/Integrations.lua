@@ -219,7 +219,8 @@ LC['integrationManager'].AddIntegration({
             -- When your companion is summoned, one of these statuses will be applied to the companion
             ['selfStatus']      = {
 
-            }
+            },
+            ['upgrade']         = {},
         }
     }
 })

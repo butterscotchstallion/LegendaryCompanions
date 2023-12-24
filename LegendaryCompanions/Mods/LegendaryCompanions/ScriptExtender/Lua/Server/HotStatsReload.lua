@@ -3,8 +3,6 @@ local modPath = 'Public/LegendaryCompanions/Stats/Generated/Data/'
 local filesToReload = {
     'LC_Summons_Buffs.txt',
     --'LC_Summons.txt',
-    --'LC_Summons_Githzerai.txt',
-    --'LC_Summons_RSO.txt',
     'LC_Books.txt',
 }
 
