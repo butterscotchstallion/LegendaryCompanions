@@ -184,19 +184,9 @@ end
 
 ---@param book table Integration book from config
 local function ApplyUpgradeEffects(book)
-    local entityUUID       = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
-    local passives         = book['upgrade']['passives']
-    local statusEffectName = 'GHOST_FX_RED'
-
-    if entityUUID then
-        --TODO: maybe add effects to book config
-        LC['Debug'](string.format(
-            'Applying upgrade status effect %s to %s',
-            statusEffectName,
-            entityUUID
-        ))
-        Osi.ApplyStatus(entityUUID, statusEffectName, 1, 1, entityUUID)
-
+    local entityUUID = GetCompanionUUIDByRT(book['upgrade']['entityUUID'])
+    local passives   = book['upgrade']['passives'] or {}
+    if entityUUID and #passives > 0 then
         ApplyBookPassives(entityUUID, passives)
     end
 end
@@ -242,6 +232,11 @@ local function OnUpgradeBookCreated(book)
             ShowUpgradeMessage(upgradeInfo['message'])
             ApplyUpgradeEffects(book)
             SetCompanionLevel(upgradeTargetEntityUUID, upgradeInfo['setLevelTo'])
+        else
+            LC['Debug'](
+                string.format('Upgrade target %s does not exist',
+                    upgradeTargetEntityUUID)
+            )
         end
     end
 
