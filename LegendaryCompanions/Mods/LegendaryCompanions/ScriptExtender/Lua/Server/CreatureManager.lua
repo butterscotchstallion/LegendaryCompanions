@@ -375,10 +375,7 @@ local function HandleUpgradeCompanionSpell(book)
     local companions = GetLCSummons()
     if companions and #companions > 0 then
         for _, summonUUID in pairs(companions) do
-            _D(book)
-            if book then
-                ApplyUpgradeEffects(summonUUID, book['upgrade']['passives'])
-            end
+            ApplyUpgradeEffects(summonUUID, book['upgrade']['passives'])
         end
     end
 end
