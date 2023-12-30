@@ -18,50 +18,6 @@ local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
     end
 end
 
---[[
-When a book is created:
-1. Check if it's referenced in the config
-2. Check if the pages match
-3. Return book if everything matches
-]]
----@param item1TplId string First combination ingredient
----@param item2TplId string Second combination ingredient
----@param bookTplId string The combined item
-local function HandleBookCreated(item1TplId, item2TplId, bookTplId)
-    local isLCBook = LC['configUtils'].IsLCBook(bookTplId)
-    if isLCBook then
-        local books = LC['configUtils'].GetBooksWithIntegrationName()
-        local book  = LC['configUtils'].GetBookByBookTplId(books, bookTplId)
-        if book then
-            local pages = {
-                item1TplId,
-                item2TplId,
-            }
-            local pagesMatch = LC['configUtils'].IsPageMatch(book, pages)
-            if pagesMatch then
-                LC['log'].Debug(string.format('LC Book "%s" created!', book['name']))
-                --Handle different book types
-                --TODO replace when scroll complete
-                local isUpgradeBook = LC['configUtils'].IsUpgradeBook(book)
-                if isUpgradeBook then
-                    LC['creatureManager'].OnUpgradeBookCreated(book)
-                    --@deprecated
-                    --else
-                    --LC['creatureManager'].OnSummonBookCreated(book)
-                end
-            else
-                LC['log'].Debug(
-                    string.format('Pages "%s", "%s" not found in book "%s"', item1TplId, item2TplId, book)
-                )
-            end
-        else
-            LC['log'].Debug(
-                string.format('Book "%s" created but not found in config list', bookTplId)
-            )
-        end
-    end
-end
-
 local function PrintVersionMessage()
     local mod        = Ext.Mod.GetMod(ModuleUUID)
     local version    = mod.Info.ModVersion
@@ -103,23 +59,10 @@ local function OnSessionLoaded()
     PrintIntegrationMessages()
 end
 
----@param item1 string First combination item
----@param item2 string Second combination item
----@param item3 string Third combination item
----@param item4 string Fourth combination item
----@param item5 string Fifth combination item
----@param item6 string Sixth combination item
----@param newItem string Created item
-local function OnCombined(item1, item2, item3, item4, item5, item6, newItem)
-    -- Update me if we add books with more pages
-    HandleBookCreated(item1, item2, newItem)
-end
-
 ---@param item string Item template name
 ---@param character string Character UUID
 local function OnGameBookInterfaceClosed(item, character)
     local isLCBook = LC['configUtils'].IsLCBook(item)
-
     if isLCBook then
         local books = LC['configUtils'].GetBooksWithIntegrationName()
         local book  = LC['configUtils'].GetBookByBookTplId(books, item)
@@ -147,7 +90,6 @@ end
 
 --Listeners
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
-Ext.Osiris.RegisterListener('Combined', 7, 'after', OnCombined)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
 Ext.Osiris.RegisterListener('GameBookInterfaceClosed', 2, 'after', OnGameBookInterfaceClosed)
 Ext.Osiris.RegisterListener('CastSpell', 5, 'after', OnCastSpell)

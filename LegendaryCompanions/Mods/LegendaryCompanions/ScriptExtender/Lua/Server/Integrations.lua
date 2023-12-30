@@ -158,7 +158,7 @@ LC['integrationManager'].AddIntegration({
                 ['setLevelTo'] = 5,
                 --These passives will be applied to the companion
                 ['passives']   = {
-                    'FastMovement',
+                    'Thought_Shield_Psychic_Reflection',
                 }
             },
         }

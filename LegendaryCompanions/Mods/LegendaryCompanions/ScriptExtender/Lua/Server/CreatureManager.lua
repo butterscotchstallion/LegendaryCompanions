@@ -154,7 +154,6 @@ end
 ---@param entityUUID string Integration book from config
 ---@param passives table Passives to apply
 local function ApplyUpgradeEffects(entityUUID, passives)
-    local entityUUID = GetCompanionUUIDByRT(entityUUID)
     if entityUUID and #passives > 0 then
         ApplyBookPassives(entityUUID, passives)
     end
@@ -352,7 +351,8 @@ local function GetLCSummons()
         for _, summon in pairs(summons) do
             local tplName      = summon[1]
             local entity       = Ext.Entity.Get(tplName)
-            local summonUUID   = entity.GameObjectVisual.RootTemplateId
+            --local originalUUID = entity.GameObjectVisual.RootTemplateId
+            local summonUUID   = entity.Uuid.EntityUuid
             local tagComponent = entity:GetComponent('Tag')
             local tags         = tagComponent['Tags']
             local isLCSummon   = IsTagInTags('6d6d37a2-95be-4841-b97f-c59e2b4a8f49', tags)
@@ -375,7 +375,10 @@ local function HandleUpgradeCompanionSpell(book)
     local companions = GetLCSummons()
     if companions and #companions > 0 then
         for _, summonUUID in pairs(companions) do
-            ApplyUpgradeEffects(summonUUID, book['upgrade']['passives'])
+            ApplyUpgradeEffects(
+                summonUUID,
+                book['upgrade']['passives']
+            )
         end
     end
 end
