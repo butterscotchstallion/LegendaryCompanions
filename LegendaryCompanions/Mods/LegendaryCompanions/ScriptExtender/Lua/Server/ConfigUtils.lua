@@ -204,6 +204,7 @@ local function IsLikelyMatch(input, startPosition)
     return string.sub(input, 1, string.len(startPosition)) == startPosition
 end
 
+--TODO: replace me with Entity.Get and use components
 ---@param books table
 ---@param bookTplId string
 ---@return table|nil

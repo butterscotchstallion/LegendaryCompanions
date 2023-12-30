@@ -160,7 +160,7 @@ local function IsValidConfiguration(config)
                                 if spell['name'] then
                                     local error =
                                         string.format(
-                                            'DEPRECATED: Book "%s" "name" field is deprecated and not used! Be sure to set "summonScrollUUID"',
+                                            'Integration book "%s" "name" field is deprecated and not used! Be sure to set "summonScrollUUID"',
                                             book['name']
                                         )
                                     table.insert(
@@ -253,12 +253,22 @@ local function AddIntegration(config)
         table.insert(messages['Info'], logMsg)
     else
         config['enabled'] = false
+        local numErrors = #validityInfo['errors']
+        local errorWord = 'errors'
+        if numErrors == 1 then
+            errorWord = 'error'
+        end
         table.insert(
             messages['Critical'],
-            string.format('%s has been disabled! Errors below:', name)
+            string.format(
+                'Integration "%s" has been disabled! %s %s below:',
+                name,
+                numErrors,
+                errorWord
+            )
         )
 
-        if #validityInfo['errors'] > 0 then
+        if numErrors > 0 then
             for _, error in pairs(validityInfo['errors']) do
                 table.insert(messages['Critical'], error)
             end
