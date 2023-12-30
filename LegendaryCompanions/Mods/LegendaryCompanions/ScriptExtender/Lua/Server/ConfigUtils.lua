@@ -11,20 +11,101 @@ local configUtils = {
     }
 }
 
+---@return string
 function configUtils.GetBookTypeByName(name)
     return configUtils['bookTypes'][name]
 end
 
+---@return string
 function configUtils.GetPartyBuffBookType()
     return configUtils.GetBookTypeByName(configUtils['bookTypes']['PARTY_BUFFS'])
 end
 
+---@return string
 function configUtils.GetCompanionUpgradeBookType()
     return configUtils.GetBookTypeByName(configUtils['bookTypes']['COMPANION_UPGRADE'])
 end
 
+---@return string
 function configUtils.GetSummonBookType()
     return configUtils.GetBookTypeByName(configUtils['bookTypes']['SUMMON_COMPANION'])
+end
+
+-- Get books from config
+---@param configs table
+---@return table
+local function GetBooksFromConfigs(configs)
+    local books = {}
+    for _, config in pairs(configs) do
+        if config['books'] then
+            for _, book in pairs(config['books']) do
+                table.insert(books, book)
+            end
+        end
+    end
+    return books
+end
+
+--Return summon type books
+---@param books table
+---@return table
+local function GetSummonBooksFromBooks(books)
+    local summonBooks = {}
+    for _, book in pairs(books) do
+        if configUtils.IsSummonBook(book) then
+            table.insert(summonBooks, book)
+        end
+    end
+    return summonBooks
+end
+
+--Return upgrade type books
+---@param books table
+---@return table
+local function GetUpgradeBooksFromBooks(books)
+    local upgradeBooks = {}
+    for _, book in pairs(books) do
+        if configUtils.IsUpgradeBook(book) then
+            table.insert(upgradeBooks, book)
+        end
+    end
+    return upgradeBooks
+end
+
+---@return table
+local function GetBooks()
+    local configs = configUtils.GetConfigs()
+    return GetBooksFromConfigs(configs)
+end
+
+---@param scrollUUID string
+---@return boolean|nil
+function configUtils.GetUpgradeBookByScrollUUID(scrollUUID)
+    local books        = GetBooks()
+    local upgradeBooks = GetUpgradeBooksFromBooks(books)
+
+    if upgradeBooks and #upgradeBooks > 0 then
+        for _, book in pairs(upgradeBooks) do
+            if configUtils.GetScrollFromBook(book) == scrollUUID then
+                return book
+            end
+        end
+    end
+end
+
+---@return table entityUUIDBookMap
+function configUtils.GetSummonEntityUUIDBookMap()
+    local books         = GetBooks()
+    local summonBooks   = GetSummonBooksFromBooks(books)
+    local entityUUIDMap = {}
+    for _, book in pairs(summonBooks) do
+        local spells = book['summonSpells']
+        for _, spell in pairs(spells) do
+            local entityUUID = spell['entityUUID']
+            entityUUIDMap[entityUUID] = book
+        end
+    end
+    return entityUUIDMap
 end
 
 ---@param book table
@@ -139,25 +220,80 @@ function configUtils.GetBookByBookTplId(books, bookTplId)
     end
 end
 
+--Filters table of books by their type
+---@param bookType string SUMMON_COMPANION, PARTY_BUFFS, COMPANION_UPGRADE
+---@param books table books|nil
+function configUtils.GetBookByBookType(bookType, books)
+    for _, book in pairs(books) do
+        if book['type'] == bookType then
+            return book
+        end
+    end
+end
+
+---@param books table
+---@return table|nil
+function configUtils.GetSummonBookByName(books)
+    return configUtils.GetBookByBookType(configUtils.GetSummonBookType(), books)
+end
+
+---@param book table
+function configUtils.GetSummonScrollFromBook(book)
+    local scrollName = book['summonScrollUUID']
+
+    LC['Debug'](string.format('Found summon scroll: %s', scrollName))
+
+    return scrollName
+end
+
+---@param book table
+function configUtils.GetScrollFromBook(book)
+    if configUtils.IsSummonBook(book) then
+        return configUtils.GetSummonScrollFromBook(book)
+    elseif configUtils.IsUpgradeBook(book) then
+        return configUtils.GetUpgradeScrollFromBook(book)
+    else
+        LC['Critical']('Unknown book type: ' .. book['type'])
+    end
+end
+
+---@param book table
+function configUtils.GetUpgradeScrollFromBook(book)
+    local scrollName = book['upgradeScrollUUID']
+
+    LC['Debug'](string.format('Found upgrade scroll: %s', scrollName))
+
+    return scrollName
+end
+
+function configUtils.AddScrollToInventory(scrollName)
+    Osi.TemplateAddTo(
+        scrollName,
+        LC['creatureManager'].GetHostGUID(),
+        1,
+        1
+    )
+end
+
 --Returns true if this is an upgrade book
 ---@param book table
 ---@return boolean
 function configUtils.IsUpgradeBook(book)
-    return book['type'] == configUtils['bookTypes']['COMPANION_UPGRADE']
+    return book['type'] == configUtils.GetCompanionUpgradeBookType()
 end
 
 --Returns true if this is a party buffs book
 ---@param book table
 ---@return boolean
 function configUtils.IsPartyBuffsBook(book)
-    return book['type'] == configUtils['bookTypes']['PARTY_BUFFS']
+    return book['type'] == configUtils.GetPartyBuffBookType()
 end
 
 --Returns true if this is a summon book
 ---@param book table
 ---@return boolean
 function configUtils.IsSummonBook(book)
-    return book['type'] == configUtils['bookTypes']['SUMMON_COMPANION']
+    return book['type'] == configUtils.GetSummonBookType()
 end
 
 --[[
@@ -181,6 +317,28 @@ function configUtils.IsPageMatch(book, pages)
         allPagesPresent = pageMatches == #bookPages
     end
     return allPagesPresent
+end
+
+--Check if book is named according to convention
+---@param bookName string
+---@return boolean
+function configUtils.IsLCBook(bookName)
+    return string.find(bookName, '^BOOK_LC_') ~= nil
+end
+
+--Check if this is the upgrade spell
+---@param spellName string
+---@return table|nil
+function configUtils.GetUpgradeBookByScrollSpellName(spellName)
+    local books        = GetBooks()
+    local upgradeBooks = GetUpgradeBooksFromBooks(books)
+    if upgradeBooks and #upgradeBooks > 0 then
+        for _, book in pairs(upgradeBooks) do
+            if book['upgradeScrollSpellName'] == spellName then
+                return book
+            end
+        end
+    end
 end
 
 LC['configUtils'] = configUtils

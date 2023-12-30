@@ -1,18 +1,16 @@
 --[[
 Commands for SE console
-
-Credit: The below code is based on code provided by FallenStar.
 ]]
 local commands = {
     {
+        --Credit: This command is based on code provided by FallenStar.
         name = 'dumpentity',
         params = 'uuid, filename',
-        --@param cmd string
-        --@param uuid string
-        --@param filename string
+        ---@param cmd string
+        ---@param uuid string
+        ---@param filename string
         func = function (cmd, uuid, filename)
             local hostGUID = tostring(Osi.GetHostCharacter())
-            --@type string
             if uuid == 'host' then
                 uuid = hostGUID
             end

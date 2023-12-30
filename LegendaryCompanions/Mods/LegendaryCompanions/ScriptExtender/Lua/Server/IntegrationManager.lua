@@ -48,10 +48,21 @@ local function IsValidConfiguration(config)
                         table.insert(
                             messages['errors'],
                             string.format(
-                                'Integration book name must not be empty',
+                                'Integration book "%s" name must not be empty',
                                 book['name']
                             )
                         )
+                    else
+                        --Check book name format
+                        if not LC['configUtils'].IsLCBook(book['name']) then
+                            table.insert(
+                                messages['errors'],
+                                string.format(
+                                    'Integration book "%s" must start with "BOOK_LC_"',
+                                    book['name']
+                                )
+                            )
+                        end
                     end
 
                     local pages = book['pages']
@@ -81,16 +92,40 @@ local function IsValidConfiguration(config)
                             )
                         end
                     elseif isUpgradeBook then
-                        local upgradeInfo    = book['upgrade'] or {}
-                        local bookEntityUUID = upgradeInfo['entityUUID']
-                        local passives       = upgradeInfo['passives']
+                        local upgradeInfo            = book['upgrade'] or {}
+                        local bookEntityUUID         = upgradeInfo['entityUUID']
+                        local passives               = upgradeInfo['passives']
+                        local upgradeScrollUUID      = book['upgradeScrollUUID']
+                        local upgradeScrollSpellName = book['upgradeScrollSpellName']
 
-                        --Check entityUUID
-                        if not bookEntityUUID or string.len(bookEntityUUID) == 0 then
+                        --Check scroll UUID
+                        if not upgradeScrollUUID or string.len(upgradeScrollUUID) ~= 36 then
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration upgrade book %s must have an entityUUID',
+                                    'Integration upgrade book "%s" must have a valid upgradeScrollUUID that is 36 characters',
+                                    book['name']
+                                )
+                            )
+                        end
+
+                        --Check scroll spell name
+                        if not upgradeScrollSpellName then
+                            table.insert(
+                                messages['errors'],
+                                string.format(
+                                    'Integration upgrade book "%s" must have a valid upgradeScrollSpellName',
+                                    book['name']
+                                )
+                            )
+                        end
+
+                        --Check entityUUID
+                        if not bookEntityUUID or string.len(bookEntityUUID) ~= 36 then
+                            table.insert(
+                                messages['errors'],
+                                string.format(
+                                    'Integration upgrade book "%s" must have a valid entityUUID that is 36 characters',
                                     book['name']
                                 )
                             )
@@ -107,16 +142,33 @@ local function IsValidConfiguration(config)
                             )
                         end
                     elseif isSummonBook then
-                        --Regular book - check spells
-                        local hasNoSpells = not book['summonSpells'] or #book['summonSpells'] == 0
-                        if hasNoSpells then
+                        --Regular book - check scroll
+                        local isInvalidScrollUUID = not book['summonScrollUUID']
+                            or string.len(book['summonScrollUUID']) ~= 36
+                        if isInvalidScrollUUID then
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration book "%s" must have at least one summoning spell',
+                                    'Integration book "%s" must have a summonScrollUUID that is 36 characters',
                                     book['name']
                                 )
                             )
+                        end
+
+                        if book['summonSpells'] then
+                            for _, spell in pairs(book['summonSpells']) do
+                                if spell['name'] then
+                                    local error =
+                                        string.format(
+                                            'DEPRECATED: Book "%s" "name" field is deprecated and not used! Be sure to set "summonScrollUUID"',
+                                            book['name']
+                                        )
+                                    table.insert(
+                                        messages['warnings'],
+                                        error
+                                    )
+                                end
+                            end
                         end
                     else
                         table.insert(
@@ -222,7 +274,6 @@ local function AddIntegration(config)
     for severity, _ in pairs(messages) do
         for _, msg in pairs(messages[severity]) do
             local messagesBySeverity = LC['integrationLogMessages'][severity]
-
             if type(messagesBySeverity) == 'table' then
                 table.insert(messagesBySeverity, msg)
             end
