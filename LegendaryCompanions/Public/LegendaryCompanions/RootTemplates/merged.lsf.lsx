@@ -877,6 +877,9 @@
 								<node id="Tag">
 									<attribute id="Object" type="guid" value="6d6d37a2-95be-4841-b97f-c59e2b4a8f49" />
 								</node>
+								<node id="Tag">
+									<attribute id="Object" type="guid" value="801bd716-0666-4dd5-b449-45ffa9a52a0f" />
+								</node>
 							</children>
 						</node>
 						<node id="OnDeathActions">

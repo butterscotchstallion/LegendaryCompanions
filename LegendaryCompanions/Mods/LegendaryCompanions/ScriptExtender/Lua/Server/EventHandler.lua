@@ -59,6 +59,10 @@ local function OnSessionLoaded()
     PrintIntegrationMessages()
 end
 
+--[[
+Finds scroll and adds to inventory based on the book
+that was closed and its type
+]]
 ---@param item string Item template name
 ---@param character string Character UUID
 local function OnGameBookInterfaceClosed(item, character)
