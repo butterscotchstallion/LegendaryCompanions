@@ -11,28 +11,28 @@ the GUID of the entity
 ---@param levelName string
 local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
     if LC['creatureManager']['isExpectingSummonBook'] then
-        local book = LC['creatureManager'].IsLegendaryCompanion(originalUUID)
-
-        LC['log'].Debug(string.format('%s entered (%s)!', objectTemplate, levelName))
-
-        if book then
-            local objectUUID = LC['creatureManager'].GetGUIDFromTpl(objectTemplate)
-            LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
-            LC['creatureManager'].HandleCreatureSpawn(tostring(objectUUID), originalUUID, book)
-        end
+        local objectUUID = LC['creatureManager'].GetGUIDFromTpl(objectTemplate)
+        LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
+        LC['creatureManager'].HandleCreatureSpawn(
+            tostring(objectUUID),
+            originalUUID,
+            LC['creatureManager']['isExpectingSummonBook']
+        )
     end
 end
 
 local function PrintVersionMessage()
-    local mod        = Ext.Mod.GetMod(ModuleUUID)
-    local version    = mod.Info.ModVersion
-    local versionMsg = string.format(
-        'LegendaryCompanions v%s.%s.%s',
-        version[1],
-        version[2],
-        version[3]
-    )
-    LC['Info'](versionMsg)
+    local mod = Ext.Mod.GetMod(ModuleUUID)
+    if mod then
+        local version    = mod.Info.ModVersion
+        local versionMsg = string.format(
+            'LegendaryCompanions v%s.%s.%s',
+            version[1],
+            version[2],
+            version[3]
+        )
+        LC['Info'](versionMsg)
+    end
 end
 
 local function PrintIntegrationMessages()
@@ -48,7 +48,6 @@ local function PrintIntegrationMessages()
     for _, msg in pairs(LC['integrationLogMessages']['Debug']) do
         LC['Debug'](msg)
     end
-
     local configTotals = LC['configUtils'].GetConfigTotals()
     LC['Info'](
         string.format(

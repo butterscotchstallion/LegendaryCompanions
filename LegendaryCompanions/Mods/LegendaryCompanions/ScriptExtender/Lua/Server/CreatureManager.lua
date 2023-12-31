@@ -250,7 +250,6 @@ local function GetLCSummons()
         for _, summon in pairs(summons) do
             local tplName      = summon[1]
             local entity       = Ext.Entity.Get(tplName)
-            --local originalUUID = entity.GameObjectVisual.RootTemplateId
             local summonUUID   = entity.Uuid.EntityUuid
             local tagComponent = entity:GetComponent('Tag')
             local tags         = tagComponent['Tags']
