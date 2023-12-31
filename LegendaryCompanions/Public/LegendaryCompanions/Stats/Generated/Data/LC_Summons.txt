@@ -38,6 +38,5 @@ new entry "LC_Upgrade_Companion"
 		data "TooltipStatusApply" ""
 		data "SpellProperties" ""
 		data "AmountOfTargets" "1"
-		// Maybe add tagged here? //
-		data "TargetConditions" "Character() and not Enemy() and not Dead() and not HasStatus('DOWNED')"
+		data "TargetConditions" "Tagged('LC_COMPANION') and Character() and not Enemy() and not Dead() and not HasStatus('DOWNED')"
 		data "UseCosts" ""
