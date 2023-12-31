@@ -15,7 +15,6 @@ local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
         LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
         LC['creatureManager'].HandleCreatureSpawn(
             tostring(objectUUID),
-            originalUUID,
             LC['creatureManager']['isExpectingSummonBook']
         )
     end

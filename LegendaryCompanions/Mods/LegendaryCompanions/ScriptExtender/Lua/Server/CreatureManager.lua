@@ -192,9 +192,8 @@ end
 
 --Handles creature spawn, passing along object info from the event handler
 ---@param spawnedUUID string Creature instance UUID
----@param spawnedRT string Root template string
 ---@param book table Book with the summoning spell
-local function HandleCreatureSpawn(spawnedUUID, spawnedRT, book)
+local function HandleCreatureSpawn(spawnedUUID, book)
     LC['Debug']('Handling creature spawn: ' .. spawnedUUID)
 
     ApplySpawnSelfStatus(spawnedUUID, book)
@@ -207,21 +206,6 @@ local function HandleCreatureSpawn(spawnedUUID, spawnedRT, book)
     end
 
     SetCreatureLevelEqualToHost(spawnedUUID)
-end
-
----@param originalUUID string
----@return table|nil
-local function IsLegendaryCompanion(originalUUID)
-    local cache = creatureManager['companionCache']
-    if cache and cache[originalUUID] then
-        LC['Debug']('Returning cached value for companion :)')
-        return cache[originalUUID]
-    else
-        LC['Debug']('Building summon entity -> book map')
-        local entityUUIDMap = LC['configUtils'].GetSummonEntityUUIDBookMap()
-        creatureManager['companionCache'] = entityUUIDMap
-        return entityUUIDMap[originalUUID]
-    end
 end
 
 ---@return table
@@ -291,7 +275,6 @@ end
 creatureManager.HandleCreatureSpawn         = HandleCreatureSpawn
 creatureManager.GetGUIDFromTpl              = GetGUIDFromTpl
 creatureManager.GetHostGUID                 = GetHostGUID
-creatureManager.IsLegendaryCompanion        = IsLegendaryCompanion
 creatureManager.HandleUpgradeCompanionSpell = HandleUpgradeCompanionSpell
 creatureManager.HandleSummonCompanionSpell  = HandleSummonCompanionSpell
 LC['creatureManager']                       = creatureManager
