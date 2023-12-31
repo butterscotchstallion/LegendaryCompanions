@@ -103,34 +103,23 @@ LC['integrationManager'].AddIntegration({
     ['books']   = {
         {
             -- Name of this book item from the root template
-            ['name']             = 'BOOK_LC_Muffin_Combined_Tome',
-            ['type']             = LC['configUtils'].GetSummonBookType(),
+            ['name']                  = 'BOOK_LC_Muffin_Combined_Tome',
+            ['type']                  = LC['configUtils'].GetSummonBookType(),
             -- Names of the pages that when combined create the above book
-            ['pages']            = {
+            ['pages']                 = {
                 'BOOK_LC_Muffin_TornPage_01',
                 'BOOK_LC_Muffin_TornPage_02',
             },
+            ['summonUUID']            = '82ffc8c7-644c-40a8-b4b7-2d73b1a1049b',
             --Scroll received when this book is read
-            ['summonScrollUUID'] = '34a2c024-687d-4154-86a1-63db496b3298',
-            -- Upon combination of the pages, one of these summoning spells will be cast randomly
-            -- to summon your companion
-            ['summonSpells']     = {
-                {
-                    -- Name of the summoning spell in LC_Summons.txt
-                    ['name']       = 'LC_Summon_Muffin_Legendary',
-                    -- This should match the UUID of the character
-                    ['entityUUID'] = muffinLegendaryUUID,
-                    -- This determines the power level and lifetime of the summoned
-                    -- companion
-                    ['rarity']     = rarityLegendary,
-                },
-            },
+            ['summonScrollUUID']      = '34a2c024-687d-4154-86a1-63db496b3298',
+            ['summonScrollSpellName'] = 'LC_Summon_Muffin_Legendary',
             -- When your companion is summoned, it will cast one of these spells on the party
-            ['buffPartySpells']  = {
+            ['buffPartySpells']       = {
                 'LC_Target_Longstrider_AOE',
             },
             -- When your companion is summoned, one of these statuses will be applied to the companion
-            ['selfStatus']       = {
+            ['selfStatus']            = {
                 'UND_GLUT_ENRAGE'
             }
         },

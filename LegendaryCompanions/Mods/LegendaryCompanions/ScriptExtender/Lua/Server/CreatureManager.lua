@@ -151,14 +151,6 @@ local function GetCompanionUUIDByRT(originalUUID)
     return companions[originalUUID]
 end
 
----@param entityUUID string Integration book from config
----@param passives table Passives to apply
-local function ApplyUpgradeEffects(entityUUID, passives)
-    if entityUUID and #passives > 0 then
-        ApplyBookPassives(entityUUID, passives)
-    end
-end
-
 ---@param message string Message to show in message box
 local function ShowUpgradeMessage(message)
     Osi.OpenMessageBox(GetHostGUID(), message)
@@ -171,7 +163,7 @@ local function SetCompanionLevel(entityUUID, level)
         local entityLevel = Osi.GetLevel(entityUUID)
 
         if level > entityLevel then
-            LC['Debug']('Upgrade setting entity level to ' .. level)
+            LC['Debug']('Upgrade: setting entity level to ' .. level)
             Osi.SetLevel(entityUUID, level)
         else
             LC['Debug'](
@@ -185,37 +177,18 @@ local function SetCompanionLevel(entityUUID, level)
     end
 end
 
----@param book table Integration book
-local function OnUpgradeBookCreated(book)
-    local upgradeInfo               = book['upgrade']
-    local upgradeTargetEntityUUID   = GetCompanionUUIDByRT(upgradeInfo['entityUUID'])
-    local upgradeTargetEntityExists = false
+---@param entityUUID string Integration book from config
+---@param book table Book with upgrade info
+local function ApplyUpgradeEffects(entityUUID, book)
+    local upgradeInfo = book['upgrade']
+    local passives = book['upgrade']['passives']
 
-    if upgradeTargetEntityUUID then
-        upgradeTargetEntityExists = Osi.Exists(upgradeTargetEntityUUID) == 1
+    ShowUpgradeMessage(upgradeInfo['message'])
+    SetCompanionLevel(entityUUID, upgradeInfo['setLevelTo'])
 
-        LC['Debug'](string.format('Handling upgrade book "%s"', book['name']))
-
-        if upgradeTargetEntityExists then
-            ShowUpgradeMessage(upgradeInfo['message'])
-            ApplyUpgradeEffects(book['upgrade']['entityUUID'], book['upgrade']['passives'])
-            SetCompanionLevel(upgradeTargetEntityUUID, upgradeInfo['setLevelTo'])
-        end
+    if entityUUID and #passives > 0 then
+        ApplyBookPassives(entityUUID, passives)
     end
-
-    if not upgradeTargetEntityExists then
-        LC['Critical'](
-            string.format('Upgrade target entity %s does not exist!', upgradeTargetEntityUUID)
-        )
-    end
-end
-
----@param book table Integration book
----@deprecated
-local function OnSummonBookCreated(book)
-    LC['Debug'](string.format('Handling summon book %s', book['name']))
-    LC['creatureManager'].OnBeforeSpawn()
-    LC['creatureManager'].SpawnCreatureWithBook(book)
 end
 
 local function OnBeforeSpawn()
@@ -278,39 +251,6 @@ local function HandleCreatureSpawn(spawnedUUID, spawnedRT, book)
     SaveCompanionRecord(spawnedUUID, spawnedRT)
 end
 
---Spawn creature based on book config
----@param book table Book from config
----@deprecated
-local function SpawnCreatureWithBook(book)
-    ---@type table
-    local summonSpells = book['summonSpells']
-
-    if summonSpells and #summonSpells > 0 then
-        local rndSpell = summonSpells[math.random(#summonSpells)]
-        local caster   = GetHostGUID()
-        local rarity   = rndSpell['rarity'] or 'common'
-
-        LC['log'].Debug(string.format(
-            'Casting summoning spell: %s [%s]',
-            rndSpell['name'],
-            rndSpell['entityUUID']
-        ))
-
-        Osi.UseSpell(caster, rndSpell['name'], caster)
-
-        --Set creature info for this scenario
-        creatureConfig['book']            = book
-        creatureConfig['rarity']          = rarity
-        creatureConfig['originalUUID']    = rndSpell['entityUUID']
-
-        --This will be handled in EnteredLevel
-        creatureManager['creatureConfig'] = creatureConfig
-    else
-        --This should not be possible if the integration validation is working
-        LC['log'].Critical('No summoning spells!')
-    end
-end
-
 ---@param originalUUID string
 ---@return table|nil
 local function IsLegendaryCompanion(originalUUID)
@@ -343,6 +283,7 @@ local function IsTagInTags(tagUUID, tags)
     return false
 end
 
+--TODO: Maybe refactor to be more efficient
 ---@return table
 local function GetLCSummons()
     local summons       = GetPlayerSummons()
@@ -377,20 +318,22 @@ local function HandleUpgradeCompanionSpell(book)
         for _, summonUUID in pairs(companions) do
             ApplyUpgradeEffects(
                 summonUUID,
-                book['upgrade']['passives']
+                book
             )
         end
     end
 end
 
+---@param book table
+local function HandleSummonCompanionSpell(book)
+    OnBeforeSpawn()
+end
+
 --External
-creatureManager.SpawnCreatureWithBook       = SpawnCreatureWithBook
 creatureManager.HandleCreatureSpawn         = HandleCreatureSpawn
 creatureManager.GetGUIDFromTpl              = GetGUIDFromTpl
-creatureManager.OnBeforeSpawn               = OnBeforeSpawn
-creatureManager.OnUpgradeBookCreated        = OnUpgradeBookCreated
-creatureManager.OnSummonBookCreated         = OnSummonBookCreated
 creatureManager.GetHostGUID                 = GetHostGUID
 creatureManager.IsLegendaryCompanion        = IsLegendaryCompanion
 creatureManager.HandleUpgradeCompanionSpell = HandleUpgradeCompanionSpell
+creatureManager.HandleSummonCompanionSpell  = HandleSummonCompanionSpell
 LC['creatureManager']                       = creatureManager

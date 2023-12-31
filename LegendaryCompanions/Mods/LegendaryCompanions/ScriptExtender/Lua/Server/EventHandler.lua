@@ -86,9 +86,14 @@ end
 ---@param spellElement string
 ---@param storyActionID integer
 local function OnCastSpell(caster, spellName, spellType, spellElement, storyActionID)
-    local book = LC['configUtils'].GetUpgradeBookByScrollSpellName(spellName)
-    if book then
-        LC['creatureManager'].HandleUpgradeCompanionSpell(book)
+    local summonBook = LC['configUtils'].GetSummonBookByScrollSpellName(spellName)
+    if summonBook then
+        LC['creatureManager'].HandleSummonCompanionSpell(summonBook)
+    else
+        local upgradeBook = LC['configUtils'].GetUpgradeBookByScrollSpellName(spellName)
+        if upgradeBook then
+            LC['creatureManager'].HandleUpgradeCompanionSpell(upgradeBook)
+        end
     end
 end
 

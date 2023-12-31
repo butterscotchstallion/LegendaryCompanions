@@ -83,7 +83,6 @@ end
 function configUtils.GetUpgradeBookByScrollUUID(scrollUUID)
     local books        = GetBooks()
     local upgradeBooks = GetUpgradeBooksFromBooks(books)
-
     if upgradeBooks and #upgradeBooks > 0 then
         for _, book in pairs(upgradeBooks) do
             if configUtils.GetScrollFromBook(book) == scrollUUID then
@@ -99,11 +98,8 @@ function configUtils.GetSummonEntityUUIDBookMap()
     local summonBooks   = GetSummonBooksFromBooks(books)
     local entityUUIDMap = {}
     for _, book in pairs(summonBooks) do
-        local spells = book['summonSpells']
-        for _, spell in pairs(spells) do
-            local entityUUID = spell['entityUUID']
-            entityUUIDMap[entityUUID] = book
-        end
+        local entityUUID = book['summonUUID']
+        entityUUIDMap[entityUUID] = book
     end
     return entityUUIDMap
 end
@@ -339,6 +335,35 @@ function configUtils.GetUpgradeBookByScrollSpellName(spellName)
                 return book
             end
         end
+    end
+end
+
+--Check if this is the summon spell
+---@param spellName string
+---@return table|nil
+function configUtils.GetSummonBookByScrollSpellName(spellName)
+    local books       = GetBooks()
+    local summonBooks = GetSummonBooksFromBooks(books)
+    if summonBooks and #summonBooks > 0 then
+        for _, book in pairs(summonBooks) do
+            if book['summonSpellName'] == spellName then
+                return book
+            end
+        end
+    end
+end
+
+--Check if this is the upgrade spell
+---@param spellName string
+---@param bookType string
+---@return table|nil
+function configUtils.GetBookBySpellName(spellName, bookType)
+    if bookType == configUtils.GetCompanionUpgradeBookType() then
+        return configUtils.GetUpgradeBookByScrollSpellName(spellName)
+    elseif bookType == configUtils.GetSummonBookType() then
+        return configUtils.GetSummonBookByScrollSpellName(spellName)
+    else
+        LC['Critical']('Unhandled book type: ' .. bookType)
     end
 end
 
