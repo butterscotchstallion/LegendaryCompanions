@@ -187,7 +187,10 @@ local function IsValidConfiguration(config)
 
                         --Old summon spells
                         if book['summonSpells'] then
-                            local depError = 'Integration book "%s" "summonSpells" field is deprecated and not used! '
+                            local depError = string.format(
+                                'Integration book "%s" "summonSpells" field is deprecated and not used! ',
+                                book['name']
+                            )
                             local error =
                                 string.format(
                                     '%s Be sure to set "summonScrollUUID" and "summonScrollSpellName"',

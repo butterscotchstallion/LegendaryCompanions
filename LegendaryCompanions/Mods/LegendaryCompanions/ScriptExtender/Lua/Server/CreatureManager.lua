@@ -3,25 +3,13 @@ CreatureManager - Handles spawning of creatures and related
 functionality
 ]]
 local creatureManager = {
-    ['companionCache']    = nil,
-    ['isExpectingSummon'] = false,
+    ['companionCache']         = nil,
+    ['isExpectingSummonBook']  = nil,
+    ['isExpectingUpgradeBook'] = nil,
 }
 
 ---@diagnostic disable-next-line: redundant-parameter
 Ext.Vars.RegisterModVariable(ModuleUUID, 'companions', {})
-
----@class creatureConfig Handles creatures summoned by integrations
----@field book table
----@field isHostile boolean
----@field spawnedUUID string
----@field originalUUID string
----@field rarity string
-local creatureConfig = {
-    ['book']         = {},
-    ['isHostile']    = false,
-    ['originalUUID'] = '',
-    ['rarity']       = 'common',
-}
 
 ---@return string Returns host UUID as a string
 local function GetHostGUID()
@@ -137,21 +125,6 @@ local function InitializeCompanionsTableAndReturnModVars()
     return modVars
 end
 
---Get persistent companions mod var
----@return table
-local function GetCompanionsModVar()
-    local modVars = InitializeCompanionsTableAndReturnModVars()
-    return modVars['companions']
-end
-
---Finds companion UUID in ModVars using original UUID
----@param originalUUID string Original UUID from Root Template
----@return string|nil Returns UUID string or nil
-local function GetCompanionUUIDByRT(originalUUID)
-    local companions = GetCompanionsModVar()
-    return companions[originalUUID]
-end
-
 ---@param message string Message to show in message box
 local function ShowUpgradeMessage(message)
     Osi.OpenMessageBox(GetHostGUID(), message)
@@ -217,20 +190,6 @@ local function ApplySpawnSelfStatus(spawnedUUID, book)
     end
 end
 
---Remembers what summons we have
----@param companionUUID string Template string for new companion
----@param originalUUID string Root template UUID
-local function SaveCompanionRecord(companionUUID, originalUUID)
-    local modVars              = InitializeCompanionsTableAndReturnModVars()
-    ---@type table
-    local companionMap         = modVars['companions']
-    companionMap[originalUUID] = companionUUID
-    modVars['companions']      = companionMap
-    LC['Debug'](
-        string.format('Saved companion record: %s -> %s', originalUUID, companionUUID)
-    )
-end
-
 --Handles creature spawn, passing along object info from the event handler
 ---@param spawnedUUID string Creature instance UUID
 ---@param spawnedRT string Root template string
@@ -241,22 +200,19 @@ local function HandleCreatureSpawn(spawnedUUID, spawnedRT, book)
     ApplySpawnSelfStatus(spawnedUUID, book)
 
     --Nil by default
-    if creatureConfig['isHostile'] == true then
+    if book['isHostile'] == true then
         HandleHostileSpawn(spawnedUUID)
     else
         HandleFriendlySpawn(spawnedUUID, book)
     end
 
     SetCreatureLevelEqualToHost(spawnedUUID)
-
-    SaveCompanionRecord(spawnedUUID, spawnedRT)
 end
 
 ---@param originalUUID string
 ---@return table|nil
 local function IsLegendaryCompanion(originalUUID)
     local cache = creatureManager['companionCache']
-    _D(cache)
     if cache and cache[originalUUID] then
         LC['Debug']('Returning cached value for companion :)')
         return cache[originalUUID]
