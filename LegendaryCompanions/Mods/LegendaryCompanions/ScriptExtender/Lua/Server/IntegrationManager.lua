@@ -104,7 +104,7 @@ local function IsValidConfiguration(config)
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration upgrade book "%s" must have a valid upgradeScrollUUID that is 36 characters',
+                                    'Integration upgrade book "%s" must have a valid "upgradeScrollUUID" that is 36 characters',
                                     book['name']
                                 )
                             )
@@ -115,7 +115,7 @@ local function IsValidConfiguration(config)
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration upgrade book "%s" must have a valid upgradeScrollSpellName',
+                                    'Integration upgrade book "%s" must have a valid "upgradeScrollSpellName"',
                                     book['name']
                                 )
                             )
@@ -150,7 +150,7 @@ local function IsValidConfiguration(config)
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration book "%s" must have a summonUUID that is 36 characters',
+                                    'Integration book "%s" must have a "summonUUID" that is 36 characters',
                                     book['name']
                                 )
                             )
@@ -165,7 +165,7 @@ local function IsValidConfiguration(config)
                             table.insert(
                                 messages['errors'],
                                 string.format(
-                                    'Integration book "%s" must have a summonScrollUUID that is 36 characters',
+                                    'Integration book "%s" must have a "summonScrollUUID" that is 36 characters',
                                     book['name']
                                 )
                             )

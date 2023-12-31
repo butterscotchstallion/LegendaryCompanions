@@ -346,7 +346,7 @@ function configUtils.GetSummonBookByScrollSpellName(spellName)
     local summonBooks = GetSummonBooksFromBooks(books)
     if summonBooks and #summonBooks > 0 then
         for _, book in pairs(summonBooks) do
-            if book['summonSpellName'] == spellName then
+            if book['summonScrollSpellName'] == spellName then
                 return book
             end
         end

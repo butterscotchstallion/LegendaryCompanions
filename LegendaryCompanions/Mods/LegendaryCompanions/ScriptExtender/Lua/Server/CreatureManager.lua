@@ -3,7 +3,8 @@ CreatureManager - Handles spawning of creatures and related
 functionality
 ]]
 local creatureManager = {
-    ['companionCache'] = nil
+    ['companionCache']    = nil,
+    ['isExpectingSummon'] = false,
 }
 
 ---@diagnostic disable-next-line: redundant-parameter
@@ -61,8 +62,8 @@ local function HandleHostileSpawn(creatureTplId)
 end
 
 ---@param spawnedUUID string
-local function AddPartyBuffs(spawnedUUID)
-    local randomBuff = LC['configUtils'].GetRandomPartyBuff(creatureConfig['book'])
+local function AddPartyBuffs(spawnedUUID, book)
+    local randomBuff = LC['configUtils'].GetRandomPartyBuff(book)
     if randomBuff then
         local buffTarget = GetHostGUID()
         LC['log'].Debug(
@@ -85,9 +86,9 @@ local function AddPartyBuffs(spawnedUUID)
 end
 
 ---@param spawnedUUID string
-local function HandleFriendlySpawn(spawnedUUID)
+local function HandleFriendlySpawn(spawnedUUID, book)
     LC['log'].Debug('Handling friendly spawn')
-    AddPartyBuffs(spawnedUUID)
+    AddPartyBuffs(spawnedUUID, book)
 end
 
 ---@param statusName string Name of status
@@ -243,7 +244,7 @@ local function HandleCreatureSpawn(spawnedUUID, spawnedRT, book)
     if creatureConfig['isHostile'] == true then
         HandleHostileSpawn(spawnedUUID)
     else
-        HandleFriendlySpawn(spawnedUUID)
+        HandleFriendlySpawn(spawnedUUID, book)
     end
 
     SetCreatureLevelEqualToHost(spawnedUUID)
@@ -255,6 +256,7 @@ end
 ---@return table|nil
 local function IsLegendaryCompanion(originalUUID)
     local cache = creatureManager['companionCache']
+    _D(cache)
     if cache and cache[originalUUID] then
         LC['Debug']('Returning cached value for companion :)')
         return cache[originalUUID]
@@ -326,6 +328,7 @@ end
 
 ---@param book table
 local function HandleSummonCompanionSpell(book)
+    LC['Debug']('Handling summon: ' .. book['name'])
     OnBeforeSpawn()
 end
 

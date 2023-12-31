@@ -10,11 +10,16 @@ the GUID of the entity
 ---@param originalUUID string
 ---@param levelName string
 local function OnEnteredLevel(objectTemplate, originalUUID, levelName)
-    local book = LC['creatureManager'].IsLegendaryCompanion(originalUUID)
-    if book then
-        local objectUUID = LC['creatureManager'].GetGUIDFromTpl(objectTemplate)
-        LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
-        LC['creatureManager'].HandleCreatureSpawn(tostring(objectUUID), originalUUID, book)
+    if LC['creatureManager']['isExpectingSummon'] then
+        local book = LC['creatureManager'].IsLegendaryCompanion(originalUUID)
+
+        LC['log'].Debug(string.format('%s entered (%s)!', objectTemplate, levelName))
+
+        if book then
+            local objectUUID = LC['creatureManager'].GetGUIDFromTpl(objectTemplate)
+            LC['log'].Debug(string.format('%s entered (%s)!', objectUUID, levelName))
+            LC['creatureManager'].HandleCreatureSpawn(tostring(objectUUID), originalUUID, book)
+        end
     end
 end
 
@@ -86,14 +91,35 @@ end
 ---@param spellElement string
 ---@param storyActionID integer
 local function OnCastSpell(caster, spellName, spellType, spellElement, storyActionID)
-    local summonBook = LC['configUtils'].GetSummonBookByScrollSpellName(spellName)
-    if summonBook then
-        LC['creatureManager'].HandleSummonCompanionSpell(summonBook)
-    else
-        local upgradeBook = LC['configUtils'].GetUpgradeBookByScrollSpellName(spellName)
-        if upgradeBook then
-            LC['creatureManager'].HandleUpgradeCompanionSpell(upgradeBook)
+    if LC['creatureManager']['isExpectingSummon'] then
+        LC['Debug']('Checking book type for ' .. spellName)
+        --TODO: maybe refactor this to use the book we found on preview
+        local summonBook = LC['configUtils'].GetSummonBookByScrollSpellName(spellName)
+        if summonBook then
+            LC['creatureManager'].HandleSummonCompanionSpell(summonBook)
+            LC['creatureManager']['isExpectingSummon'] = false
+        else
+            local upgradeBook = LC['configUtils'].GetUpgradeBookByScrollSpellName(spellName)
+            if upgradeBook then
+                LC['creatureManager'].HandleUpgradeCompanionSpell(upgradeBook)
+                LC['creatureManager']['isExpectingSummon'] = false
+            end
         end
+    end
+end
+
+---@param caster GUIDSTRING
+---@param spell string
+---@param isMostPowerful integer
+---@param hasMultipleLevels integer
+local function OnPreviewingSpell(caster, spell, isMostPowerful, hasMultipleLevels)
+    local summonBookType                       = LC['configUtils'].GetSummonBookType()
+    local summonSpellBook                      = LC['configUtils'].GetBookBySpellName(spell, summonBookType)
+    local isExpectingSummon                    = type(summonSpellBook) == 'table'
+    LC['creatureManager']['isExpectingSummon'] = isExpectingSummon
+
+    if isExpectingSummon then
+        LC['Debug']('Expecting summon: ' .. spell)
     end
 end
 
@@ -102,3 +128,4 @@ Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
 Ext.Osiris.RegisterListener('EnteredLevel', 3, 'after', OnEnteredLevel)
 Ext.Osiris.RegisterListener('GameBookInterfaceClosed', 2, 'after', OnGameBookInterfaceClosed)
 Ext.Osiris.RegisterListener('CastSpell', 5, 'after', OnCastSpell)
+Ext.Osiris.RegisterListener('StartedPreviewingSpell', 4, 'after', OnPreviewingSpell)
