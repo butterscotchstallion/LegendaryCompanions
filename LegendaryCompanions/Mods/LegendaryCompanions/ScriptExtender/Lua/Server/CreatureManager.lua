@@ -8,9 +8,6 @@ local creatureManager = {
     ['isExpectingUpgradeBook'] = nil,
 }
 
----@diagnostic disable-next-line: redundant-parameter
-Ext.Vars.RegisterModVariable(ModuleUUID, 'companions', {})
-
 ---@return string Returns host UUID as a string
 local function GetHostGUID()
     return tostring(Osi.GetHostCharacter())
@@ -75,7 +72,7 @@ end
 
 ---@param spawnedUUID string
 local function HandleFriendlySpawn(spawnedUUID, book)
-    LC['log'].Debug('Handling friendly spawn')
+    LC['log'].Debug('Handling friendly actions')
     AddPartyBuffs(spawnedUUID, book)
 end
 
