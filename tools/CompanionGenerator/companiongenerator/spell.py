@@ -1,9 +1,9 @@
 """
 Spells
 """
-
 from pathlib import Path
 import logging as log
+from .template_variable_replacer import TemplateVariableReplacer
 
 log.basicConfig(format="%(levelname)s:%(message)s", level=log.DEBUG)
 
@@ -14,6 +14,10 @@ class Spell:
 
 
 class SummonSpell(Spell):
+    """
+    The spell used to summon the companion
+    """
+
     def __init__(self, **kwargs) -> None:
         self.spell_name = kwargs["spell_name"]
         self.summon_uuid = kwargs["summon_uuid"]
@@ -36,7 +40,7 @@ class SummonSpell(Spell):
                 "./companiongenerator/templates/summon_spell.txt"
             ).read_text()
             if spell_tpl:
-                replacers = {
+                replacements = {
                     "{{display_name}}": self.display_name,
                     "{{description}}": self.description,
                     "{{summon_uuid}}": self.summon_uuid,
@@ -44,25 +48,10 @@ class SummonSpell(Spell):
                     "{{integration_name}}": self.integration_name,
                 }
 
-                for replacer_var_name in replacers:
-                    if replacer_var_name in spell_tpl:
-                        spell_tpl = spell_tpl.replace(
-                            replacer_var_name, replacers[replacer_var_name]
-                        )
-                        log.debug(
-                            "Replaced {name} with {value}",
-                            extra=dict(
-                                name=replacer_var_name,
-                                value=replacers[replacer_var_name],
-                            ),
-                        )
-                    else:
-                        log.error(
-                            "Could not find replacer variable in template: {name}",
-                            extra=dict(name=replacer_var_name),
-                        )
+                replacer = TemplateVariableReplacer()
+                replaced_text = replacer.replace(spell_tpl, replacements)
 
-                return spell_tpl
+                return replaced_text
             else:
                 log.error("Error reading summon spell template")
         except FileNotFoundError:
