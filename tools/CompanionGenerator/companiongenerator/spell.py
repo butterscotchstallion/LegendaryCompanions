@@ -19,14 +19,15 @@ class SummonSpell(Spell):
         self.summon_uuid = kwargs["summon_uuid"]
         self.display_name = kwargs["display_name"]
         self.description = kwargs["description"]
+        self.integration_name = kwargs["integration_name"]
         self.validate_parameters(kwargs)
 
     def validate_parameters(self, kwargs):
-        valid_uuid = self.is_valid_uuid(kwargs["summon_uuid"])
-        if not valid_uuid:
-            raise Exception("Invalid UUID!")
+        valid_summon_uuid = self.is_valid_summon_uuid(kwargs["summon_uuid"])
+        if not valid_summon_uuid:
+            raise Exception("Invalid summon_uuid!")
 
-    def is_valid_uuid(self, summon_uuid) -> bool:
+    def is_valid_summon_uuid(self, summon_uuid) -> bool:
         return summon_uuid and len(summon_uuid) == 36
 
     def get_spell_text(self):
@@ -40,6 +41,7 @@ class SummonSpell(Spell):
                     "{{description}}": self.description,
                     "{{summon_uuid}}": self.summon_uuid,
                     "{{spell_name}}": self.spell_name,
+                    "{{integration_name}}": self.integration_name,
                 }
 
                 for replacer_var_name in replacers:
