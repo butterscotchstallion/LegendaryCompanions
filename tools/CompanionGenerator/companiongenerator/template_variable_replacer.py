@@ -11,15 +11,10 @@ class TemplateVariableReplacer:
                     replacer_var_name, replacements[replacer_var_name]
                 )
                 log.debug(
-                    "Replaced {name} with {value}",
-                    extra=dict(
-                        name=replacer_var_name,
-                        value=replacements[replacer_var_name],
-                    ),
+                    f"Replaced {replacer_var_name} with {replacements[replacer_var_name]}"
                 )
             else:
                 log.error(
-                    "Could not find replacer variable in template: {name}",
-                    extra=dict(name=replacer_var_name),
+                    f"Could not find replacer variable {replacer_var_name} in template: {replaced_text}"
                 )
         return replaced_text

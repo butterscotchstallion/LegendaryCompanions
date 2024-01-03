@@ -2,16 +2,19 @@ from companiongenerator import TemplateVariableReplacer
 
 
 def test_replacer_basic():
+    """
+    Tests the basic functionality of the replacer
+    """
     replacer = TemplateVariableReplacer()
     spell_text = """
         new entry "{{spell_name}}"
             type "SpellData"
             data "SpellType" "Target"
-            using "Target_Bless"
+            using "{{spell_name}}"
             data "AmountOfTargets" "4"
             data "DescriptionParams" "1d4;4"
             data "UseCosts" "ActionPoint:1;SpellSlotsGroup:1:1:2"
-            data "RootSpellID" "Target_Bless"
+            data "RootSpellID" "{{spell_name}}"
             data "PowerLevel" "2"
             data "CombatAIOverrideSpell" "Target_Bless_2_AI"
     """

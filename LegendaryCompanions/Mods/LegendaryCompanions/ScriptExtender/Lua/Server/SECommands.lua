@@ -16,8 +16,9 @@ local commands = {
             end
             local entity = Ext.Entity.Get(uuid)
             filename = (filename or uuid) .. '.json'
+            --Will be saved under %localappdata%\Larian Studios\Baldur's Gate 3\Script Extender
             Ext.IO.SaveFile(filename, Ext.DumpExport(entity:GetAllComponents()))
-            LC['log'].Debug(string.format('Saved dump file: %s', filename))
+            LC['Debug'](string.format('Saved dump file: %s', filename))
         end
     },
     {
