@@ -1,0 +1,42 @@
+<node id="GameObjects">
+    <attribute id="Archetype" type="FixedString" value="{{archetypeName}}" />
+    <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+    <attribute id="Equipment" type="FixedString" value="{{equipmentSetName}}" />
+    <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
+    <attribute id="Name" type="LSString" value="{{name}}" />
+    <attribute id="Type" type="FixedString" value="character" />
+    <attribute id="Stats" type="FixedString" value="{{statsName}}" />
+    <attribute id="ShowEquipmentVisuals" type="bool" value="True" />
+    <attribute id="Floating" type="bool" value="True" />
+    <attribute id="Title" type="TranslatedString" handle="{{title}}" version="1" />
+    <attribute id="ParentTemplateId" type="FixedString" value="{{parentTemplateId}}" />
+    <attribute id="LevelOverride" type="int32" value="" />
+    <children>
+        <node id="Tags">
+            <children>
+                {{tagList}}
+            </children>
+        </node>
+        <node id="OnDeathActions">
+            <children>
+                <node id="Action">
+                    <attribute id="ActionType" type="int32" value="10" />
+                    <children>
+                        <node id="Attributes">
+                            <attribute id="Animation" type="FixedString" value="" />
+                            <attribute id="ApplyDeathTypeBloodCheck" type="bool" value="True" />
+                            <attribute id="CellAtGrow" type="int32" value="10" />
+                            <attribute id="Conditions" type="LSString" value="" />
+                            <attribute id="ExternalCauseAsSurfaceOwner" type="bool" value="True" />
+                            <attribute id="GrowTimer" type="float" value="0.02" />
+                            <attribute id="LifeTime" type="float" value="60" />
+                            <attribute id="SurfaceType" type="FixedString" value="SurfaceNone" />
+                            <attribute id="Timeout" type="float" value="0" />
+                            <attribute id="TotalCells" type="int32" value="15" />
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    </children>
+</node>
