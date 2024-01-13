@@ -11,7 +11,7 @@ local commands = {
         ---@param filename string
         func = function (cmd, uuid, filename)
             local hostGUID = tostring(Osi.GetHostCharacter())
-            if uuid == 'host' then
+            if not uuid then
                 uuid = hostGUID
             end
             local entity = Ext.Entity.Get(uuid)

@@ -5,7 +5,6 @@ def test_replacer_basic():
     """
     Tests the basic functionality of the replacer
     """
-    replacer = TemplateVariableReplacer()
     spell_text = """
         new entry "{{spell_name}}"
             type "SpellData"
@@ -18,13 +17,14 @@ def test_replacer_basic():
             data "PowerLevel" "{{power_level}}"
             data "CombatAIOverrideSpell" "Target_Bless_2_AI"
     """
-    spell_name = "Target_Bless_2"
-    power_level = 2
-    replacements = {
+    spell_name: str = "Target_Bless_2"
+    power_level: int = 2
+    replacements: dict = {
         "{{spell_name}}": spell_name,
         "{{power_level}}": power_level,
     }
-    replaced_text = replacer.replace(spell_text, replacements)
+    replacer = TemplateVariableReplacer()
+    replaced_text = replacer.replace_placeholders(spell_text, replacements)
     assert replaced_text is not None
     assert spell_name in replaced_text
-    assert power_level in replaced_text
+    assert str(power_level) in replaced_text
