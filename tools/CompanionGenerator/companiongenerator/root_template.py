@@ -20,31 +20,27 @@ class RootTemplate:
                 "LegendaryCompanions/RootTemplates/",
             ]
         )
-        tag_list = ""
-        if "tagList" in kwargs:
-            tag_list = kwargs["tagList"]
         self.replacements = {
-            "displayName": kwargs["displayName"],
-            "description": kwargs["description"],
-            "mapKey": uuid4(),
-            "statsName": kwargs["statsName"],
-            "parentTemplateId": kwargs["parentTemplateId"],
-            "tagList": tag_list,
+            "{{name}}": kwargs["name"],
+            "{{displayName}}": kwargs["displayName"],
+            "{{mapKey}}": uuid4(),
+            "{{statsName}}": kwargs["statsName"],
         }
         self.template_fetcher = kwargs["template_fetcher"]
+
+    def _get_template_text(self):
+        """
+        Fetches template from filesystem
+        """
+        return self.template_fetcher.get_template_text(self.filename)
 
     def get_tpl_with_replacements(self):
         """
         Replaces using map
         """
-        tpl_text = self.get_template_text()
+        tpl_text = self._get_template_text()
         replacer = TemplateVariableReplacer()
-
-        print(self.replacements)
-        return replacer.replace(tpl_text, self.replacements)
-
-    def get_template_text(self):
-        return self.template_fetcher.get_template_text(self.filename)
+        return replacer.replace_placeholders(tpl_text, self.replacements)
 
 
 class CompanionRT(RootTemplate):
@@ -56,7 +52,14 @@ class CompanionRT(RootTemplate):
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_companion.xml"
         # Companion specific replacements below
-        self.replacements["archetypeName"] = "melee_smart"
+        self.replacements["{{archetypeName}}"] = "melee_smart"
+        self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
+        self.replacements["{{equipmentSetName}}"] = kwargs["equipmentSetName"]
+        self.replacements["{{title}}"] = kwargs["title"]
+        tag_list = ""
+        if "tagList" in kwargs:
+            tag_list = kwargs["tagList"]
+        self.replacements["{{tagList}}"] = tag_list
 
 
 class PageRT(RootTemplate):
@@ -65,6 +68,8 @@ class PageRT(RootTemplate):
     """
 
     def __init__(self, **kwargs):
-        super().__init__(kwargs)
+        super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_page.xml"
+        self.replacements["{{icon}}"] = kwargs["icon"]
+        self.replacements["{{description}}"] = kwargs["description"]
         # Book page specific replacements below
