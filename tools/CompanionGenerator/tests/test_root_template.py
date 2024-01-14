@@ -1,4 +1,4 @@
-from companiongenerator.root_template import CompanionRT, PageRT
+from companiongenerator.root_template import BookRT, CompanionRT, PageRT
 from companiongenerator.template_fetcher import TemplateFetcher
 import xml.etree.ElementTree as ET
 
@@ -32,6 +32,44 @@ def verify_xml_values(template_xml: str, attribute_value_map: dict):
             # validate UUID
             if "MapKey" in child.attrib:
                 assert len(child.attrib["MapKey"]) == 36
+
+
+def mock_get_book_template_text():
+    """
+    A subset of the book template
+    """
+    return """
+        <node id="GameObjects"> {{name}}
+            <attribute id="Description" type="TranslatedString" handle="{{description}}" version="1" />
+            <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+            <attribute id="Flag" type="int32" value="0" />
+            <attribute id="Icon" type="FixedString" value="{{icon}}" />
+            <attribute id="LevelName" type="FixedString" value="" />
+            <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
+            <attribute id="Name" type="LSString" value="{{name}}" />
+            <attribute id="ParentTemplateId" type="FixedString" value="23f65dff-a1ca-42fb-91ee-4cbb69450336" />
+            <attribute id="PhysicsTemplate" type="FixedString" value="74eb44d4-f1a9-c08c-fd8a-4cc98285f2c2" />
+            <attribute id="Stats" type="FixedString" value="{{statsName}}" />
+            <attribute id="Type" type="FixedString" value="item" />
+            <attribute id="VisualTemplate" type="FixedString" value="224e8aa7-8011-e18d-1a4a-ea5f83636769" />
+            <children>
+                <node id="OnUsePeaceActions">
+                    <children>
+                        <node id="Action">
+                            <attribute id="ActionType" type="int32" value="11" />
+                            <children>
+                                <node id="Attributes">
+                                    <attribute id="Animation" type="FixedString" value="" />
+                                    <attribute id="BookId" type="FixedString" value="{{bookId}}" />
+                                    <attribute id="Conditions" type="LSString" value="" />
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+            </children>
+        </node>
+    """
 
 
 def mock_get_companion_template_text():
@@ -133,6 +171,41 @@ def test_generate_page_xml(mocker):
         statsName=stats_name,
         name=stats_name,
         icon=icon_name,
+        template_fetcher=fetcher,
+    )
+    attribute_value_map = {
+        "DisplayName": display_name,
+        "Description": description,
+        "Stats": stats_name,
+        "Name": stats_name,
+        "Icon": icon_name,
+    }
+    xml_with_replacements = companion_rt.get_tpl_with_replacements()
+
+    assert_template_validity(xml_with_replacements)
+    verify_xml_values(xml_with_replacements, attribute_value_map)
+
+
+def test_generate_book_xml(mocker):
+    """
+    Tests generation of books
+    """
+    fetcher = TemplateFetcher()
+    mocker.patch.object(
+        fetcher, "get_template_text", return_value=mock_get_book_template_text()
+    )
+    display_name = "The Legend of Chip Chocolate"
+    description = "A legendary muffin wizard"
+    stats_name = "OBJ_LC_BOOK_1"
+    icon_name = "Item_BOOK_GEN_Book_C"
+    book_id = "LC_BOOK_Legendary_Muffin"
+    companion_rt = BookRT(
+        displayName=display_name,
+        description=description,
+        statsName=stats_name,
+        name=stats_name,
+        icon=icon_name,
+        bookId=book_id,
         template_fetcher=fetcher,
     )
     attribute_value_map = {

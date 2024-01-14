@@ -1,5 +1,3 @@
-# import logging as log
-
 from companiongenerator.template_variable_replacer import TemplateVariableReplacer
 from uuid import uuid4
 
@@ -72,4 +70,14 @@ class PageRT(RootTemplate):
         self.filename = f"{self.base_path}rt_page.xml"
         self.replacements["{{icon}}"] = kwargs["icon"]
         self.replacements["{{description}}"] = kwargs["description"]
-        # Book page specific replacements below
+
+
+class BookRT(PageRT):
+    """
+    Root template for books
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.filename = f"{self.base_path}rt_book.xml"
+        self.replacements["{{bookId}}"] = kwargs["bookId"]
