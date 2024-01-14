@@ -11,6 +11,29 @@ def assert_template_validity(template: str):
     assert "{{" not in template
 
 
+def verify_xml_values(template_xml: str, attribute_value_map: dict):
+    """
+    Parses XML string and iterates children, testing
+    values against a provided map
+    """
+    root = ET.fromstring(template_xml)
+    for child in root:
+        if "id" in child.attrib:
+            attr_id = child.attrib["id"]
+            if "value" in child.attrib:
+                value = child.attrib["value"]
+            else:
+                # DisplayName has a handle and not a value
+                value = child.attrib["handle"]
+
+            if attr_id in attribute_value_map:
+                assert attribute_value_map[attr_id] == value
+
+            # validate UUID
+            if "MapKey" in child.attrib:
+                assert len(child.attrib["MapKey"]) == 36
+
+
 def mock_get_companion_template_text():
     """
     A subset of the companion template
@@ -68,24 +91,7 @@ def test_generate_companion_rt(mocker):
     xml_with_replacements = companion_rt.get_tpl_with_replacements()
 
     assert_template_validity(xml_with_replacements)
-
-    # Parse XML and verify values
-    root = ET.fromstring(xml_with_replacements)
-    for child in root:
-        if "id" in child.attrib:
-            attr_id = child.attrib["id"]
-            if "value" in child.attrib:
-                value = child.attrib["value"]
-            else:
-                # DisplayName has a handle and not a value
-                value = child.attrib["handle"]
-
-            if attr_id in attribute_value_map:
-                assert attribute_value_map[attr_id] == value
-
-            # validate UUID
-            if "MapKey" in child.attrib:
-                assert len(child.attrib["MapKey"]) == 36
+    verify_xml_values(xml_with_replacements, attribute_value_map)
 
 
 def mock_get_page_template_text():
@@ -136,23 +142,7 @@ def test_generate_page_xml(mocker):
         "Name": stats_name,
         "Icon": icon_name,
     }
-    rt_xml = companion_rt.get_tpl_with_replacements()
+    xml_with_replacements = companion_rt.get_tpl_with_replacements()
 
-    assert_template_validity(rt_xml)
-
-    root = ET.fromstring(rt_xml)
-    for child in root:
-        if "id" in child.attrib:
-            attr_id = child.attrib["id"]
-            if "value" in child.attrib:
-                value = child.attrib["value"]
-            else:
-                # DisplayName has a handle and not a value
-                value = child.attrib["handle"]
-
-            if attr_id in attribute_value_map:
-                assert attribute_value_map[attr_id] == value
-
-            # validate UUID
-            if "MapKey" in child.attrib:
-                assert len(child.attrib["MapKey"]) == 36
+    assert_template_validity(xml_with_replacements)
+    verify_xml_values(xml_with_replacements, attribute_value_map)
