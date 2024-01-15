@@ -2,13 +2,7 @@ from companiongenerator.root_template import BookRT, CompanionRT, PageRT
 from companiongenerator.template_fetcher import TemplateFetcher
 import xml.etree.ElementTree as ET
 
-
-def assert_template_validity(template: str):
-    """
-    Basic template replacement validity check
-    """
-    assert len(template) > 0
-    assert "{{" not in template
+from tests.template_validity_helper import assert_template_validity
 
 
 def verify_xml_values(template_xml: str, attribute_value_map: dict):

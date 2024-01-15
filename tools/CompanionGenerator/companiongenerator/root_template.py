@@ -1,8 +1,8 @@
-from companiongenerator.template_variable_replacer import TemplateVariableReplacer
+from companiongenerator.template_replacer_base import TemplateReplacerBase
 from uuid import uuid4
 
 
-class RootTemplate:
+class RootTemplate(TemplateReplacerBase):
     """
     Creates XML file using template
     1. Set base path
@@ -26,20 +26,6 @@ class RootTemplate:
         }
         self.template_fetcher = kwargs["template_fetcher"]
 
-    def _get_template_text(self):
-        """
-        Fetches template from filesystem
-        """
-        return self.template_fetcher.get_template_text(self.filename)
-
-    def get_tpl_with_replacements(self):
-        """
-        Replaces using map
-        """
-        tpl_text = self._get_template_text()
-        replacer = TemplateVariableReplacer()
-        return replacer.replace_placeholders(tpl_text, self.replacements)
-
 
 class CompanionRT(RootTemplate):
     """
@@ -50,10 +36,17 @@ class CompanionRT(RootTemplate):
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_companion.xml"
         # Companion specific replacements below
-        self.replacements["{{archetypeName}}"] = "melee_smart"
+        archetype = "melee_smart"
+        if "archetypeName" in kwargs:
+            archetype = kwargs["archetypeName"]
+        self.replacements["{{archetypeName}}"] = archetype
         self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
         self.replacements["{{equipmentSetName}}"] = kwargs["equipmentSetName"]
-        self.replacements["{{title}}"] = kwargs["title"]
+        title = ""
+        if "title" in kwargs:
+            title = kwargs["title"]
+        self.replacements["{{title}}"] = title
+
         tag_list = ""
         if "tagList" in kwargs:
             tag_list = kwargs["tagList"]
