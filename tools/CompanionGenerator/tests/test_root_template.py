@@ -102,6 +102,7 @@ def test_generate_companion_rt(mocker):
     stats_name = "LC_Legendary_Muffin"
     parent_template_id = "1234"
     equipment_set_name = "LC_EQP_Legendary_Muffin"
+    icon = "LC_icon_name"
     companion_rt = CompanionRT(
         name=stats_name,
         displayName=display_name,
@@ -110,6 +111,7 @@ def test_generate_companion_rt(mocker):
         template_fetcher=fetcher,
         equipmentSetName=equipment_set_name,
         title=description,
+        icon=icon,
     )
     attribute_value_map = {
         "DisplayName": display_name,
@@ -119,6 +121,7 @@ def test_generate_companion_rt(mocker):
         "Name": stats_name,
         "EquipmentSetName": equipment_set_name,
         "Title": description,
+        "Icon": icon,
     }
     xml_with_replacements = companion_rt.get_tpl_with_replacements()
 

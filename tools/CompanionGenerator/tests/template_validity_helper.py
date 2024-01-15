@@ -4,3 +4,4 @@ def assert_template_validity(template: str):
     """
     assert len(template) > 0
     assert "{{" not in template
+    assert "}}" not in template

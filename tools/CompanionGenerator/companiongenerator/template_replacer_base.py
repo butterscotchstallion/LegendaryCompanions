@@ -11,7 +11,7 @@ class TemplateReplacerBase:
         """
         Fetches template from filesystem
         """
-        return self.template_fetcher.get_template_text(self.filename)
+        return self.template_fetcher.get_template_text(self.filename).strip()
 
     def get_tpl_with_replacements(self):
         """
