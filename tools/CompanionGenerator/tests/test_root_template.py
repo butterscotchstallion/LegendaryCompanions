@@ -126,7 +126,7 @@ def test_generate_companion_rt(mocker) -> None:
         title=title,
         icon=icon,
         template_fetcher=fetcher,
-        localizationManager=LocalizationManager(),
+        localization_manager=LocalizationManager(),
     )
     attribute_value_map = {
         "DisplayName": companion_rt.display_name_handle,
@@ -183,7 +183,7 @@ def test_generate_page_xml(mocker) -> None:
         name=stats_name,
         icon=icon_name,
         template_fetcher=fetcher,
-        localizationManager=LocalizationManager(),
+        localization_manager=LocalizationManager(),
     )
     attribute_value_map = {
         "DisplayName": page_rt.display_name_handle,
@@ -219,7 +219,7 @@ def test_generate_book_xml(mocker) -> None:
         icon=icon_name,
         bookId=book_id,
         template_fetcher=fetcher,
-        localizationManager=LocalizationManager(),
+        localization_manager=LocalizationManager(),
     )
     attribute_value_map = {
         "DisplayName": book_rt.display_name_handle,

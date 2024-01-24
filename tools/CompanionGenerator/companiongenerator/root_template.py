@@ -24,7 +24,7 @@ class RootTemplate(TemplateReplacerBase):
             ]
         )
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
-        self.loca_mgr = kwargs["localizationManager"]
+        self.loca_mgr = kwargs["localization_manager"]
         self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["displayName"],
             comment=kwargs["displayName"],

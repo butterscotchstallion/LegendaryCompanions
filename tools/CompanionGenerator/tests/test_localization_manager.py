@@ -39,7 +39,7 @@ def test_add_entry():
         title=title,
         icon=icon,
         template_fetcher=TemplateFetcher(),
-        localizationManager=loca_mgr,
+        localization_manager=loca_mgr,
     )
     assert is_handle_uuid(companion_rt.display_name_handle)
     assert is_handle_uuid(companion_rt.title_handle)
@@ -56,7 +56,7 @@ def test_add_entry():
         name=pg_stats_name,
         icon=pg_icon_name,
         template_fetcher=TemplateFetcher(),
-        localizationManager=loca_mgr,
+        localization_manager=loca_mgr,
     )
     assert is_handle_uuid(page_rt.display_name_handle)
     assert is_handle_uuid(page_rt.description_handle)
