@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 
+from companiongenerator.localization_manager import LocalizationManager
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT
 from companiongenerator.template_fetcher import TemplateFetcher
 
@@ -125,6 +126,7 @@ def test_generate_companion_rt(mocker) -> None:
         title=title,
         icon=icon,
         template_fetcher=fetcher,
+        localizationManager=LocalizationManager(),
     )
     attribute_value_map = {
         "DisplayName": companion_rt.display_name_handle,
@@ -174,22 +176,23 @@ def test_generate_page_xml(mocker) -> None:
     description = "A tattered page"
     stats_name = "OBJ_LC_Page_1"
     icon_name = "book_icon_name"
-    companion_rt = PageRT(
+    page_rt = PageRT(
         displayName=display_name,
         description=description,
         statsName=stats_name,
         name=stats_name,
         icon=icon_name,
         template_fetcher=fetcher,
+        localizationManager=LocalizationManager(),
     )
     attribute_value_map = {
-        "DisplayName": companion_rt.display_name_handle,
-        "Description": companion_rt.description_handle,
+        "DisplayName": page_rt.display_name_handle,
+        "Description": page_rt.description_handle,
         "Stats": stats_name,
         "Name": stats_name,
         "Icon": icon_name,
     }
-    xml_with_replacements = companion_rt.get_tpl_with_replacements()
+    xml_with_replacements = page_rt.get_tpl_with_replacements()
 
     assert_template_validity(xml_with_replacements)
     verify_xml_values(xml_with_replacements, attribute_value_map)
@@ -216,6 +219,7 @@ def test_generate_book_xml(mocker) -> None:
         icon=icon_name,
         bookId=book_id,
         template_fetcher=fetcher,
+        localizationManager=LocalizationManager(),
     )
     attribute_value_map = {
         "DisplayName": book_rt.display_name_handle,

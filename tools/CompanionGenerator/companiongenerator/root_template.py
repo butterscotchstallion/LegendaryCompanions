@@ -1,11 +1,10 @@
-import logging as log
 from uuid import uuid4
 
-from companiongenerator.localization_manager import (
-    LocalizationManager,
-)
+from companiongenerator.logger import log
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
+
+logger = log.getLogger(__name__)
 
 
 class RootTemplate(TemplateReplacerBase):
@@ -25,8 +24,8 @@ class RootTemplate(TemplateReplacerBase):
             ]
         )
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
-        loca_mgr = LocalizationManager()
-        self.display_name_handle = loca_mgr.add_entry_and_return_handle(
+        self.loca_mgr = kwargs["localizationManager"]
+        self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["displayName"],
             comment=kwargs["displayName"],
             template_fetcher=self.template_fetcher,
@@ -47,7 +46,7 @@ class CompanionRT(RootTemplate):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_companion.xml"
-        loca_mgr = LocalizationManager()
+
         # Companion specific replacements below
         archetype: str = "melee_smart"
         if "archetypeName" in kwargs:
@@ -57,13 +56,13 @@ class CompanionRT(RootTemplate):
         self.replacements["{{equipmentSetName}}"] = kwargs["equipmentSetName"]
 
         if "title" in kwargs:
-            self.title_handle = loca_mgr.add_entry_and_return_handle(
+            self.title_handle = self.loca_mgr.add_entry_and_return_handle(
                 text=kwargs["title"],
                 comment=kwargs["title"],
                 template_fetcher=self.template_fetcher,
             )
             self.replacements["{{titleHandle}}"] = self.title_handle
-            log.info("Replacing title")
+            logger.info("Replacing title")
         else:
             raise RuntimeError("No title specified")
 
@@ -84,8 +83,7 @@ class PageRT(RootTemplate):
         self.filename = f"{self.base_path}rt_page.xml"
         self.replacements["{{icon}}"] = kwargs["icon"]
 
-        loca_mgr = LocalizationManager()
-        self.description_handle = loca_mgr.add_entry_and_return_handle(
+        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
             template_fetcher=self.template_fetcher,

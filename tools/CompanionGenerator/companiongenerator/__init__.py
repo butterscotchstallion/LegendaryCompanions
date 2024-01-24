@@ -6,3 +6,4 @@ from .template_fetcher import TemplateFetcher
 from .automation_state_handler import AutomationStateHandler
 from .localization_entry import LocalizationEntry
 from .localization_manager import LocalizationManager
+from .logger import log

@@ -23,3 +23,6 @@ class LocalizationEntry(TemplateReplacerBase):
             "{{comment}}": self.comment,
             "{{text}}": self.text,
         }
+
+    def __str__(self):
+        return self.text
