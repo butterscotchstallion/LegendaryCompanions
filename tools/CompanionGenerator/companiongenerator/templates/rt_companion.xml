@@ -1,6 +1,6 @@
 <node id="GameObjects">
     <attribute id="Archetype" type="FixedString" value="{{archetypeName}}" />
-    <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+    <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
     <attribute id="Equipment" type="FixedString" value="{{equipmentSetName}}" />
     <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
     <attribute id="Name" type="LSString" value="{{name}}" />
@@ -8,7 +8,7 @@
     <attribute id="Stats" type="FixedString" value="{{statsName}}" />
     <attribute id="ShowEquipmentVisuals" type="bool" value="True" />
     <attribute id="Floating" type="bool" value="True" />
-    <attribute id="Title" type="TranslatedString" handle="{{title}}" version="1" />
+    <attribute id="Title" type="TranslatedString" handle="{{titleHandle}}" version="1" />
     <attribute id="ParentTemplateId" type="FixedString" value="{{parentTemplateId}}" />
     <attribute id="LevelOverride" type="int32" value="" />
     <children>

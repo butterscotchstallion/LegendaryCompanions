@@ -1,11 +1,16 @@
-from companiongenerator.root_template import BookRT, CompanionRT, PageRT
-from companiongenerator.template_fetcher import TemplateFetcher
 import xml.etree.ElementTree as ET
 
-from tests.template_validity_helper import assert_template_validity
+from companiongenerator.root_template import BookRT, CompanionRT, PageRT
+from companiongenerator.template_fetcher import TemplateFetcher
+
+from tests.template_validity_helper import (
+    assert_template_validity,
+    is_handle_uuid,
+    is_uuid_v4,
+)
 
 
-def verify_xml_values(template_xml: str, attribute_value_map: dict):
+def verify_xml_values(template_xml: str, attribute_value_map: dict) -> None:
     """
     Parses XML string and iterates children, testing
     values against a provided map
@@ -18,24 +23,29 @@ def verify_xml_values(template_xml: str, attribute_value_map: dict):
                 value = child.attrib["value"]
             else:
                 # DisplayName has a handle and not a value
-                value = child.attrib["handle"]
+                if "handle" in child.attrib:
+                    value = child.attrib["handle"]
+                    # Make sure this is actually a handle and not a value
+                    assert is_handle_uuid(value), "not a handle!"
 
             if attr_id in attribute_value_map:
-                assert attribute_value_map[attr_id] == value
+                assert (
+                    attribute_value_map[attr_id] == value
+                ), f"Value mismatch in XML: '{value}' != '{attribute_value_map[attr_id]}'"
 
             # validate UUID
             if "MapKey" in child.attrib:
-                assert len(child.attrib["MapKey"]) == 36
+                assert is_uuid_v4(child.attrib["MapKey"]), "not a UUID!"
 
 
-def mock_get_book_template_text():
+def mock_get_book_template_text() -> str:
     """
     A subset of the book template
     """
     return """
         <node id="GameObjects"> {{name}}
-            <attribute id="Description" type="TranslatedString" handle="{{description}}" version="1" />
-            <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+            <attribute id="Description" type="TranslatedString" handle="{{descriptionHandle}}" version="1" />
+            <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
             <attribute id="Flag" type="int32" value="0" />
             <attribute id="Icon" type="FixedString" value="{{icon}}" />
             <attribute id="LevelName" type="FixedString" value="" />
@@ -66,20 +76,20 @@ def mock_get_book_template_text():
     """
 
 
-def mock_get_companion_template_text():
+def mock_get_companion_template_text() -> str:
     """
     A subset of the companion template
     """
     return """
         <node id="GameObjects">
             <attribute id="Archetype" type="FixedString" value="{{archetypeName}}" />
-            <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+            <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
             <attribute id="Equipment" type="FixedString" value="{{equipmentSetName}}" />
             <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
             <attribute id="Name" type="LSString" value="{{name}}" />
             <attribute id="Type" type="FixedString" value="character" />
             <attribute id="Stats" type="FixedString" value="{{statsName}}" />
-            <attribute id="Title" type="TranslatedString" handle="{{title}}" version="1" />
+            <attribute id="Title" type="TranslatedString" handle="{{titleHandle}}" version="1" />
             <attribute id="ParentTemplateId" type="FixedString" value="{{parentTemplateId}}" />
             <children>
                 <node id="Tags">
@@ -92,13 +102,16 @@ def mock_get_companion_template_text():
     """
 
 
-def test_generate_companion_rt(mocker):
+def test_generate_companion_rt(mocker) -> None:
+    """
+    Tests generation of companion root template
+    """
     fetcher = TemplateFetcher()
     mocker.patch.object(
         fetcher, "get_template_text", return_value=mock_get_companion_template_text()
     )
     display_name = "Chip Chocolate"
-    description = "Legendary Muffin"
+    title = "Legendary Muffin"
     stats_name = "LC_Legendary_Muffin"
     parent_template_id = "1234"
     equipment_set_name = "LC_EQP_Legendary_Muffin"
@@ -108,19 +121,18 @@ def test_generate_companion_rt(mocker):
         displayName=display_name,
         statsName=stats_name,
         parentTemplateId=parent_template_id,
-        template_fetcher=fetcher,
         equipmentSetName=equipment_set_name,
-        title=description,
+        title=title,
         icon=icon,
+        template_fetcher=fetcher,
     )
     attribute_value_map = {
-        "DisplayName": display_name,
-        "Description": description,
+        "DisplayName": companion_rt.display_name_handle,
         "Stats": stats_name,
         "ParentTemplateId": parent_template_id,
         "Name": stats_name,
         "EquipmentSetName": equipment_set_name,
-        "Title": description,
+        "Title": companion_rt.title_handle,
         "Icon": icon,
     }
     xml_with_replacements = companion_rt.get_tpl_with_replacements()
@@ -129,14 +141,14 @@ def test_generate_companion_rt(mocker):
     verify_xml_values(xml_with_replacements, attribute_value_map)
 
 
-def mock_get_page_template_text():
+def mock_get_page_template_text() -> str:
     """
     A subset of the book page template
     """
     return """
         <node id="GameObjects"> {{name}}
-            <attribute id="Description" type="TranslatedString" handle="{{description}}" version="1" />
-            <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+            <attribute id="Description" type="TranslatedString" handle="{{descriptionHandle}}" version="1" />
+            <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
             <attribute id="Icon" type="FixedString" value="{{icon}}" />
             <attribute id="LevelName" type="FixedString" value="" />
             <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
@@ -150,7 +162,7 @@ def mock_get_page_template_text():
     """
 
 
-def test_generate_page_xml(mocker):
+def test_generate_page_xml(mocker) -> None:
     """
     Tests generation of book pages
     """
@@ -171,8 +183,8 @@ def test_generate_page_xml(mocker):
         template_fetcher=fetcher,
     )
     attribute_value_map = {
-        "DisplayName": display_name,
-        "Description": description,
+        "DisplayName": companion_rt.display_name_handle,
+        "Description": companion_rt.description_handle,
         "Stats": stats_name,
         "Name": stats_name,
         "Icon": icon_name,
@@ -183,7 +195,7 @@ def test_generate_page_xml(mocker):
     verify_xml_values(xml_with_replacements, attribute_value_map)
 
 
-def test_generate_book_xml(mocker):
+def test_generate_book_xml(mocker) -> None:
     """
     Tests generation of books
     """
@@ -196,7 +208,7 @@ def test_generate_book_xml(mocker):
     stats_name = "OBJ_LC_BOOK_1"
     icon_name = "Item_BOOK_GEN_Book_C"
     book_id = "LC_BOOK_Legendary_Muffin"
-    companion_rt = BookRT(
+    book_rt = BookRT(
         displayName=display_name,
         description=description,
         statsName=stats_name,
@@ -206,13 +218,13 @@ def test_generate_book_xml(mocker):
         template_fetcher=fetcher,
     )
     attribute_value_map = {
-        "DisplayName": display_name,
-        "Description": description,
+        "DisplayName": book_rt.display_name_handle,
+        "Description": book_rt.description_handle,
         "Stats": stats_name,
         "Name": stats_name,
         "Icon": icon_name,
     }
-    xml_with_replacements = companion_rt.get_tpl_with_replacements()
+    xml_with_replacements = book_rt.get_tpl_with_replacements()
 
     assert_template_validity(xml_with_replacements)
     verify_xml_values(xml_with_replacements, attribute_value_map)

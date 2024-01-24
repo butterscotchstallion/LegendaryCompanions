@@ -25,6 +25,14 @@ def test_replacer_basic():
     }
     replacer = TemplateVariableReplacer()
     replaced_text = replacer.replace_placeholders(spell_text, replacements)
+    spell_lines = replaced_text.splitlines()
+
     assert replaced_text is not None
-    assert spell_name in replaced_text
-    assert str(power_level) in replaced_text
+
+    for line in spell_lines:
+        if line:
+            if line.startswith("new entry "):
+                assert spell_name in line, "Missing spell name"
+
+            if line.startswith('data "PowerLevel"'):
+                assert str(power_level) in line, "Missing power level"

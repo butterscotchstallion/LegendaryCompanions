@@ -1,6 +1,6 @@
 <node id="GameObjects"> {{name}}
-    <attribute id="Description" type="TranslatedString" handle="{{description}}" version="1" />
-    <attribute id="DisplayName" type="TranslatedString" handle="{{displayName}}" version="1" />
+    <attribute id="Description" type="TranslatedString" handle="{{descriptionHandle}}" version="1" />
+    <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
     <attribute id="Flag" type="int32" value="0" />
     <attribute id="Icon" type="FixedString" value="{{icon}}" />
     <attribute id="LevelName" type="FixedString" value="" />

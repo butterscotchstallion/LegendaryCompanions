@@ -2,6 +2,7 @@
 Spells
 """
 import logging as log
+
 from .template_variable_replacer import TemplateVariableReplacer
 
 
@@ -27,15 +28,6 @@ class SummonSpell(Spell):
         super().__init__(**kwargs)
         self.summon_uuid = kwargs["summon_uuid"]
         self.template_fetcher = kwargs["template_fetcher"]
-        self.validate_parameters(kwargs)
-
-    def validate_parameters(self, kwargs):
-        valid_summon_uuid = self.is_valid_uuid(kwargs["summon_uuid"])
-        if not valid_summon_uuid:
-            raise Exception("Invalid summon_uuid!")
-
-    def is_valid_uuid(self, uuid) -> bool:
-        return uuid and len(uuid) == 36
 
     def get_spell_template_text(self):
         return self.template_fetcher.get_template_text("summon_spell.txt")

@@ -1,7 +1,9 @@
+import xml.etree.ElementTree as ET
+
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.template_fetcher import TemplateFetcher
-from tests.template_validity_helper import assert_template_validity
-import xml.etree.ElementTree as ET
+
+from tests.template_validity_helper import assert_template_validity, is_handle_uuid
 
 
 def mock_loca_xml():
@@ -29,6 +31,6 @@ def test_loca_entry(mocker):
     tag = ET.fromstring(xml_with_replacements)
     xml_lines = xml_with_replacements.splitlines()
 
-    assert tag.text == loca_value
-    assert len(tag.attrib["contentuid"]) == 37
-    assert comment in xml_lines[0]
+    assert tag.text == loca_value, "Localization text mismatch"
+    assert is_handle_uuid(tag.attrib["contentuid"]), "Not a handle!"
+    assert comment in xml_lines[0], "Missing comment"

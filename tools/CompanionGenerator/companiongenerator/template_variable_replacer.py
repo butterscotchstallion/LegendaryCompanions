@@ -24,4 +24,5 @@ class TemplateVariableReplacer:
             else:
                 err_msg = f"Could not find replacer variable '{replacer_var_name}' in template!"
                 raise RuntimeError(err_msg)
+
         return replaced_text
