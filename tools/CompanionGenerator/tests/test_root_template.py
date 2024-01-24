@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 
 from companiongenerator.localization_manager import LocalizationManager
-from companiongenerator.root_template import BookRT, CompanionRT, PageRT
+from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import (
@@ -136,6 +136,7 @@ def test_generate_companion_rt(mocker) -> None:
         "EquipmentSetName": equipment_set_name,
         "Title": companion_rt.title_handle,
         "Icon": icon,
+        "MapKey": companion_rt.map_key,
     }
     xml_with_replacements = companion_rt.get_tpl_with_replacements()
 
@@ -160,6 +161,41 @@ def mock_get_page_template_text() -> str:
             <attribute id="Stats" type="FixedString" value="{{statsName}}" />
             <attribute id="Type" type="FixedString" value="item" />
             <attribute id="VisualTemplate" type="FixedString" value="d9dc6f6d-a431-2200-5a3b-36f04573e7d5" />
+        </node>
+    """
+
+
+def mock_get_scroll_template_text():
+    return """
+        <node id="GameObjects"> {{name}}
+            <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
+            <attribute id="Description" type="TranslatedString" handle="{{descriptionHandle}}" version="1" />
+            <attribute id="Flag" type="int32" value="0" />
+            <attribute id="Icon" type="FixedString" value="Item_LOOT_SCROLL_ArcaneEye" />
+            <attribute id="LevelName" type="FixedString" value="" />
+            <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
+            <attribute id="Name" type="LSString" value="{{name}}" />
+            <attribute id="ParentTemplateId" type="FixedString" value="4ffd5c4b-4c56-4f05-a228-a33754bb1806" />
+            <attribute id="PhysicsTemplate" type="FixedString" value="94a7c400-b2df-c54c-1675-1937920b7714" />
+            <attribute id="Stats" type="FixedString" value="{{statsName}}" />
+            <attribute id="Type" type="FixedString" value="item" />
+            <attribute id="VisualTemplate" type="FixedString" value="916f78a4-779b-3e43-28eb-eefc26d9683d" />
+            <children>
+                <node id="OnUsePeaceActions">
+                    <children>
+                        <node id="Action">
+                            <attribute id="ActionType" type="int32" value="12" />
+                            <children>
+                                <node id="Attributes">
+                                    <attribute id="Animation" type="FixedString" value="" />
+                                    <attribute id="Consume" type="bool" value="True" />
+                                    <attribute id="SkillID" type="FixedString" value="{{scrollSpellName}}" />
+                                </node>
+                            </children>
+                        </node>
+                    </children>
+                </node>
+            </children>
         </node>
     """
 
@@ -191,6 +227,7 @@ def test_generate_page_xml(mocker) -> None:
         "Stats": stats_name,
         "Name": stats_name,
         "Icon": icon_name,
+        "MapKey": page_rt.map_key,
     }
     xml_with_replacements = page_rt.get_tpl_with_replacements()
 
@@ -227,8 +264,43 @@ def test_generate_book_xml(mocker) -> None:
         "Stats": stats_name,
         "Name": stats_name,
         "Icon": icon_name,
+        "MapKey": book_rt.map_key,
     }
     xml_with_replacements = book_rt.get_tpl_with_replacements()
+
+    assert_template_validity(xml_with_replacements)
+    verify_xml_values(xml_with_replacements, attribute_value_map)
+
+
+def test_generate_scroll_xml(mocker) -> None:
+    """
+    Tests generation of scrolls
+    """
+    fetcher = TemplateFetcher()
+    mocker.patch.object(
+        fetcher, "get_template_text", return_value=mock_get_scroll_template_text()
+    )
+    display_name = "Scroll of Summon Chip Chocolate"
+    description = "A tattered scroll, glowing with power"
+    stats_name = "OBJ_LC_SCROLL"
+    scroll_spell_name = "LC_Summon_Legendary_Muffin"
+    scroll_rt = ScrollRT(
+        displayName=display_name,
+        description=description,
+        statsName=stats_name,
+        name=stats_name,
+        scrollSpellName=scroll_spell_name,
+        template_fetcher=fetcher,
+        localization_manager=LocalizationManager(),
+    )
+    attribute_value_map = {
+        "DisplayName": scroll_rt.display_name_handle,
+        "Description": scroll_rt.description_handle,
+        "Stats": stats_name,
+        "Name": stats_name,
+        "MapKey": scroll_rt.map_key,
+    }
+    xml_with_replacements = scroll_rt.get_tpl_with_replacements()
 
     assert_template_validity(xml_with_replacements)
     verify_xml_values(xml_with_replacements, attribute_value_map)

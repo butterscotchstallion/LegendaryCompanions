@@ -30,10 +30,11 @@ class RootTemplate(TemplateReplacerBase):
             comment=kwargs["displayName"],
             template_fetcher=self.template_fetcher,
         )
+        self.map_key = str(uuid4())
         self.replacements: dict[str, str] = {
             "{{name}}": kwargs["name"],
             "{{displayNameHandle}}": self.display_name_handle,
-            "{{mapKey}}": str(uuid4()),
+            "{{mapKey}}": self.map_key,
             "{{statsName}}": kwargs["statsName"],
         }
 
@@ -80,7 +81,7 @@ class PageRT(RootTemplate):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_page.xml"
+        self.filename = f"{self.base_path}rt_object_page.xml"
         self.replacements["{{icon}}"] = kwargs["icon"]
 
         self.description_handle = self.loca_mgr.add_entry_and_return_handle(
@@ -98,5 +99,30 @@ class BookRT(PageRT):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_book.xml"
+        self.filename = f"{self.base_path}rt_object_book.xml"
         self.replacements["{{bookId}}"] = kwargs["bookId"]
+
+        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
+            text=kwargs["description"],
+            comment=kwargs["description"],
+            template_fetcher=self.template_fetcher,
+        )
+        self.replacements["{{descriptionHandle}}"] = self.description_handle
+
+
+class ScrollRT(RootTemplate):
+    """
+    Root template for scrolls
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.filename = f"{self.base_path}rt_object_scroll.xml"
+        self.replacements["{{scrollSpellName}}"] = kwargs["scrollSpellName"]
+
+        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
+            text=kwargs["description"],
+            comment=kwargs["description"],
+            template_fetcher=self.template_fetcher,
+        )
+        self.replacements["{{descriptionHandle}}"] = self.description_handle

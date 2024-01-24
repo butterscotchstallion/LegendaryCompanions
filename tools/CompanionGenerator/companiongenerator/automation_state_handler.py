@@ -1,11 +1,16 @@
+from uuid import uuid4
+
+
 class AutomationStateHandler:
     """
-    Handles name -> identifier mappings
-    Automation state such as isDryRun
+    Handles state management for each automation run
     """
 
     run_id: int | None = None
     is_dry_run: bool = True
+
+    def __init__(self):
+        self.run_id = uuid4()
 
     def set_is_dry_run(self, is_dry_run: bool) -> None:
         """
