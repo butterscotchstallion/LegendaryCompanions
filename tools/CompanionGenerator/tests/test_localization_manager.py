@@ -8,7 +8,7 @@ from companiongenerator.template_fetcher import TemplateFetcher
 from tests.template_validity_helper import is_handle_uuid
 
 
-def test_add_entry():
+def test_add_entry() -> None:
     loca_mgr = LocalizationManager()
     new_handle = loca_mgr.add_entry_and_return_handle(
         text="Shake that brass!",

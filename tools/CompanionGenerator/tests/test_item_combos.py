@@ -1,38 +1,14 @@
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.template_fetcher import TemplateFetcher
+
 from tests.template_validity_helper import assert_template_validity
 
 
-def mock_combo_template_text():
-    return """
-        // {{comboName}}
-        new ItemCombination "{{comboName}}"
-                data "Type 1" "Object"
-                data "Object 1" "{{objectOneName}}"
-                data "Combine 1" "Base"
-                data "Transform 1" "Transform"
-
-                data "Type 2" "Object"
-                data "Object 2" "{{objectTwoName}}"
-                data "Combine 2" "Base"
-                data "Transform 2" "Consume"
-
-        new ItemCombinationResult "{{comboName}}_1"
-                data "ResultAmount 1" "1"
-                data "Result 1" "{{comboResultItemName}}"
-                data "PreviewStatsID" "{{comboResultItemName}}"
-                data "PreviewIcon" "Item_BOOK_GEN_Book_B"
-    """
-
-
-def test_item_combos(mocker):
+def test_item_combos():
     """
     Test generation of item combinations
     """
     fetcher = TemplateFetcher()
-    mocker.patch.object(
-        fetcher, "get_template_text", return_value=mock_combo_template_text()
-    )
     combo_name = "LC_Book_Pages_Combo"
     object_one_name = "page_1"
     object_two_name = "page_2"

@@ -2,18 +2,7 @@ from companiongenerator import SummonSpell
 from companiongenerator.template_fetcher import TemplateFetcher
 
 
-def mock_get_template_text():
-    return """
-        // {{integration_name}}
-        new entry "{{spell_name}}"
-        using "LC_Summon"
-            data "DisplayName" "{{display_name}};1"
-            data "Description" "{{description}};1"
-            data "SpellProperties" "GROUND:Summon({{summon_uuid}},Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
-    """
-
-
-def test_generate_spell(mocker):
+def test_generate_spell():
     """
     Tests basic spell generation
     """
@@ -23,9 +12,6 @@ def test_generate_spell(mocker):
     description = "hcb9c97fcg3eafg43f0g81d7gc478ec34a6f0"
     integration_name = "LC_Muffin_Integration"
     fetcher = TemplateFetcher()
-    mocker.patch.object(
-        fetcher, "get_template_text", return_value=mock_get_template_text()
-    )
     spell = SummonSpell(
         spell_name=spell_name,
         summon_uuid=summon_uuid,
