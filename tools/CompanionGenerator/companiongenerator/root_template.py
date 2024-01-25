@@ -17,12 +17,7 @@ class RootTemplate(TemplateReplacerBase):
     """
 
     def __init__(self, **kwargs) -> None:
-        self.base_path: str = "".join(
-            [
-                "../../../LegendaryCompanions/Mods/LegendaryCompanions/public/",
-                "LegendaryCompanions/RootTemplates/",
-            ]
-        )
+        self.base_path = "../templates/"
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
         self.loca_mgr = kwargs["localization_manager"]
         self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(

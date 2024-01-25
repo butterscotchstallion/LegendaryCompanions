@@ -66,7 +66,7 @@ def test_add_entry():
     There should be four entries, one for each localized
     value
     """
-    assert len(loca_mgr.entries) == 5
+    assert len(loca_mgr.entries) == 7
 
     entry_map: dict[str, LocalizationEntry] = {}
     for entry in loca_mgr.entries:

@@ -1,7 +1,8 @@
 from pathlib import Path
-import logging
 
-log = logging.getLogger(__name__)
+from companiongenerator.logger import log
+
+logger = log.getLogger(__name__)
 
 
 class TemplateFetcher:
@@ -16,10 +17,5 @@ class TemplateFetcher:
         """
         Reads template file
         """
-        log.debug("Reading from file system")
         template_path = f"{self.base_path}{filename}"
-        try:
-            return Path(template_path).read_text()
-        except IOError:
-            log.error(f"Could not find path {template_path}")
-            return ""
+        return Path(template_path).read_text().strip()

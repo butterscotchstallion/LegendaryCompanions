@@ -1,0 +1,8 @@
+<node id="TranslatedStringKey"> {{name}}
+    <attribute id="Content" type="TranslatedString" handle="{{contentHandle}}" version="1" />
+    <attribute id="UUID" type="FixedString" value="{{name}}" />
+    <attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+    <attribute id="ExtraData" type="LSString" value="" />
+    <attribute id="Stub" type="bool" value="True" />
+    <attribute id="UnknownDescription" type="TranslatedString" handle="{{unknownDescriptionHandle}}" version="1" />
+</node>

@@ -1,4 +1,33 @@
 import re
+import xml.etree.ElementTree as ET
+
+
+def verify_xml_values(template_xml: str, attribute_value_map: dict) -> None:
+    """
+    Parses XML string and iterates children, testing
+    values against a provided map
+    """
+    root = ET.fromstring(template_xml)
+    for child in root:
+        if "id" in child.attrib:
+            attr_id = child.attrib["id"]
+            if "value" in child.attrib:
+                value = child.attrib["value"]
+            else:
+                # DisplayName has a handle and not a value
+                if "handle" in child.attrib:
+                    value = child.attrib["handle"]
+                    # Make sure this is actually a handle and not a value
+                    assert is_handle_uuid(value), "not a handle!"
+
+            if attr_id in attribute_value_map:
+                assert (
+                    attribute_value_map[attr_id] == value
+                ), f"Value mismatch in XML: '{value}' != '{attribute_value_map[attr_id]}'"
+
+            # validate UUID
+            if "MapKey" in child.attrib:
+                assert is_uuid_v4(child.attrib["MapKey"]), "not a UUID!"
 
 
 def contains_template_symbols(template: str) -> bool:

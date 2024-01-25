@@ -24,5 +24,5 @@ class LocalizationEntry(TemplateReplacerBase):
             "{{text}}": self.text,
         }
 
-    def __str__(self):
+    def __repr__(self):
         return self.text
