@@ -21,9 +21,9 @@ def test_generate_spell():
         template_fetcher=fetcher,
     )
 
-    generated_spell_text = spell.get_spell_text()
+    generated_spell_text = spell.get_tpl_with_replacements()
 
-    if generated_spell_text is not None:
+    if generated_spell_text:
         all_lines = generated_spell_text.splitlines()
         spell_text_lines = [line for line in all_lines if line]
         assert generated_spell_text is not None
