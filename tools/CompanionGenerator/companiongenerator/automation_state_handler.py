@@ -6,7 +6,7 @@ class AutomationStateHandler:
     Handles state management for each automation run
     """
 
-    run_id: int | None = None
+    run_id: str
     is_dry_run: bool = True
 
     def __init__(self):
