@@ -1,5 +1,6 @@
 import logging as log
 
+from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_entry import (
     LocalizationEntry,
 )
@@ -15,6 +16,7 @@ class LocalizationManager:
     entries: list[LocalizationEntry] = []
 
     def __init__(self, **kwargs):
+        self.entries = []
         self.is_dry_run = True
 
         if "is_dry_run" in kwargs:
@@ -25,16 +27,12 @@ class LocalizationManager:
         self.entries.append(entry)
         return entry.handle
 
-    def write_entries(self):
+    def write_entries(self, file_path: str):
         """
         Writes entries to file or edits existing localization file
         """
-        if len(self.entries):
-            for entry in self.entries:
-                log.info(f"Writing localization entry '{entry.handle}")
-
-                if not self.is_dry_run:
-                    # add writing here
-                    pass
+        if len(self.entries) > 0:
+            handler = FileHandler(is_dry_run=self.is_dry_run)
+            handler.write_list_to_file(file_path, self.entries)
         else:
             log.error("No localization entries. This is probably an error.")

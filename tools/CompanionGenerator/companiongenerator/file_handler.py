@@ -14,22 +14,26 @@ class FileHandler:
         if "is_dry_run" in kwargs:
             self.is_dry_run = kwargs["is_dry_run"]
 
-    def create_output_dir(self, dir_path: str):
+    def write_list_to_file(self, file_path: str, lines: list[str]):
         """
-        Creates output directory where mod files will be created
+        Writes list to file
         """
-        if not os.path.exists(dir_path) and not os.path.isdir(dir_path):
-            if not self.is_dry_run:
-                os.makedirs(dir_path)
+        if not self.is_dry_run:
+            if not os.exists(file_path):
+                with open(file_path) as handle:
+                    handle.writelines(lines)
 
-                is_created_successfully = os.path.isdir(dir_path)
+                file_written_successfully = os.exists(file_path)
 
-                if is_created_successfully:
-                    log.info(f"Created directory {dir_path}")
-                    return True
+                if file_written_successfully:
+                    log.info(f"Wrote to file {file_path} successfully")
+                else:
+                    log.error(f"Error writing to file {file_path}")
+
+                return file_written_successfully
             else:
-                log.info(f"Dry run: not creating directory {dir_path}")
-                return True
+                log.error(f"File exists: {file_path}!")
+                return False
         else:
-            log.error(f"Directory {dir_path} exists!")
-            return False
+            log.info(f"Dry run: not writing to file {file_path}")
+            return True

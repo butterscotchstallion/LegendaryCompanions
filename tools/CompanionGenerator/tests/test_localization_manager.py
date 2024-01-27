@@ -5,20 +5,11 @@ from companiongenerator.localization_manager import (
 from companiongenerator.root_template import CompanionRT, PageRT
 from companiongenerator.template_fetcher import TemplateFetcher
 
-from tests.template_validity_helper import is_handle_uuid
+from tests.template_validity_helper import is_valid_handle_uuid
 
 
 def test_add_entry() -> None:
     loca_mgr = LocalizationManager()
-    new_handle = loca_mgr.add_entry_and_return_handle(
-        text="Shake that brass!",
-        comment="Test comment",
-        template_fetcher=TemplateFetcher(),
-    )
-
-    assert is_handle_uuid(
-        new_handle
-    ), "add_entry_and_return_handle returned a non-handle!"
 
     # TODO: test retrieval of entries here
     # Test that entries remain after multiple instantiations
@@ -41,8 +32,8 @@ def test_add_entry() -> None:
         template_fetcher=TemplateFetcher(),
         localization_manager=loca_mgr,
     )
-    assert is_handle_uuid(companion_rt.display_name_handle)
-    assert is_handle_uuid(companion_rt.title_handle)
+    assert is_valid_handle_uuid(companion_rt.display_name_handle)
+    assert is_valid_handle_uuid(companion_rt.title_handle)
 
     # Page
     pg_display_name = "Page 1"
@@ -58,18 +49,19 @@ def test_add_entry() -> None:
         template_fetcher=TemplateFetcher(),
         localization_manager=loca_mgr,
     )
-    assert is_handle_uuid(page_rt.display_name_handle)
-    assert is_handle_uuid(page_rt.description_handle)
+    assert is_valid_handle_uuid(page_rt.display_name_handle)
+    assert is_valid_handle_uuid(page_rt.description_handle)
 
     """
     Verify localization manager values
     There should be four entries, one for each localized
     value
     """
-    assert len(loca_mgr.entries) == 7
+    assert len(loca_mgr.entries) == 4
 
     entry_map: dict[str, LocalizationEntry] = {}
     for entry in loca_mgr.entries:
+        assert not is_valid_handle_uuid(entry.text), "Text should not be a handle"
         entry_map[entry.handle] = entry
 
     # Companion values
@@ -81,3 +73,5 @@ def test_add_entry() -> None:
     assert page_rt.display_name_handle in entry_map
     assert entry_map[page_rt.display_name_handle].text == pg_display_name
     assert entry_map[page_rt.description_handle].text == pg_description
+
+    # Test writing entries
