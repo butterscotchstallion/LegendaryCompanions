@@ -6,6 +6,7 @@ from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.localization_manager import LocalizationManager
 from companiongenerator.logger import logger
+from companiongenerator.root_template import CompanionRT
 from companiongenerator.spell import SummonSpell
 
 
@@ -113,3 +114,9 @@ class AutomationDirector:
         item_combo_tpl = item_combos.get_tpl_with_replacements()
         file_path = f"{self.output_dir_path}/{item_combos.filename}"
         return self.file_handler.write_string_to_file(file_path, item_combo_tpl)
+
+    def create_companion_rt(self, **kwargs):
+        companion_rt = CompanionRT(**kwargs)
+        companion_tpl = companion_rt.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/companion_rt.lsf.lsx"
+        return self.file_handler.write_string_to_file(file_path, companion_tpl)

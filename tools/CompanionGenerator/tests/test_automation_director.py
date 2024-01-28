@@ -51,3 +51,15 @@ def test_create():
         assert created_item_combos, "Failed to create item combos file"
 
         # Write root templates
+        ## Companion RT
+        created_companion_rt = director.create_companion_rt(
+            title="Legendary Muffin",
+            name="Chip Chocolate",
+            displayName="Display name",
+            parentTemplateId=uuid4(),
+            equipmentSetName="LC_EQP_Legendary",
+            statsName="LC_Legendary_Muffin",
+            localization_manager=director.loca_mgr,
+            template_fetcher=TemplateFetcher(),
+        )
+        assert created_companion_rt, "Failed to create companion RT"
