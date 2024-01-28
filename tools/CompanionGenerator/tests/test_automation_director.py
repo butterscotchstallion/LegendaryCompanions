@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from companiongenerator.automation_director import AutomationDirector
-from companiongenerator.localization_manager import LocalizationManager
 from companiongenerator.template_fetcher import TemplateFetcher
 
 
@@ -20,12 +19,13 @@ def test_create():
             integration_name="LegendaryCompanions",
             summon_uuid=str(uuid4()),
             template_fetcher=TemplateFetcher(),
-            localization_manager=LocalizationManager(),
             is_dry_run=False,
         )
         assert created_spell_file, "Failed to create spell file"
 
         # Write localization
+        created_loca_file = director.create_localization_file()
+        assert created_loca_file, "Failed to create localization file"
 
         # Write book localization file (book contents)
 

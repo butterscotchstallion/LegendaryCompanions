@@ -26,13 +26,14 @@ class LocalizationManager:
         self.entries.append(entry)
         return entry.handle
 
-    def write_entries(self, file_path: str):
+    def write_entries(self, file_path: str) -> bool:
         """
         Writes entries to file or edits existing localization file
         """
         if len(self.entries) > 0:
             xml_entries: list[str] = [entry.to_xml() for entry in self.entries]
             handler = FileHandler(is_dry_run=self.is_dry_run)
-            handler.write_list_to_file(file_path, xml_entries)
+            return handler.write_list_to_file(file_path, xml_entries)
         else:
             logger.error("No localization entries. This is probably an error.")
+            return False
