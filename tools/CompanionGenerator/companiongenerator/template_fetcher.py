@@ -1,9 +1,5 @@
 from pathlib import Path
 
-from companiongenerator.logger import log
-
-logger = log.getLogger(__name__)
-
 
 class TemplateFetcher:
     """

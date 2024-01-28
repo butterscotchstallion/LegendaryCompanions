@@ -1,6 +1,7 @@
 import os
+from collections.abc import Iterable
 
-from companiongenerator.logger import log
+from companiongenerator.logger import logger
 
 
 class FileHandler:
@@ -14,26 +15,26 @@ class FileHandler:
         if "is_dry_run" in kwargs:
             self.is_dry_run = kwargs["is_dry_run"]
 
-    def write_list_to_file(self, file_path: str, lines: list[str]):
+    def write_list_to_file(self, file_path: str, lines: Iterable[str]):
         """
         Writes list to file
         """
         if not self.is_dry_run:
-            if not os.exists(file_path):
-                with open(file_path) as handle:
-                    handle.writelines(lines)
+            if not os.path.exists(file_path):
+                with open(file_path, "w") as handle:
+                    handle.write(os.linesep.join(lines))
 
-                file_written_successfully = os.exists(file_path)
+                file_written_successfully = os.path.exists(file_path)
 
                 if file_written_successfully:
-                    log.info(f"Wrote to file {file_path} successfully")
+                    logger.info(f"Wrote to file {file_path} successfully")
                 else:
-                    log.error(f"Error writing to file {file_path}")
+                    logger.error(f"Error writing to file {file_path}")
 
                 return file_written_successfully
             else:
-                log.error(f"File exists: {file_path}!")
+                logger.error(f"File exists: {file_path}!")
                 return False
         else:
-            log.info(f"Dry run: not writing to file {file_path}")
+            logger.info(f"Dry run: not writing to file {file_path}")
             return True

@@ -11,6 +11,7 @@ def verify_xml_values(template_xml: str, attribute_value_map: dict) -> None:
     for child in root:
         if "id" in child.attrib:
             attr_id = child.attrib["id"]
+            value = None
             if "value" in child.attrib:
                 value = child.attrib["value"]
             else:

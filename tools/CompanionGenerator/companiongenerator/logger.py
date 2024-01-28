@@ -1,3 +1,5 @@
-import logging as log
+import sys
 
-log.basicConfig(format="%(levelname)s:%(message)s", encoding="utf-8", level=log.DEBUG)
+from loguru import logger
+
+logger.add(sys.stdout, colorize=True, format="<level>{message}</level>")

@@ -24,5 +24,8 @@ class LocalizationEntry(TemplateReplacerBase):
             "{{text}}": self.text,
         }
 
+    def to_xml(self):
+        return self.get_tpl_with_replacements()
+
     def __repr__(self):
         return self.text

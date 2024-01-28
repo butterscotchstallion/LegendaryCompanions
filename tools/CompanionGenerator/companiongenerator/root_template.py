@@ -1,10 +1,7 @@
 from uuid import uuid4
 
-from companiongenerator.logger import log
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
-
-logger = log.getLogger(__name__)
 
 
 class RootTemplate(TemplateReplacerBase):
@@ -58,7 +55,6 @@ class CompanionRT(RootTemplate):
                 template_fetcher=self.template_fetcher,
             )
             self.replacements["{{titleHandle}}"] = self.title_handle
-            logger.info("Replacing title")
         else:
             raise RuntimeError("No title specified")
 

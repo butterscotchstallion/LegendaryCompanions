@@ -1,9 +1,8 @@
-import logging as log
-
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_entry import (
     LocalizationEntry,
 )
+from companiongenerator.logger import logger
 
 
 class LocalizationManager:
@@ -32,7 +31,8 @@ class LocalizationManager:
         Writes entries to file or edits existing localization file
         """
         if len(self.entries) > 0:
+            xml_entries: list[str] = [entry.to_xml() for entry in self.entries]
             handler = FileHandler(is_dry_run=self.is_dry_run)
-            handler.write_list_to_file(file_path, self.entries)
+            handler.write_list_to_file(file_path, xml_entries)
         else:
-            log.error("No localization entries. This is probably an error.")
+            logger.error("No localization entries. This is probably an error.")

@@ -5,4 +5,7 @@ from .root_template import CompanionRT, PageRT, BookRT
 from .template_fetcher import TemplateFetcher
 from .localization_entry import LocalizationEntry
 from .localization_manager import LocalizationManager
-from .logger import log
+from .item_combo import ItemCombo
+from .book_loca_entry import BookLocaEntry
+from .file_handler import FileHandler
+from .automation_director import AutomationDirector

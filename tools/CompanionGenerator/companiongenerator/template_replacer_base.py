@@ -1,3 +1,4 @@
+from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_variable_replacer import TemplateVariableReplacer
 
 
@@ -6,6 +7,11 @@ class TemplateReplacerBase:
     Template replacement functionality which is used
     in a few places
     """
+
+    def __init__(self):
+        self.filename = ""
+        self.replacements = {}
+        self.template_fetcher = TemplateFetcher()
 
     def _get_template_text(self):
         """
