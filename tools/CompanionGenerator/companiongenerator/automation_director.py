@@ -1,7 +1,9 @@
 import os
 from uuid import uuid4
 
+from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.file_handler import FileHandler
+from companiongenerator.item_combo import ItemCombo
 from companiongenerator.localization_manager import LocalizationManager
 from companiongenerator.logger import logger
 from companiongenerator.spell import SummonSpell
@@ -27,6 +29,7 @@ class AutomationDirector:
             self.integration_name = kwargs["integration_name"]
 
         self.loca_mgr = LocalizationManager(is_dry_run=self.is_dry_run)
+        self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
 
     def create_output_dir_if_not_exists(self):
         if not self.output_dir_path:
@@ -73,8 +76,7 @@ class AutomationDirector:
                 file_path = f"{self.output_dir_path}/{summon_spell.spell_name}.txt"
 
                 if not os.path.exists(file_path) and not os.path.isfile(file_path):
-                    handler = FileHandler(is_dry_run=self.is_dry_run)
-                    is_write_successful = handler.write_list_to_file(
+                    is_write_successful = self.file_handler.write_list_to_file(
                         file_path, generated_spell_text.splitlines()
                     )
                     if is_write_successful:
@@ -93,3 +95,21 @@ class AutomationDirector:
         filename = self.integration_name or self.default_localization_filename
         file_path = f"{self.output_dir_path}/{filename}.loca.xml"
         return self.loca_mgr.write_entries(file_path)
+
+    def create_book_localization_file(self, **kwargs):
+        """
+        Creates localization file (the books)
+        """
+        book_loca_entry = BookLocaEntry(localization_manager=self.loca_mgr, **kwargs)
+        book_entry_xml = book_loca_entry.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/Books.lsf.lsx"
+        return self.file_handler.write_string_to_file(file_path, book_entry_xml)
+
+    def create_item_combos(self, **kwargs):
+        """
+        Creates item combos file
+        """
+        item_combos = ItemCombo(**kwargs)
+        item_combo_tpl = item_combos.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/{item_combos.filename}"
+        return self.file_handler.write_string_to_file(file_path, item_combo_tpl)

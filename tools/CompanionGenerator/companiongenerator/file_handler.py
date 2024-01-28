@@ -15,15 +15,14 @@ class FileHandler:
         if "is_dry_run" in kwargs:
             self.is_dry_run = kwargs["is_dry_run"]
 
-    def write_list_to_file(self, file_path: str, lines: Iterable[str]):
+    def write_string_to_file(self, file_path: str, contents: str) -> bool:
         """
         Writes list to file
         """
         if not self.is_dry_run:
             if not os.path.exists(file_path):
                 with open(file_path, "w") as handle:
-                    file_contents = "\n".join(lines)
-                    handle.write(file_contents)
+                    handle.write(contents)
 
                 file_written_successfully = os.path.exists(file_path)
 
@@ -39,3 +38,7 @@ class FileHandler:
         else:
             logger.info(f"Dry run: not writing to file {file_path}")
             return True
+
+    def write_list_to_file(self, file_path: str, lines: Iterable[str]):
+        file_contents = "\n".join(lines)
+        return self.write_string_to_file(file_path, file_contents)
