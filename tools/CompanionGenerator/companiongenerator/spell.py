@@ -28,6 +28,8 @@ class Spell:
             template_fetcher=self.template_fetcher,
         )
         self.replacements = {
+            "{{display_name}}": kwargs["display_name"],
+            "{{description}}": kwargs["description"],
             "{{display_name_handle}}": self.display_name_handle,
             "{{description_handle}}": self.description_handle,
             "{{spell_name}}": self.spell_name,

@@ -1,5 +1,7 @@
 new entry "{{spell_name}}"
 	using "LC_Summon"
+		// {{display_name}}
 		data "DisplayName" "{{display_name_handle}}"
+		// {{description}}
 		data "Description" "{{description_handle}}"
 		data "SpellProperties" "GROUND:Summon({{summon_uuid}},Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"

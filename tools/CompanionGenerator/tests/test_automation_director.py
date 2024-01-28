@@ -12,6 +12,7 @@ def test_create():
     assert created_output_dir, "Failed to create output directory"
 
     if created_output_dir:
+        # Create spell
         created_spell_file = director.create_summon_spell(
             display_name="Summon Chip Chocolate",
             description="A powerful summoning scroll",
@@ -23,3 +24,11 @@ def test_create():
             is_dry_run=False,
         )
         assert created_spell_file, "Failed to create spell file"
+
+        # Write localization
+
+        # Write book localization file (book contents)
+
+        # Write item combos
+
+        # Write root templates
