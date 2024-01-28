@@ -22,8 +22,7 @@ class FileHandler:
         if not self.is_dry_run:
             if not os.path.exists(file_path):
                 with open(file_path, "w") as handle:
-                    stripped_lines = [line.strip() for line in lines]
-                    file_contents = "\n".join(stripped_lines)
+                    file_contents = "\n".join(lines)
                     handle.write(file_contents)
 
                 file_written_successfully = os.path.exists(file_path)
