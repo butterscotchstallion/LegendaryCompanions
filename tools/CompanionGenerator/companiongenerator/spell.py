@@ -17,7 +17,6 @@ class Spell:
         self.loca_mgr = kwargs["localization_manager"]
         self.template_fetcher = kwargs["template_fetcher"]
         self.spell_name = kwargs["spell_name"]
-        self.integration_name = kwargs["integration_name"]
         self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["display_name"],
             comment=kwargs["display_name"],
@@ -32,7 +31,6 @@ class Spell:
             "{{display_name_handle}}": self.display_name_handle,
             "{{description_handle}}": self.description_handle,
             "{{spell_name}}": self.spell_name,
-            "{{integration_name}}": self.integration_name,
         }
 
 

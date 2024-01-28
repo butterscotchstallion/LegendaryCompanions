@@ -1,4 +1,3 @@
-// {{integration_name}} //
 new entry "{{spell_name}}"
 	using "LC_Summon"
 		data "DisplayName" "{{display_name_handle}}"

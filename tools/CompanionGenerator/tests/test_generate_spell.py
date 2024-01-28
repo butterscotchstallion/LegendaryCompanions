@@ -31,7 +31,6 @@ def test_generate_spell():
         all_lines = generated_spell_text.splitlines()
         spell_text_lines = [line for line in all_lines if line]
         assert generated_spell_text is not None
-        assert integration_name in spell_text_lines[0]
         assert spell_name in spell_text_lines[1]
         assert spell.display_name_handle in generated_spell_text
         assert spell.description_handle in generated_spell_text
