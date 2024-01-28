@@ -6,7 +6,7 @@ from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.localization_manager import LocalizationManager
 from companiongenerator.logger import logger
-from companiongenerator.root_template import CompanionRT
+from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.spell import SummonSpell
 
 
@@ -120,3 +120,21 @@ class AutomationDirector:
         companion_tpl = companion_rt.get_tpl_with_replacements()
         file_path = f"{self.output_dir_path}/companion_rt.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, companion_tpl)
+
+    def create_page_rt(self, **kwargs):
+        rt = PageRT(**kwargs)
+        tpl = rt.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/page_rt.lsf.lsx"
+        return self.file_handler.write_string_to_file(file_path, tpl)
+
+    def create_book_rt(self, **kwargs):
+        rt = BookRT(**kwargs)
+        tpl = rt.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/book_rt.lsf.lsx"
+        return self.file_handler.write_string_to_file(file_path, tpl)
+
+    def create_scroll_rt(self, **kwargs):
+        rt = ScrollRT(**kwargs)
+        tpl = rt.get_tpl_with_replacements()
+        file_path = f"{self.output_dir_path}/scroll_rt.lsf.lsx"
+        return self.file_handler.write_string_to_file(file_path, tpl)

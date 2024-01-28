@@ -63,3 +63,38 @@ def test_create():
             template_fetcher=TemplateFetcher(),
         )
         assert created_companion_rt, "Failed to create companion RT"
+
+        ## Page RT
+        created_page_rt = director.create_page_rt(
+            name="LC_Page_1",
+            displayName="A tattered page",
+            description="Page description",
+            statsName="LC_Page_1",
+            localization_manager=director.loca_mgr,
+            template_fetcher=TemplateFetcher(),
+        )
+        assert created_page_rt, "Failed to create page RT"
+
+        ## Book RT
+        created_book_rt = director.create_book_rt(
+            name="LC_Book_of_Testing",
+            displayName="Book of Testing",
+            description="A thick leather bound tome",
+            bookId=uuid4(),
+            statsName="LC_Book_of_Testing",
+            localization_manager=director.loca_mgr,
+            template_fetcher=TemplateFetcher(),
+        )
+        assert created_book_rt, "Failed to create book RT"
+
+        ## Scroll RT
+        created_scroll_rt = director.create_scroll_rt(
+            name="LC_Scroll_of_Testing",
+            displayName="Scroll of Testing",
+            description="Scroll description",
+            scrollSpellName="LC_Scroll_of_Testing",
+            statsName="LC_Scroll_of_Testing",
+            localization_manager=director.loca_mgr,
+            template_fetcher=TemplateFetcher(),
+        )
+        assert created_scroll_rt, "Failed to create scroll RT"

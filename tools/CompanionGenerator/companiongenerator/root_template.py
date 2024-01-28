@@ -73,7 +73,10 @@ class PageRT(RootTemplate):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_object_page.xml"
-        self.replacements["{{icon}}"] = kwargs["icon"]
+        self.replacements["{{icon}}"] = "Item_BOOK_GEN_Paper_Sheet_F"
+
+        if "icon" in kwargs:
+            self.replacements["{{icon}}"] = kwargs["icon"]
 
         self.description_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["description"],
