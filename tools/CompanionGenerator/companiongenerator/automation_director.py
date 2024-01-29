@@ -1,6 +1,8 @@
 import os
 from uuid import uuid4
 
+from slugify import slugify
+
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
@@ -117,6 +119,7 @@ class AutomationDirector:
 
     def create_companion_rt(self, **kwargs):
         companion_rt = CompanionRT(**kwargs)
+        self.companion = companion_rt
         companion_tpl = companion_rt.get_tpl_with_replacements()
         file_path = f"{self.output_dir_path}/companion_rt.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, companion_tpl)
@@ -124,7 +127,8 @@ class AutomationDirector:
     def create_page_rt(self, **kwargs):
         rt = PageRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/page_rt.lsf.lsx"
+        slugified_name = slugify(kwargs["name"])
+        file_path = f"{self.output_dir_path}/page_rt_{slugified_name}.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, tpl)
 
     def create_book_rt(self, **kwargs):
@@ -136,5 +140,6 @@ class AutomationDirector:
     def create_scroll_rt(self, **kwargs):
         rt = ScrollRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/scroll_rt.lsf.lsx"
+        slugified_name = slugify(kwargs["name"])
+        file_path = f"{self.output_dir_path}/scroll_rt_{slugified_name}.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, tpl)
