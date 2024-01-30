@@ -77,4 +77,14 @@ def test_add_entry() -> None:
     assert entry_map[page_rt.display_name_handle].text == pg_display_name
     assert entry_map[page_rt.description_handle].text == pg_description
 
-    # Test writing entries
+
+def test_deduplication():
+    """
+    Ensure that duplicate text entries aren't added
+    """
+    loca_mgr = LocalizationAggregator()
+    fetcher = TemplateFetcher()
+    text = "Chill: I ain't got none, but if I'm gonna be a mess I'm a hot one"
+    loca_mgr.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
+    loca_mgr.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
+    assert len(loca_mgr.entries) == 1, "Failed to de-duplicate loca entries"

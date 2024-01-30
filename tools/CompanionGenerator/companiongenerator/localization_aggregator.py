@@ -1,3 +1,5 @@
+from typing import Literal
+
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_entry import (
     LocalizationEntry,
@@ -21,10 +23,23 @@ class LocalizationAggregator:
         if "is_dry_run" in kwargs:
             self.is_dry_run = kwargs["is_dry_run"]
 
+    def entry_with_text_exists(
+        self, entry_text: str
+    ) -> LocalizationEntry | Literal[False]:
+        for entry in self.entries:
+            if entry.text == entry_text:
+                return entry
+        return False
+
     def add_entry_and_return_handle(self, **kwargs) -> str:
-        entry = LocalizationEntry(**kwargs)
-        self.entries.append(entry)
-        return entry.handle
+        existing_entry = self.entry_with_text_exists(kwargs["text"])
+
+        if existing_entry:
+            return existing_entry.handle
+        else:
+            entry = LocalizationEntry(**kwargs)
+            self.entries.append(entry)
+            return entry.handle
 
     def write_entries(self, file_path: str) -> bool:
         """
