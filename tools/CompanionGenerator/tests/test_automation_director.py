@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from companiongenerator.automation_director import AutomationDirector
+from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 
 
@@ -15,9 +16,8 @@ def test_create():
     assert created_output_dir, "Failed to create output directory"
 
     if created_output_dir:
-        # Write root templates
         ## Companion RT
-        created_companion_rt = director.create_companion_rt(
+        director.add_companion_rt(
             title="Legendary Muffin",
             name="Chip Chocolate",
             displayName="Display name",
@@ -26,8 +26,8 @@ def test_create():
             statsName="LC_Legendary_Muffin",
             localization_manager=director.loca_mgr,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
-        assert created_companion_rt, "Failed to create companion RT"
 
         # Create spell
         created_spell_file = director.create_summon_spell(
@@ -37,37 +37,38 @@ def test_create():
             integration_name="LegendaryCompanions",
             summon_uuid=director.companion.map_key,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
             is_dry_run=False,
         )
         assert created_spell_file, "Failed to create spell file"
 
         ## Page 1 RT
         page_one_stats_name = "LC_Page_1"
-        created_page_one_rt = director.create_page_rt(
+        director.add_page_rt(
             name=page_one_stats_name,
             displayName="A tattered page",
             description="Page description",
             statsName=page_one_stats_name,
             localization_manager=director.loca_mgr,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
-        assert created_page_one_rt, "Failed to create page one RT"
 
         ## Page 2 RT
         page_two_stats_name = "LC_Page_2"
-        created_page_two_rt = director.create_page_rt(
+        director.add_page_rt(
             name=page_two_stats_name,
             displayName="A tattered page",
             description="Page 2 description",
             statsName=page_two_stats_name,
             localization_manager=director.loca_mgr,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
-        assert created_page_two_rt, "Failed to create page two RT"
 
         ## Book RT
         book_stats_name = "LC_Book_of_Testing"
-        created_book_rt = director.create_book_rt(
+        director.add_book_rt(
             name=book_stats_name,
             displayName="Book of Testing",
             description="A thick leather bound tome",
@@ -75,8 +76,8 @@ def test_create():
             statsName=book_stats_name,
             localization_manager=director.loca_mgr,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
-        assert created_book_rt, "Failed to create book RT"
 
         # Write item combos
         created_item_combos = director.create_item_combos(
@@ -89,7 +90,7 @@ def test_create():
         assert created_item_combos, "Failed to create item combos file"
 
         ## Scroll RT
-        created_scroll_rt = director.create_scroll_rt(
+        director.add_scroll_rt(
             name="LC_Scroll_of_Testing",
             displayName="Scroll of Testing",
             description="Scroll description",
@@ -97,8 +98,13 @@ def test_create():
             statsName="LC_Scroll_of_Testing",
             localization_manager=director.loca_mgr,
             template_fetcher=TemplateFetcher(),
+            root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
-        assert created_scroll_rt, "Failed to create scroll RT"
+
+        ## Create singular root template from all the above RTs
+        merged_path = f"{director.output_dir_path}/merged.lsf.lsx"
+        created_rt = director.create_root_template(merged_path)
+        assert created_rt, "Failed to create root template"
 
         # Write localization
         created_loca_file = director.create_localization_file()

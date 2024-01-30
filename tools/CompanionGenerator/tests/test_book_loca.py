@@ -1,5 +1,5 @@
 from companiongenerator.book_loca_entry import BookLocaEntry
-from companiongenerator.localization_manager import LocalizationManager
+from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import assert_template_validity, verify_xml_values
@@ -18,7 +18,7 @@ def test_book_loca_entry():
         unknownDescription=unknown_description,
         name=book_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
     )
     attribute_value_map = {
         "Content": book_loca_entry.content_handle,

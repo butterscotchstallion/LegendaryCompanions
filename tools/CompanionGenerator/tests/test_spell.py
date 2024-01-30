@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from companiongenerator import SummonSpell
-from companiongenerator.localization_manager import LocalizationManager
+from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 
 
@@ -22,7 +22,7 @@ def test_generate_spell():
         description=description,
         integration_name=integration_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
     )
 
     generated_spell_text = spell.get_tpl_with_replacements()

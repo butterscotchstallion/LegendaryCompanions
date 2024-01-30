@@ -1,15 +1,16 @@
-from companiongenerator.localization_entry import LocalizationEntry
-from companiongenerator.localization_manager import (
-    LocalizationManager,
+from companiongenerator.localization_aggregator import (
+    LocalizationAggregator,
 )
+from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.root_template import CompanionRT, PageRT
+from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import is_valid_handle_uuid
 
 
 def test_add_entry() -> None:
-    loca_mgr = LocalizationManager()
+    loca_mgr = LocalizationAggregator()
 
     # TODO: test retrieval of entries here
     # Test that entries remain after multiple instantiations
@@ -31,6 +32,7 @@ def test_add_entry() -> None:
         icon=icon,
         template_fetcher=TemplateFetcher(),
         localization_manager=loca_mgr,
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     assert is_valid_handle_uuid(companion_rt.display_name_handle)
     assert is_valid_handle_uuid(companion_rt.title_handle)
@@ -48,6 +50,7 @@ def test_add_entry() -> None:
         icon=pg_icon_name,
         template_fetcher=TemplateFetcher(),
         localization_manager=loca_mgr,
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     assert is_valid_handle_uuid(page_rt.display_name_handle)
     assert is_valid_handle_uuid(page_rt.description_handle)

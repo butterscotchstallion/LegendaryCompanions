@@ -1,5 +1,6 @@
-from companiongenerator.localization_manager import LocalizationManager
+from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
+from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import (
@@ -28,7 +29,8 @@ def test_generate_companion_rt() -> None:
         title=title,
         icon=icon,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
         "DisplayName": companion_rt.display_name_handle,
@@ -62,7 +64,8 @@ def test_generate_page_xml() -> None:
         name=stats_name,
         icon=icon_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
         "DisplayName": page_rt.display_name_handle,
@@ -96,7 +99,8 @@ def test_generate_book_xml() -> None:
         icon=icon_name,
         bookId=book_id,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
         "DisplayName": book_rt.display_name_handle,
@@ -128,7 +132,8 @@ def test_generate_scroll_xml() -> None:
         name=stats_name,
         scrollSpellName=scroll_spell_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationManager(),
+        localization_manager=LocalizationAggregator(),
+        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
         "DisplayName": scroll_rt.display_name_handle,

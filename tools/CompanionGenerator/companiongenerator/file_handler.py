@@ -1,5 +1,6 @@
 import os
 from collections.abc import Iterable
+from pathlib import Path
 
 from companiongenerator.logger import logger
 
@@ -15,6 +16,15 @@ class FileHandler:
         if "is_dry_run" in kwargs:
             self.is_dry_run = kwargs["is_dry_run"]
 
+    def convert_bytes(self, num):
+        """
+        this function will convert bytes to MB.... GB... etc
+        """
+        for x in ["bytes", "KB", "MB", "GB", "TB"]:
+            if num < 1024.0:
+                return "%3.1f %s" % (num, x)
+            num /= 1024.0
+
     def write_string_to_file(self, file_path: str, contents: str) -> bool:
         """
         Writes list to file
@@ -27,7 +37,9 @@ class FileHandler:
                 file_written_successfully = os.path.exists(file_path)
 
                 if file_written_successfully:
-                    logger.info(f"Wrote to file {file_path} successfully")
+                    readable_size = self.convert_bytes(os.path.getsize(file_path))
+                    filename = Path(file_path).stem
+                    logger.info(f'Wrote file "{filename}" ({readable_size})')
                 else:
                     logger.error(f"Error writing to file {file_path}")
 

@@ -16,7 +16,9 @@ class RootTemplate(TemplateReplacerBase):
     def __init__(self, **kwargs) -> None:
         self.base_path = "../templates/"
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
+        self.rt_aggregator = kwargs["root_template_aggregator"]
         self.loca_mgr = kwargs["localization_manager"]
+        self.display_name = kwargs["displayName"]
         self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(
             text=kwargs["displayName"],
             comment=kwargs["displayName"],
@@ -30,6 +32,9 @@ class RootTemplate(TemplateReplacerBase):
             "{{statsName}}": kwargs["statsName"],
         }
 
+    def get_comment(self):
+        return self.display_name
+
 
 class CompanionRT(RootTemplate):
     """
@@ -39,6 +44,7 @@ class CompanionRT(RootTemplate):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_companion.xml"
+        self.title = ""
 
         # Companion specific replacements below
         archetype: str = "melee_smart"
@@ -49,6 +55,7 @@ class CompanionRT(RootTemplate):
         self.replacements["{{equipmentSetName}}"] = kwargs["equipmentSetName"]
 
         if "title" in kwargs:
+            self.title = kwargs["title"]
             self.title_handle = self.loca_mgr.add_entry_and_return_handle(
                 text=kwargs["title"],
                 comment=kwargs["title"],
@@ -64,6 +71,9 @@ class CompanionRT(RootTemplate):
         else:
             self.replacements["{{tagList}}"] = ""
 
+    def get_comment(self):
+        return self.title or self.display_name
+
 
 class PageRT(RootTemplate):
     """
@@ -74,6 +84,7 @@ class PageRT(RootTemplate):
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_object_page.xml"
         self.replacements["{{icon}}"] = "Item_BOOK_GEN_Paper_Sheet_F"
+        self.name = kwargs["name"]
 
         if "icon" in kwargs:
             self.replacements["{{icon}}"] = kwargs["icon"]
@@ -84,6 +95,9 @@ class PageRT(RootTemplate):
             template_fetcher=self.template_fetcher,
         )
         self.replacements["{{descriptionHandle}}"] = self.description_handle
+
+    def get_comment(self):
+        return self.name
 
 
 class BookRT(PageRT):

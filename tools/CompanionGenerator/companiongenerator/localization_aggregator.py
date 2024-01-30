@@ -5,7 +5,7 @@ from companiongenerator.localization_entry import (
 from companiongenerator.logger import logger
 
 
-class LocalizationManager:
+class LocalizationAggregator:
     """
     Handles localization entries by adding entries each time
     a handle is created. As part of the file generation process,

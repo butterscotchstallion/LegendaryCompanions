@@ -1,14 +1,13 @@
 import os
 from uuid import uuid4
 
-from slugify import slugify
-
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
-from companiongenerator.localization_manager import LocalizationManager
+from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
+from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
 
 
@@ -21,7 +20,8 @@ class AutomationDirector:
     base_dir = "../output"
     is_dry_run: bool = True
     output_dir_path: str | None = None
-    loca_mgr: LocalizationManager
+    loca_mgr: LocalizationAggregator
+    rt_aggregator: RootTemplateAggregator
     integration_name: str = ""
     default_localization_filename: str = "English"
 
@@ -31,8 +31,10 @@ class AutomationDirector:
         if "integration_name" in kwargs:
             self.integration_name = kwargs["integration_name"]
 
-        self.loca_mgr = LocalizationManager(is_dry_run=self.is_dry_run)
+        self.rt_aggregator = RootTemplateAggregator(is_dry_run=self.is_dry_run)
+        self.loca_mgr = LocalizationAggregator(is_dry_run=self.is_dry_run)
         self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
+        logger.info("\nInitializing new automation run!")
 
     def create_output_dir_if_not_exists(self):
         if not self.output_dir_path:
@@ -82,11 +84,6 @@ class AutomationDirector:
                     is_write_successful = self.file_handler.write_list_to_file(
                         file_path, generated_spell_text.splitlines()
                     )
-                    if is_write_successful:
-                        logger.info(f"Wrote spell file: {file_path}")
-                    else:
-                        logger.error(f"Error writing file: {file_path}")
-
                     return is_write_successful
                 else:
                     logger.error(f"File exists: {file_path}")
@@ -117,29 +114,30 @@ class AutomationDirector:
         file_path = f"{self.output_dir_path}/{item_combos.filename}"
         return self.file_handler.write_string_to_file(file_path, item_combo_tpl)
 
-    def create_companion_rt(self, **kwargs):
+    def create_root_template(self, file_path: str) -> bool:
+        """
+        Creates a single root template using
+        RootTemplateAggregator
+        """
+        return self.rt_aggregator.write_root_template(file_path)
+
+    def add_companion_rt(self, **kwargs):
         companion_rt = CompanionRT(**kwargs)
         self.companion = companion_rt
-        companion_tpl = companion_rt.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/companion_rt.lsf.lsx"
-        return self.file_handler.write_string_to_file(file_path, companion_tpl)
+        tpl = companion_rt.get_tpl_with_replacements()
+        self.rt_aggregator.add_entry(tpl, companion_rt.get_comment())
 
-    def create_page_rt(self, **kwargs):
+    def add_page_rt(self, **kwargs):
         rt = PageRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        slugified_name = slugify(kwargs["name"])
-        file_path = f"{self.output_dir_path}/page_rt_{slugified_name}.lsf.lsx"
-        return self.file_handler.write_string_to_file(file_path, tpl)
+        self.rt_aggregator.add_entry(tpl, rt.get_comment())
 
-    def create_book_rt(self, **kwargs):
+    def add_book_rt(self, **kwargs):
         rt = BookRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/book_rt.lsf.lsx"
-        return self.file_handler.write_string_to_file(file_path, tpl)
+        self.rt_aggregator.add_entry(tpl, rt.get_comment())
 
-    def create_scroll_rt(self, **kwargs):
+    def add_scroll_rt(self, **kwargs):
         rt = ScrollRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        slugified_name = slugify(kwargs["name"])
-        file_path = f"{self.output_dir_path}/scroll_rt_{slugified_name}.lsf.lsx"
-        return self.file_handler.write_string_to_file(file_path, tpl)
+        self.rt_aggregator.add_entry(tpl, rt.get_comment())
