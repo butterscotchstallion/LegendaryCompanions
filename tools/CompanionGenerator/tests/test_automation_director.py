@@ -24,7 +24,7 @@ def test_create():
             parentTemplateId=uuid4(),
             equipmentSetName="LC_EQP_Legendary",
             statsName="LC_Legendary_Muffin",
-            localization_manager=director.loca_mgr,
+            localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
@@ -49,7 +49,7 @@ def test_create():
             displayName="A tattered page",
             description="Page description",
             statsName=page_one_stats_name,
-            localization_manager=director.loca_mgr,
+            localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
@@ -61,7 +61,7 @@ def test_create():
             displayName="A tattered page",
             description="Page 2 description",
             statsName=page_two_stats_name,
-            localization_manager=director.loca_mgr,
+            localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
@@ -74,7 +74,7 @@ def test_create():
             description="A thick leather bound tome",
             bookId=uuid4(),
             statsName=book_stats_name,
-            localization_manager=director.loca_mgr,
+            localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
@@ -96,7 +96,7 @@ def test_create():
             description="Scroll description",
             scrollSpellName="LC_Scroll_of_Testing",
             statsName="LC_Scroll_of_Testing",
-            localization_manager=director.loca_mgr,
+            localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
@@ -116,5 +116,6 @@ def test_create():
             content="This is a book about how much I love testing",
             unknownDescription="This is the unknown description",
             template_fetcher=TemplateFetcher(),
+            localization_aggregator=director.localization_aggregator,
         )
         assert created_book_loca_file, "Failed to create book localization file"

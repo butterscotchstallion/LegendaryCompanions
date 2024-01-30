@@ -29,7 +29,7 @@ def test_generate_companion_rt() -> None:
         title=title,
         icon=icon,
         template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
@@ -64,7 +64,7 @@ def test_generate_page_xml() -> None:
         name=stats_name,
         icon=icon_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
@@ -99,7 +99,7 @@ def test_generate_book_xml() -> None:
         icon=icon_name,
         bookId=book_id,
         template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {
@@ -132,7 +132,7 @@ def test_generate_scroll_xml() -> None:
         name=stats_name,
         scrollSpellName=scroll_spell_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
     attribute_value_map = {

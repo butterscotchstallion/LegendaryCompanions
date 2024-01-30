@@ -17,9 +17,9 @@ class RootTemplate(TemplateReplacerBase):
         self.base_path = "../templates/"
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
         self.rt_aggregator = kwargs["root_template_aggregator"]
-        self.loca_mgr = kwargs["localization_manager"]
+        self.loca_aggregator = kwargs["localization_aggregator"]
         self.display_name = kwargs["displayName"]
-        self.display_name_handle = self.loca_mgr.add_entry_and_return_handle(
+        self.display_name_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["displayName"],
             comment=kwargs["displayName"],
             template_fetcher=self.template_fetcher,
@@ -56,7 +56,7 @@ class CompanionRT(RootTemplate):
 
         if "title" in kwargs:
             self.title = kwargs["title"]
-            self.title_handle = self.loca_mgr.add_entry_and_return_handle(
+            self.title_handle = self.loca_aggregator.add_entry_and_return_handle(
                 text=kwargs["title"],
                 comment=kwargs["title"],
                 template_fetcher=self.template_fetcher,
@@ -89,7 +89,7 @@ class PageRT(RootTemplate):
         if "icon" in kwargs:
             self.replacements["{{icon}}"] = kwargs["icon"]
 
-        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
+        self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
             template_fetcher=self.template_fetcher,
@@ -110,7 +110,7 @@ class BookRT(PageRT):
         self.filename = f"{self.base_path}rt_object_book.xml"
         self.replacements["{{bookId}}"] = kwargs["bookId"]
 
-        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
+        self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
             template_fetcher=self.template_fetcher,
@@ -128,7 +128,7 @@ class ScrollRT(RootTemplate):
         self.filename = f"{self.base_path}rt_object_scroll.xml"
         self.replacements["{{scrollSpellName}}"] = kwargs["scrollSpellName"]
 
-        self.description_handle = self.loca_mgr.add_entry_and_return_handle(
+        self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
             template_fetcher=self.template_fetcher,

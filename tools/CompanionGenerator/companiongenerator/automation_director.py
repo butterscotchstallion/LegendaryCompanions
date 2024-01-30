@@ -20,7 +20,7 @@ class AutomationDirector:
     base_dir = "../output"
     is_dry_run: bool = True
     output_dir_path: str | None = None
-    loca_mgr: LocalizationAggregator
+    localization_aggregator: LocalizationAggregator
     rt_aggregator: RootTemplateAggregator
     integration_name: str = ""
     default_localization_filename: str = "English"
@@ -32,7 +32,9 @@ class AutomationDirector:
             self.integration_name = kwargs["integration_name"]
 
         self.rt_aggregator = RootTemplateAggregator(is_dry_run=self.is_dry_run)
-        self.loca_mgr = LocalizationAggregator(is_dry_run=self.is_dry_run)
+        self.localization_aggregator = LocalizationAggregator(
+            is_dry_run=self.is_dry_run
+        )
         self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
         logger.info("\nInitializing new automation run!")
 
@@ -72,7 +74,9 @@ class AutomationDirector:
         """
         Create spell based on supplied info
         """
-        summon_spell = SummonSpell(**kwargs, localization_manager=self.loca_mgr)
+        summon_spell = SummonSpell(
+            **kwargs, localization_manager=self.localization_aggregator
+        )
 
         if summon_spell:
             generated_spell_text = summon_spell.get_tpl_with_replacements()
@@ -94,13 +98,15 @@ class AutomationDirector:
         """
         filename = self.integration_name or self.default_localization_filename
         file_path = f"{self.output_dir_path}/{filename}.loca.xml"
-        return self.loca_mgr.write_entries(file_path)
+        return self.localization_aggregator.write_entries(file_path)
 
     def create_book_localization_file(self, **kwargs):
         """
         Creates localization file (the books)
         """
-        book_loca_entry = BookLocaEntry(localization_manager=self.loca_mgr, **kwargs)
+        book_loca_entry = BookLocaEntry(
+            localization_manager=self.localization_aggregator, **kwargs
+        )
         book_entry_xml = book_loca_entry.get_tpl_with_replacements()
         file_path = f"{self.output_dir_path}/Books.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, book_entry_xml)

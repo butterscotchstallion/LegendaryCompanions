@@ -18,7 +18,7 @@ def test_book_loca_entry():
         unknownDescription=unknown_description,
         name=book_name,
         template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
     )
     attribute_value_map = {
         "Content": book_loca_entry.content_handle,
