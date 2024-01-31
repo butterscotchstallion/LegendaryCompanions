@@ -31,6 +31,14 @@ class LocalizationAggregator:
                 return entry
         return False
 
+    def entry_with_handle_exists(
+        self, entry_handle: str
+    ) -> LocalizationEntry | Literal[False]:
+        for entry in self.entries:
+            if entry.handle == entry_handle:
+                return entry
+        return False
+
     def add_entry_and_return_handle(self, **kwargs) -> str:
         existing_entry = self.entry_with_text_exists(kwargs["text"])
 

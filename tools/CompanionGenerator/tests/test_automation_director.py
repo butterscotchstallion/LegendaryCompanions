@@ -106,16 +106,26 @@ def test_create():
         created_rt = director.create_root_template(merged_path)
         assert created_rt, "Failed to create root template"
 
-        # Write localization
-        created_loca_file = director.create_localization_file()
-        assert created_loca_file, "Failed to create localization file"
-
         # Write book localization file (book contents)
+        book_name = "Book of Testing"
+        book_contents = "This is a book about how much I love testing"
+        unknown_description = "This is the unknown description"
         created_book_loca_file = director.create_book_localization_file(
-            name="Book of Testing",
-            content="This is a book about how much I love testing",
-            unknownDescription="This is the unknown description",
+            name=book_name,
+            content=book_contents,
+            unknownDescription=unknown_description,
             template_fetcher=TemplateFetcher(),
             localization_aggregator=director.localization_aggregator,
         )
         assert created_book_loca_file, "Failed to create book localization file"
+        assert director.localization_aggregator.entry_with_text_exists(book_contents)
+        assert director.localization_aggregator.entry_with_handle_exists(
+            director.book_content_handle
+        )
+        assert director.localization_aggregator.entry_with_handle_exists(
+            director.book_description_handle
+        )
+
+        # Write localization
+        created_loca_file = director.create_localization_file()
+        assert created_loca_file, "Failed to create localization file"

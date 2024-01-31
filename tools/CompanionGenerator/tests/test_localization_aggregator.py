@@ -105,4 +105,6 @@ def test_book_content_loca_added():
         template_fetcher=fetcher,
         localization_aggregator=loca_aggregator,
     )
+    # There should be two entries: one for content
+    # and one for unknown description
     assert len(loca_aggregator.entries) == 2

@@ -104,9 +104,12 @@ class AutomationDirector:
         """
         Creates localization file (the books)
         """
+        ## This is not working!
         book_loca_entry = BookLocaEntry(
             localization_manager=self.localization_aggregator, **kwargs
         )
+        self.book_content_handle = book_loca_entry.content_handle
+        self.book_description_handle = book_loca_entry.unknown_description_handle
         book_entry_xml = book_loca_entry.get_tpl_with_replacements()
         file_path = f"{self.output_dir_path}/Books.lsf.lsx"
         return self.file_handler.write_string_to_file(file_path, book_entry_xml)
