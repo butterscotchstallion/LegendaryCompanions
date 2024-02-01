@@ -1,4 +1,5 @@
 import os
+import xml.etree.ElementTree as ET
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -54,3 +55,54 @@ class FileHandler:
     def write_list_to_file(self, file_path: str, lines: Iterable[str]):
         file_contents = "\n".join(lines)
         return self.write_string_to_file(file_path, file_contents)
+
+    def get_file_contents(self, file_path: str):
+        try:
+            return Path(file_path).read_text()
+        except FileNotFoundError:
+            logger.error(f"File not found: {file_path}")
+            return ""
+
+    def get_tag_with_id_from_root(
+        self, root, tag_name: str, tag_id: str
+    ) -> ET.Element | None:
+        for tag in root.findall(tag_name):
+            tree_tag_id = tag.attrib.get("id")
+            if tree_tag_id is not None and tree_tag_id == tag_id:
+                return tag
+
+    def get_templates_children(self, root) -> ET.Element | None:
+        # Get region#Templates
+        templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
+        if templates_region is not None:
+            all_nodes = templates_region.findall("node")
+            if all_nodes is not None:
+                for node in all_nodes:
+                    # Get Node#Templates
+                    if node.attrib.get("id") == "Templates":
+                        return node.find("children")
+
+    def append_nodes_to_children(self, filename: str, nodes: list[str]) -> str | None:
+        tree = ET.parse(filename)
+        root = tree.getroot()
+
+        """
+        region#Templates
+          node#Templates
+             children
+        """
+        templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
+        if templates_region is not None:
+            all_nodes = templates_region.findall("node")
+            if all_nodes is not None:
+                for node in all_nodes:
+                    # Get Node#Templates
+                    if node.attrib.get("id") == "Templates":
+                        children = node.find("children")
+                        if children is not None:
+                            for new_node in nodes:
+                                xml_node = ET.fromstring(new_node)
+                                children.append(xml_node)
+
+                            ET.indent(tree, space="\t", level=0)
+                            return ET.tostring(root, encoding="unicode")

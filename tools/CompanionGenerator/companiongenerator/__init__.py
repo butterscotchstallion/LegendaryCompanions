@@ -10,3 +10,4 @@ from .book_loca_entry import BookLocaEntry
 from .file_handler import FileHandler
 from .automation_director import AutomationDirector
 from .root_template_aggregator import RootTemplateAggregator
+from .logger import logger
