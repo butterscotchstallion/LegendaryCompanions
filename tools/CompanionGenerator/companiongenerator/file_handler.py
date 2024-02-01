@@ -74,35 +74,27 @@ class FileHandler:
     def get_templates_children(self, root) -> ET.Element | None:
         # Get region#Templates
         templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
-        if templates_region is not None:
-            all_nodes = templates_region.findall("node")
-            if all_nodes is not None:
-                for node in all_nodes:
-                    # Get Node#Templates
-                    if node.attrib.get("id") == "Templates":
-                        return node.find("children")
+        node = self.get_tag_with_id_from_root(templates_region, "node", "Templates")
+        if node is not None:
+            return node.find("children")
 
     def append_nodes_to_children(self, filename: str, nodes: list[str]) -> str | None:
+        """
+        Finds templates node, appends nodes, and returns
+        updated structure.
+        """
         tree = ET.parse(filename)
         root = tree.getroot()
-
         """
         region#Templates
           node#Templates
              children
         """
-        templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
-        if templates_region is not None:
-            all_nodes = templates_region.findall("node")
-            if all_nodes is not None:
-                for node in all_nodes:
-                    # Get Node#Templates
-                    if node.attrib.get("id") == "Templates":
-                        children = node.find("children")
-                        if children is not None:
-                            for new_node in nodes:
-                                xml_node = ET.fromstring(new_node)
-                                children.append(xml_node)
+        children = self.get_templates_children(root)
+        if children is not None:
+            for new_node in nodes:
+                xml_node = ET.fromstring(new_node)
+                children.append(xml_node)
 
-                            ET.indent(tree, space="\t", level=0)
-                            return ET.tostring(root, encoding="unicode")
+            ET.indent(tree, space="\t", level=0)
+            return ET.tostring(root, encoding="unicode")
