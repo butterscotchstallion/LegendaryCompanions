@@ -1,4 +1,5 @@
 import os
+import shutil
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -54,6 +55,27 @@ class FileHandler:
     def write_list_to_file(self, file_path: str, lines: Iterable[str]):
         file_contents = "\n".join(lines)
         return self.write_string_to_file(file_path, file_contents)
+
+    def create_backup_file(self, file_path: str):
+        """
+        Creates backup file from provided filename
+        """
+        try:
+            origin_path_obj = Path(file_path)
+            origin_path = origin_path_obj.parent
+            origin_filename = origin_path_obj.stem
+            backup_path = f"{origin_path}/{origin_filename}.backup"
+
+            if not os.path.exists(backup_path) and os.path.isfile(file_path):
+                result = shutil.copy2(origin_path, backup_path)
+                if result:
+                    logger.info(f"Created backup file: {backup_path}")
+                else:
+                    logger.error("Error creating backup file: failed to copy")
+            else:
+                logger.error(f"Invalid file path: '{file_path}' exists or is not file")
+        except IOError as err:
+            logger.error(f"Error creating backup file: {os.strerror(err.errno)}")
 
     def get_file_contents(self, file_path: str):
         try:
