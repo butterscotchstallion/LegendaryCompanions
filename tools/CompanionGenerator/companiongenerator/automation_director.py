@@ -123,10 +123,10 @@ class AutomationDirector:
         file_path = f"{self.output_dir_path}/{item_combos.filename}"
         return self.file_handler.write_string_to_file(file_path, item_combo_tpl)
 
-    def create_root_template(self, file_path: str) -> bool:
+    def create_root_template(self, file_path: str) -> bool | None:
         """
         Creates a single root template using
-        RootTemplateAggregator
+        RootTemplateAggregator.
         """
         return self.rt_aggregator.write_root_template(file_path)
 

@@ -1,5 +1,4 @@
 import os
-import xml.etree.ElementTree as ET
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -62,39 +61,3 @@ class FileHandler:
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return ""
-
-    def get_tag_with_id_from_root(
-        self, root, tag_name: str, tag_id: str
-    ) -> ET.Element | None:
-        for tag in root.findall(tag_name):
-            tree_tag_id = tag.attrib.get("id")
-            if tree_tag_id is not None and tree_tag_id == tag_id:
-                return tag
-
-    def get_templates_children(self, root) -> ET.Element | None:
-        # Get region#Templates
-        templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
-        node = self.get_tag_with_id_from_root(templates_region, "node", "Templates")
-        if node is not None:
-            return node.find("children")
-
-    def append_nodes_to_children(self, filename: str, nodes: list[str]) -> str | None:
-        """
-        Finds templates node, appends nodes, and returns
-        updated structure.
-        """
-        tree = ET.parse(filename)
-        root = tree.getroot()
-        """
-        region#Templates
-          node#Templates
-             children
-        """
-        children = self.get_templates_children(root)
-        if children is not None:
-            for new_node in nodes:
-                xml_node = ET.fromstring(new_node)
-                children.append(xml_node)
-
-            ET.indent(tree, space="\t", level=0)
-            return ET.tostring(root, encoding="unicode")
