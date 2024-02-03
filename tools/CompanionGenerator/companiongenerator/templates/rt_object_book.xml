@@ -1,4 +1,4 @@
-<node id="GameObjects"> {{name}}
+<node id="GameObjects">
     <attribute id="Description" type="TranslatedString" handle="{{descriptionHandle}}" version="1" />
     <attribute id="DisplayName" type="TranslatedString" handle="{{displayNameHandle}}" version="1" />
     <attribute id="Flag" type="int32" value="0" />

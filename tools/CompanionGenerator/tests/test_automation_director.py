@@ -101,10 +101,10 @@ def test_create():
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
 
-        ## Create singular root template from all the above RTs
+        ## Append to root template using the above RTs
         merged_path = f"{director.output_dir_path}/merged.lsf.lsx"
-        created_rt = director.create_root_template(merged_path)
-        assert created_rt, "Failed to create root template"
+        appended_rt = director.append_root_template(merged_path)
+        assert appended_rt, "Failed to append root template"
 
         # Write book localization file (book contents)
         book_name = "Book of Testing"

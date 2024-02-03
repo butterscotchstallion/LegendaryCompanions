@@ -126,12 +126,12 @@ class AutomationDirector:
         file_path = f"{self.output_dir_path}/{item_combos.filename}"
         return self.file_handler.write_string_to_file(file_path, item_combo_tpl)
 
-    def create_root_template(self, file_path: str) -> bool | None:
+    def append_root_template(self, file_path: str) -> bool | None:
         """
-        Creates a single root template using
+        Appends to existing root template using
         RootTemplateAggregator.
         """
-        return self.rt_aggregator.write_root_template(file_path)
+        return self.rt_aggregator.append_root_template(file_path)
 
     def add_companion_rt(self, **kwargs):
         companion_rt = CompanionRT(**kwargs)

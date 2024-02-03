@@ -13,9 +13,7 @@
     <attribute id="LevelOverride" type="int32" value="" />
     <children>
         <node id="Tags">
-            <children>
-                {{tagList}}
-            </children>
+            <children>{{tagList}}</children>
         </node>
         <node id="OnDeathActions">
             <children>

@@ -18,9 +18,21 @@ class RootTemplateAggregator:
             )
         )
 
-    def write_root_template(self, file_path: str) -> bool | None:
+    def append_root_template(self, file_path: str) -> bool | None:
+        """
+        1. Find existing backups, if any
+        2. Overwrite existing backup if exists, or create new one
+        3. Parse RT and append new nodes to it
+        4. If write successful, remove backup
+
+        Args:
+            file_path (str): Path to root template
+
+        Returns:
+            bool | None: Returns true if successful
+        """
         xml_merged_str = self.root_template_parser.append_nodes_to_children(
-            "./companiongenerator/templates/merged.lsx", self.entries
+            "./companiongenerator/templates/merged_with_contents.lsf.lsx", self.entries
         )
 
         if xml_merged_str:
