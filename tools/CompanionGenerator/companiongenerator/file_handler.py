@@ -64,24 +64,15 @@ class FileHandler:
             origin_path_obj = Path(file_path)
             origin_parent = origin_path_obj.parent
             origin_filename = origin_path_obj.stem
-            # origin_path = f"{origin_parent}/{origin_filename}"
             backup_path = f"{origin_parent}/{origin_filename}.lcbackup"
+            logger.info(f"Copying {file_path} to {backup_path}")
 
-            logger.info(f"Attempting to make backup of file {file_path}")
-
-            if not os.path.exists(backup_path) and os.path.isfile(file_path):
-                logger.info(f"Copying {file_path} to {backup_path}")
-
-                result = shutil.copy2(file_path, backup_path)
-                if result:
-                    logger.info(f"Created backup file: {backup_path}")
-                    return True
-                else:
-                    raise RuntimeError("Error creating backup file: failed to copy")
+            result = shutil.copy2(file_path, backup_path)
+            if result:
+                logger.info(f"Created backup file: {backup_path}")
+                return True
             else:
-                raise RuntimeError(
-                    f"Invalid file path: '{file_path}' exists or is not file"
-                )
+                raise RuntimeError("Error creating backup file: failed to copy")
         except IOError as err:
             raise RuntimeError(f"Error creating backup file: {os.strerror(err.errno)}")
 
