@@ -1,0 +1,45 @@
+new entry "LC_Summon"
+	type "SpellData"
+	using "Shout_DivineIntervention_Supplies"
+		data "TargetRadius" "18"
+		data "Icon" "PassiveFeature_ImprovedMinorIllusion"
+		data "DisplayName" "he9970b22gfd51g418cgb50agfa567ac24fd2;1"
+		data "UseCosts" ""
+		data "TargetConditions" ""
+		data "RequirementConditions" ""
+
+// RSO //
+new entry "LC_Summon_RSO_Legendary"
+	type "SpellData"
+	using "LC_Summon"
+		data "DisplayName" "h18580da7ge9b8g4f70g9864geee1b4b823dc;1"
+		data "SpellProperties" "GROUND:Summon(52db9322-b223-48fd-ac88-e465efa0c736,Permanent,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+
+// Gith'zerai //
+new entry "LC_Summon_Githzerai_Legendary"
+	type "SpellData"
+	using "LC_Summon"
+		data "DisplayName" "h2f47ac41g21efg4789ga2e2ge351173cc9b2;1"
+		data "SpellProperties" "GROUND:Summon(4973f064-fe29-4857-89fb-a18af7a5d02a,Permanent,Projectile_AiHelper_Summon_Strong,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+
+// Muffin //
+new entry "LC_Summon_Muffin_Legendary"
+	type "SpellData"
+	using "LC_Summon"
+		data "DisplayName" "h06c7146eg3e10g45a2g99efga7cc3af432ba;1"
+		data "Description" "hbb4b62beg2c67g48c5gaceeg30b67840aa98;1"
+		data "SpellProperties" "GROUND:Summon(82ffc8c7-644c-40a8-b4b7-2d73b1a1049b,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+
+// Muffin Upgrade spell //
+new entry "LC_Upgrade_Companion"
+	type "SpellData"
+	using "Target_Bless"
+		data "SpellType" "Target"
+		data "DisplayName" "h1da13e1dg30b9g4811gb9ebgd71a76145011"
+		data "Description" "h1114e926g187dg4827g988bg7cff3e77f2a7"
+		data "TooltipUpcastDescription" ""
+		data "TooltipStatusApply" ""
+		data "SpellProperties" ""
+		data "AmountOfTargets" "1"
+		data "TargetConditions" "Tagged('LC_COMPANION') and Character() and not Enemy() and not Dead() and not HasStatus('DOWNED')"
+		data "UseCosts" ""

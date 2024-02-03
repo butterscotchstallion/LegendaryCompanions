@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="9" build="322" />
+	<region id="TranslatedStringKeys">
+		<node id="TranslatedStringKeys">
+			<children>
+				<!-- Gith'zerai -->
+				<node id="TranslatedStringKey"> Gith'zerai combined tome
+					<attribute id="Content" type="TranslatedString" handle="h2c03a7e3g463fg42b1g861ag748be71bf4f8" version="1" />
+					<attribute id="UUID" type="FixedString" value="LC_Githzerai_Combined_Tome" />
+					<attribute id="Speaker" type="FixedString" value="" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+				</node>
+
+				<!-- RSO -->
+				<node id="TranslatedStringKey"> RSO combined tome
+					<attribute id="Content" type="TranslatedString" handle="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1" />
+					<attribute id="UUID" type="FixedString" value="LC_RSO_Combined_Tome" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+				</node>
+
+				<!-- Muffin -->
+				<node id="TranslatedStringKey"> Muffin combined tome
+					<attribute id="Content" type="TranslatedString" handle="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1" />
+					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Tome" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+				</node>
+				<node id="TranslatedStringKey"> LC_Muffin_Combined_Upgrade_Tome
+					<attribute id="Content" type="TranslatedString" handle="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1" />
+					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Upgrade_Tome" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+				</node>
+
+			</children>
+		</node>
+	</region>
+</save>
