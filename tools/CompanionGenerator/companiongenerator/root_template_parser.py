@@ -69,14 +69,11 @@ class RootTemplateParser:
                             for attribute_tag in attributes:
                                 if attribute_tag.attrib["id"] == "Name":
                                     name_value = attribute_tag.attrib["value"]
-                                    logger.info(f"Name value is: {name_value}")
                                     existing_names.append(name_value)
                         else:
                             logger.error(
                                 "Unexpected XML format: no attributes found in node tag!"
                             )
-
-                    logger.info(f"Existing names: {existing_names}")
 
                     # Iterate supplied nodes and append if not existent
                     for new_node in nodes:
