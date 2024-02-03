@@ -1,3 +1,4 @@
+import datetime
 import os
 from uuid import uuid4
 
@@ -50,7 +51,9 @@ class AutomationDirector:
         """
         Creates output directory where mod files will be created
         """
-        dir_name = uuid4()
+        ahorita = datetime.datetime.now()
+        shortened_uuid = str(uuid4())[0:7]
+        dir_name = f"{ahorita.strftime('%Y-%m-%d_%I-%M-%S')}_{shortened_uuid}"
         dir_path = f"{self.base_dir}/{dir_name}"
         if not os.path.exists(dir_path) and not os.path.isdir(dir_path):
             if not self.is_dry_run:
