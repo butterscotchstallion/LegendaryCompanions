@@ -51,3 +51,4 @@ __pycache__
 .pytest_cache
 tools/output/*
 tools/logs/*
+*.lcbackup
