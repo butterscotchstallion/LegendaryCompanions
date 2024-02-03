@@ -10,14 +10,29 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
     """
     Iterates node children and verifies one of them has the root
     template object map key which is unique
+
+    Create list of names from RT objects, and if we find multiple
+    then we know there is a duplicate and this test should fail
     """
+    rt_names: list[str] = []
     for node_child in node_children:
         """
         Each node has a series of attribute tags
         """
         attrs = node_child.findall("attribute")
         for attr in attrs:
-            # <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
+            # Get value of name attribute
+            # Check if this name exists
+            name_value = ""
+            if attr.attrib["id"] == "Name":
+                name_value = attr.attrib["value"]
+                if name_value in rt_names:
+                    raise RuntimeError("Duplicate entry found")
+                else:
+                    if name_value:
+                        rt_names.append(name_value)
+
+            # Example: <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
             is_map_key = attr.attrib["id"] == "MapKey"
             has_value = "value" in attr.attrib
             # Localization entries do not have a value
@@ -42,19 +57,26 @@ def test_parse_and_append():
     scroll_rt = get_scroll_rt()
     scroll_xml = scroll_rt.get_tpl_with_replacements()
 
+    scroll_entry = RootTemplateNodeEntry(
+        comment=scroll_rt.get_comment(),
+        root_template_xml=scroll_xml,
+        name=scroll_rt.name,
+    )
+
     new_nodes = [
         RootTemplateNodeEntry(
             comment=companion_rt.get_comment(),
             root_template_xml=companion_xml,
+            name=companion_rt.name,
         ),
         RootTemplateNodeEntry(
             comment=page_rt.get_comment(),
             root_template_xml=page_xml,
+            name=page_rt.name,
         ),
-        RootTemplateNodeEntry(
-            comment=scroll_rt.get_comment(),
-            root_template_xml=scroll_xml,
-        ),
+        scroll_entry,
+        # Intentional duplicate
+        scroll_entry,
     ]
 
     # Parse XML and verify children tag exists
@@ -75,8 +97,8 @@ def test_parse_and_append():
     Verify XML by checking each root template against
     the parsed XML
     """
-    node_children = children_el.findall("node")
     root_templates_to_verify = [companion_rt, page_rt, scroll_rt]
+    node_children = children_el.findall("node")
 
     for template in root_templates_to_verify:
         assert verify_node_children(node_children, template)

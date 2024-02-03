@@ -9,12 +9,12 @@ class RootTemplateAggregator:
         self.root_template_parser = RootTemplateParser()
         self.entries: list[RootTemplateNodeEntry] = []
 
-    def add_entry(self, rt_xml: str, comment: str):
+    def add_entry(self, rt_xml: str, comment: str, name: str):
         self.entries.append(
             RootTemplateNodeEntry(
-                # comment=f"<!--{comment}-->",
                 comment=comment,
                 root_template_xml=rt_xml,
+                name=name,
             )
         )
 

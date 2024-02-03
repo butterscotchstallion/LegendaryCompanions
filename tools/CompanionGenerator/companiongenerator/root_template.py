@@ -18,6 +18,7 @@ class RootTemplate(TemplateReplacerBase):
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
         self.rt_aggregator = kwargs["root_template_aggregator"]
         self.loca_aggregator = kwargs["localization_aggregator"]
+        self.name = kwargs["name"]
         self.display_name = kwargs["displayName"]
         self.display_name_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["displayName"],
@@ -26,7 +27,7 @@ class RootTemplate(TemplateReplacerBase):
         )
         self.map_key = str(uuid4())
         self.replacements: dict[str, str] = {
-            "{{name}}": kwargs["name"],
+            "{{name}}": self.name,
             "{{displayNameHandle}}": self.display_name_handle,
             "{{mapKey}}": self.map_key,
             "{{statsName}}": kwargs["statsName"],

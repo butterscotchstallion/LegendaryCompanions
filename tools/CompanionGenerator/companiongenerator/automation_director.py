@@ -134,22 +134,22 @@ class AutomationDirector:
         return self.rt_aggregator.append_root_template(file_path)
 
     def add_companion_rt(self, **kwargs):
-        companion_rt = CompanionRT(**kwargs)
-        self.companion = companion_rt
-        tpl = companion_rt.get_tpl_with_replacements()
-        self.rt_aggregator.add_entry(tpl, companion_rt.get_comment())
+        rt = CompanionRT(**kwargs)
+        self.companion = rt
+        tpl = rt.get_tpl_with_replacements()
+        self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
 
     def add_page_rt(self, **kwargs):
         rt = PageRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        self.rt_aggregator.add_entry(tpl, rt.get_comment())
+        self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
 
     def add_book_rt(self, **kwargs):
         rt = BookRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        self.rt_aggregator.add_entry(tpl, rt.get_comment())
+        self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
 
     def add_scroll_rt(self, **kwargs):
         rt = ScrollRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
-        self.rt_aggregator.add_entry(tpl, rt.get_comment())
+        self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
