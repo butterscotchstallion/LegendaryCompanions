@@ -15,6 +15,10 @@ class RootTemplateParser:
     Handles parsing XML in root templates
     """
 
+    def __init__(self):
+        self.filename = ""
+        self.tree: ET.ElementTree
+
     def get_templates_children(self, root: ET.Element) -> ET.Element | None:
         # Get region#Templates
         templates_region = get_tag_with_id_from_root(root, "region", "Templates")
@@ -36,8 +40,9 @@ class RootTemplateParser:
                 raise FileNotFoundError()
 
             parser = get_comment_preserving_parser()
-            tree = ET.parse(filename, parser)
-            root = tree.getroot()
+            self.filename = filename
+            self.tree = ET.parse(filename, parser)
+            root = self.tree.getroot()
             """
             <region id="Templates">
 		        <node id="Templates">
@@ -75,7 +80,7 @@ class RootTemplateParser:
                             nodes_added = nodes_added + 1
 
                     if nodes_added > 0:
-                        ET.indent(tree, space="\t", level=0)
+                        ET.indent(self.tree, space="\t", level=0)
                         return ET.tostring(root, encoding="unicode")
 
         except ET.ParseError as err:
@@ -84,3 +89,7 @@ class RootTemplateParser:
             else:
                 err_msg = "unknown"
             logger.error(f"Failed to parse XML: {err_msg}")
+
+    def write(self):
+        if self.tree:
+            self.tree.write(self.filename, "unicode", True)

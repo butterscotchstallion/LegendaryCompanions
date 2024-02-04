@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.root_template_aggregator import RootTemplateNodeEntry
 from companiongenerator.root_template_parser import RootTemplateParser
 
@@ -81,7 +82,7 @@ def test_parse_and_append():
 
     # Parse XML and verify children tag exists
     xml_with_new_nodes = parser.append_nodes_to_children(
-        "./companiongenerator/templates/merged_with_contents.lsf.lsx",
+        MOD_FILENAMES["root_template_merged"],
         new_nodes,
     )
     assert (
@@ -102,3 +103,5 @@ def test_parse_and_append():
 
     for template in root_templates_to_verify:
         assert verify_node_children(node_children, template)
+
+    parser.write()
