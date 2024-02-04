@@ -1,8 +1,13 @@
 import io
 import itertools as IT
 import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 
 StringIO = io.StringIO
+
+
+def get_comment_preserving_parser():
+    return ElementTree.XMLParser(target=ElementTree.TreeBuilder(insert_comments=True))
 
 
 def get_tag_with_id_from_root(

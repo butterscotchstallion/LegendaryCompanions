@@ -3,7 +3,11 @@ import xml.etree.ElementTree as ET
 
 from companiongenerator.logger import logger
 from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
-from companiongenerator.xml_utils import get_error_message, get_tag_with_id_from_root
+from companiongenerator.xml_utils import (
+    get_comment_preserving_parser,
+    get_error_message,
+    get_tag_with_id_from_root,
+)
 
 
 class RootTemplateParser:
@@ -31,7 +35,8 @@ class RootTemplateParser:
             if not os.path.exists(filename):
                 raise FileNotFoundError()
 
-            tree = ET.parse(filename)
+            parser = get_comment_preserving_parser()
+            tree = ET.parse(filename, parser)
             root = tree.getroot()
             """
             <region id="Templates">

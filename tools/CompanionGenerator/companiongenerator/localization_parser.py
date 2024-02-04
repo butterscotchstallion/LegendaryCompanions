@@ -1,10 +1,12 @@
 import os
 import xml.etree.ElementTree as ET
-from xml.etree import ElementTree
 
 from companiongenerator import logger
 from companiongenerator.localization_entry import LocalizationEntry
-from companiongenerator.xml_utils import get_error_message
+from companiongenerator.xml_utils import (
+    get_comment_preserving_parser,
+    get_error_message,
+)
 
 
 class LocalizationParser:
@@ -36,9 +38,8 @@ class LocalizationParser:
                 raise FileNotFoundError()
 
             self.loca_filename = filename
-            parser = ElementTree.XMLParser(
-                target=ElementTree.TreeBuilder(insert_comments=True)
-            )
+
+            parser = get_comment_preserving_parser()
             self.tree = ET.parse(filename, parser)
             # Root is contentList
             content_list = self.tree.getroot()
