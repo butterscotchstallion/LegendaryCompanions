@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from uuid import uuid4
 
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_aggregator import LocalizationAggregator
@@ -47,7 +48,8 @@ def test_append_localization_entries():
 
     # Get new nodes and append to file
     loca_aggregator = LocalizationAggregator(template_fetcher=TemplateFetcher())
-    loca_text = "Tut tut tut tut tut tut"
+    # Text needs to be unique because it won't add text that's already there
+    loca_text = str(uuid4())
     new_handle = loca_aggregator.add_entry_and_return_handle(
         text=loca_text, template_fetcher=TemplateFetcher()
     )

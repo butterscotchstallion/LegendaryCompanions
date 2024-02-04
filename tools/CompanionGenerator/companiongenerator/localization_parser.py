@@ -60,6 +60,7 @@ class LocalizationParser:
                 )
 
                 # Append new entries
+                entries_added = 0
                 for loca_entry in entries:
                     if loca_entry.text not in content_text_list:
                         loca_entry_element = ET.fromstring(
@@ -67,10 +68,11 @@ class LocalizationParser:
                         )
                         # Append new nodes to content list (root)
                         content_list.append(loca_entry_element)
+                        entries_added = entries_added + 1
 
-                ET.indent(content_list, "\t")
-
-                return content_list
+                if entries_added > 0:
+                    ET.indent(content_list, "\t")
+                    return content_list
             else:
                 logger.error("Failed to find content list loca XML tree")
         except ET.ParseError as err:
