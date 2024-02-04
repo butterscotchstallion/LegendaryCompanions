@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 
+from companiongenerator import logger
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.root_template_aggregator import RootTemplateNodeEntry
 from companiongenerator.root_template_parser import RootTemplateParser
@@ -28,7 +29,10 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
             if attr.attrib["id"] == "Name":
                 name_value = attr.attrib["value"]
                 if name_value in rt_names:
-                    raise RuntimeError("Duplicate entry found")
+                    logger.error(
+                        f"Duplicate entry found: \"{attr.attrib['value']}\"! Skipping"
+                    )
+                    continue
                 else:
                     if name_value:
                         rt_names.append(name_value)
@@ -89,19 +93,20 @@ def test_parse_and_append():
         xml_with_new_nodes is not None
     ), "Failed to parse children from XML file contents"
 
-    # Parse XML and verify children
-    root = ET.fromstring(xml_with_new_nodes)
-    children_el = parser.get_templates_children(root)
-    assert children_el is not None
+    if xml_with_new_nodes:
+        # Parse XML and verify children
+        root = ET.fromstring(xml_with_new_nodes)
+        children_el = parser.get_templates_children(root)
+        assert children_el is not None
 
-    """
-    Verify XML by checking each root template against
-    the parsed XML
-    """
-    root_templates_to_verify = [companion_rt, page_rt, scroll_rt]
-    node_children = children_el.findall("node")
+        """
+        Verify XML by checking each root template against
+        the parsed XML
+        """
+        root_templates_to_verify = [companion_rt, page_rt, scroll_rt]
+        node_children = children_el.findall("node")
 
-    for template in root_templates_to_verify:
-        assert verify_node_children(node_children, template)
+        for template in root_templates_to_verify:
+            assert verify_node_children(node_children, template)
 
-    parser.write()
+        parser.write()

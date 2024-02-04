@@ -67,6 +67,7 @@ class RootTemplateParser:
                             logger.error(
                                 "Unexpected XML format: no attributes found in node tag!"
                             )
+                            break
 
                     # Iterate supplied nodes and append if not existent
                     nodes_added = 0
