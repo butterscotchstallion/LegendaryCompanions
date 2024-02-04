@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 
+from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.localization_parser import LocalizationParser
@@ -33,16 +34,16 @@ def test_append_localization_entries():
     3. Verify output by testing that all added localization
     entries exist in the output
     """
-    # handler = FileHandler()
+    handler = FileHandler()
     loca_file_path = (
         "../replica_mod_directory/Localization/English/LegendaryCompanions.loca.xml"
     )
-    # backup_created = handler.create_backup_file(loca_file_path)
-    # assert backup_created, "Failed to create backup file"
+    backup_created = handler.create_backup_file(loca_file_path)
+    assert backup_created, "Failed to create backup file"
 
     # Test overwriting last backup file
-    # overwrote_backup_file = handler.create_backup_file(loca_file_path)
-    # assert overwrote_backup_file, "Failed to overwrite existing backup file"
+    overwrote_backup_file = handler.create_backup_file(loca_file_path)
+    assert overwrote_backup_file, "Failed to overwrite existing backup file"
 
     # Get new nodes and append to file
     loca_aggregator = LocalizationAggregator(template_fetcher=TemplateFetcher())
