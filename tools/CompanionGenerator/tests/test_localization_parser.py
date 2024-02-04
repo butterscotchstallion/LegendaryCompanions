@@ -51,7 +51,9 @@ def test_append_localization_entries():
     # Text needs to be unique because it won't add text that's already there
     loca_text = str(uuid4())
     new_handle = loca_aggregator.add_entry_and_return_handle(
-        text=loca_text, template_fetcher=TemplateFetcher()
+        text=loca_text,
+        comment="This is a comment about where this localization is used",
+        template_fetcher=TemplateFetcher(),
     )
     assert is_valid_handle_uuid(new_handle)
     assert len(loca_aggregator.entries) == 1

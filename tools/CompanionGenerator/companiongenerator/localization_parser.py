@@ -1,5 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
+from xml.etree import ElementTree
 
 from companiongenerator import logger
 from companiongenerator.localization_entry import LocalizationEntry
@@ -35,7 +36,10 @@ class LocalizationParser:
                 raise FileNotFoundError()
 
             self.loca_filename = filename
-            self.tree = ET.parse(filename)
+            parser = ElementTree.XMLParser(
+                target=ElementTree.TreeBuilder(insert_comments=True)
+            )
+            self.tree = ET.parse(filename, parser)
             # Root is contentList
             content_list = self.tree.getroot()
 
@@ -67,6 +71,8 @@ class LocalizationParser:
                             loca_entry.get_tpl_with_replacements()
                         )
                         # Append new nodes to content list (root)
+                        if loca_entry.comment:
+                            content_list.append(ET.Comment(loca_entry.comment))
                         content_list.append(loca_entry_element)
                         entries_added = entries_added + 1
 
@@ -79,4 +85,4 @@ class LocalizationParser:
             logger.error(f"Error parsing loca file: {get_error_message(new_node, err)}")
 
     def write_tree(self):
-        self.tree.write(self.loca_filename, "unicode")
+        self.tree.write(self.loca_filename, "unicode", True)
