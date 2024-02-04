@@ -1,102 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
 <contentList>
-  <content contentuid="h78e6ba11gea6ag4627g983fg592126b8f047" version="1">Legendary Companion</content>
-
-  <!-- Tags -->
-  <content contentuid="hd0a1456dg87c9g4632gb707g58e318c3edc7" version="1">A Legendary Companion</content>
-
-  <!-- Gith'zerai -->
-  <content contentuid="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1">Gith'zerai Legendary</content>
-  <content contentuid="h428f14efgf3b5g4536ga265g86a0bce69d11" version="1">A loyal follower of the Gith'zerai</content>
-
-  <!--
-    Combined Book 1
-  -->
-
-  <!-- Torn page 1 -->
-  <content contentuid="h18eb2fe6g78dbg4515gb031g9b5265d9fc49" version="1">Torn Page of Gith'zerai Lore 1</content>
-  <content contentuid="h6bbd35f1g59b2g467ag8498g62dfb1d6655b" version="1">Torn Page 1 lore here</content>
-
-  <!-- Torn page 2 -->
-  <content contentuid="h32885304g6fe4g4024g8590gba73f192028f" version="1">Torn Page of Gith'zerai Lore 2</content>
-  <content contentuid="he4da7caag1b2ag410cgbbfcgf4c289f8accf" version="1">Torn Page 2 lore here</content>
-
-  <!-- Torn Page 1+2 Combined book -->
-  <content contentuid="h8ccd62c7g307cg44bbgbd12g5ab7e38a084e" version="1">Gith'zerai Legend Lore Book</content>
-  <content contentuid="h7068195bgacefg48daga505gb8a22a70240e" version="1">Gith'zerai Legend Lore Book description</content>
-  <content contentuid="h2c03a7e3g463fg42b1g861ag748be71bf4f8" version="1">Very cool Gith'zerai lore here</content>
-
-  <!--
-    RS_Slim_Outfit_Series - Combined Book
-  -->
-  <content contentuid="h18580da7ge9b8g4f70g9864geee1b4b823dc" version="1">Legendary Bard Babe</content>
-
-  <!-- Torn page 1 -->
-  <content contentuid="h257af92fg4134g4872g976cg07c19d8cb6bb" version="1">Torn Page of Bard Lore 1</content>
-  <content contentuid="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="1">Bard Lore 1 here</content>
-
-  <!-- Torn page 2 -->
-  <content contentuid="head3efadg9978g484egbf20gf1b186aa22c0" version="1">Torn Page of Bard Lore 2</content>
-  <content contentuid="h8b179b4fg7d27g40f2g9b12g89b34b1f180b" version="1">Bard Lore 2 here</content>
-
-  <!-- Torn Page 1+2 Combined book -->
-  <content contentuid="hb04b795bgee49g4efeg8285g3c591db0b08a" version="1">Bard Lore Book</content>
-  <content contentuid="h66259cfagee64g4e7agba99gbca89bf5f5b5" version="1">Bard Lore book description here</content>
-  <content contentuid="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1">The legend of Bard Babe has yet to be written, but whispers say the tale is riveting</content>
-
-  <!--
-    Muffin
-  -->
-  <content contentuid="h06c7146eg3e10g45a2g99efga7cc3af432ba" version="1">Chip Chocolate</content>
-  <content contentuid="hbb4b62beg2c67g48c5gaceeg30b67840aa98" version="1">Legendary Muffin</content>
-
-  <!-- Tattered page 1 -->
-  <content contentuid="h07fde134g2789g4d4eg8bd2g1a5b9a3bcc9e" version="1">First Tattered Page of Muffin Lore</content>
-  <content contentuid="h869ae85dg80a3g438egb7d9g1bcab175c508" version="1">The page is hardly legible, but you can make out something about a muffin</content>
-
-  <!-- Tattered page 2 -->
-  <content contentuid="h1f612d34gc0a4g4525g8cdcgff9db4421b65" version="1">Second Tattered Page of Muffin Lore</content>
-  <content contentuid="he0bc99c3gcb12g404bg8272gf1cc9d5588f0" version="1">The page appears to be part of a book about a wizard</content>
-
-  <!-- Tattered Page 1+2 Combined book -->
-  <content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Chocolate, Legendary Muffin</content>
-  <content contentuid="hb021d620gb23fg4b05ga445g9d8d1d6e7253" version="1">Chip Chocolate is a famous wizard known for transforming himself into a chocolate chip muffin</content>
-  <content contentuid="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1">Add muffin legend here</content>
-
-  <!-- Upgrade book -->
-
-  <!-- Left page 1 -->
-  <content contentuid="h8f208074gd2c5g4030g8235g9795b1bca320" version="1">Left Ripped Page of Chip Chocolate Revelations</content>
-  <content contentuid="hab372d69g47ecg4861g9181g9934bf0ac2ed" version="1">The page details a powerful transformation</content>
-
-  <!-- Right page 2 -->
-  <content contentuid="ha4410059gded6g4bf9gab40g3a401e636cbc" version="1">Right Ripped Page of Chip Chocolate Revelations</content>
-  <content contentuid="h64bcce1ag3123g4fc8gab9bg37187a5cc0c1" version="1">The ripped page contains references to arcane revelations</content>
-
-  <!-- Tattered Page 1+2 Combined book -->
-  <content contentuid="h57708a66ge50cg461fgb6d2g66bc2c4e5340" version="1">Revelations of Chip Chocolate, Legendary Muffin</content>
-  <content contentuid="h6fc7e346g7198g4384g99cbg2123b95e098b" version="1">The tome is thick and heavy, its binding made of rich leather</content>
-  <content contentuid="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1">Upgrade lore here</content>
-
-  <!-- PartyBuffs Book -->
-
-  <!-- Left page 1 -->
-  <content contentuid="h5e21d670g32bag4fc9g9184gfb14a351f122" version="1">First Tattered Scrap of a Prayer Book</content>
-  <content contentuid="h6860af51gb6c1g4df9g937bgac1eae2e9805" version="1">This appears to be part of a prayer book</content>
-
-  <!-- Right page 2 -->
-  <content contentuid="h22afee6cg75b5g4a1cgb80cg70a0eb7365cd" version="1">Second Tattered Scrap of a Prayer Book</content>
-  <content contentuid="hcf7d9d8bgd07cg4f59gb986g737386fc0169" version="1">This appears to be part of a prayer book</content>
-
-  <!-- Tattered Page 1+2 Combined book -->
-  <content contentuid="hcc990375ge2cag4bc2ga82egb30134bc0db3" version="1">Desperate Prayers</content>
-  <content contentuid="h33a3949eg3e2ag4e29g8d0eg3f1f057f6b80" version="1">A blessed tome brimming with power</content>
-  <content contentuid="hb7bfb8dcg7e3fg4febg91eeg0dd1affe901f" version="1">We beseech thee!</content>
-
-  <!-- Summon scroll -->
-  <content contentuid="h0abe5f42g55cfg4703gabafg13e1413a3ea6" version="1">Scroll of Summon Chip Chocolate</content>
-  <!-- Upgrade Scroll 1 -->
-  <content contentuid="h1da13e1dg30b9g4811gb9ebgd71a76145011" version="1">Scroll of Muffin Revelations I</content>
-  <content contentuid="h1114e926g187dg4827g988bg7cff3e77f2a7" version="1">The scroll's arcane energy charges the parchment, leaving a tingling sensation</content>
-
+	<content contentuid="h78e6ba11gea6ag4627g983fg592126b8f047" version="1">Legendary Companion</content>
+	<content contentuid="hd0a1456dg87c9g4632gb707g58e318c3edc7" version="1">A Legendary Companion</content>
+	<content contentuid="h2f47ac41g21efg4789ga2e2ge351173cc9b2" version="1">Gith'zerai Legendary</content>
+	<content contentuid="h428f14efgf3b5g4536ga265g86a0bce69d11" version="1">A loyal follower of the Gith'zerai</content>
+	<content contentuid="h18eb2fe6g78dbg4515gb031g9b5265d9fc49" version="1">Torn Page of Gith'zerai Lore 1</content>
+	<content contentuid="h6bbd35f1g59b2g467ag8498g62dfb1d6655b" version="1">Torn Page 1 lore here</content>
+	<content contentuid="h32885304g6fe4g4024g8590gba73f192028f" version="1">Torn Page of Gith'zerai Lore 2</content>
+	<content contentuid="he4da7caag1b2ag410cgbbfcgf4c289f8accf" version="1">Torn Page 2 lore here</content>
+	<content contentuid="h8ccd62c7g307cg44bbgbd12g5ab7e38a084e" version="1">Gith'zerai Legend Lore Book</content>
+	<content contentuid="h7068195bgacefg48daga505gb8a22a70240e" version="1">Gith'zerai Legend Lore Book description</content>
+	<content contentuid="h2c03a7e3g463fg42b1g861ag748be71bf4f8" version="1">Very cool Gith'zerai lore here</content>
+	<content contentuid="h18580da7ge9b8g4f70g9864geee1b4b823dc" version="1">Legendary Bard Babe</content>
+	<content contentuid="h257af92fg4134g4872g976cg07c19d8cb6bb" version="1">Torn Page of Bard Lore 1</content>
+	<content contentuid="h9b01c04dg1358g4a4fg9d83g0340e8c90bbd" version="1">Bard Lore 1 here</content>
+	<content contentuid="head3efadg9978g484egbf20gf1b186aa22c0" version="1">Torn Page of Bard Lore 2</content>
+	<content contentuid="h8b179b4fg7d27g40f2g9b12g89b34b1f180b" version="1">Bard Lore 2 here</content>
+	<content contentuid="hb04b795bgee49g4efeg8285g3c591db0b08a" version="1">Bard Lore Book</content>
+	<content contentuid="h66259cfagee64g4e7agba99gbca89bf5f5b5" version="1">Bard Lore book description here</content>
+	<content contentuid="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1">The legend of Bard Babe has yet to be written, but whispers say the tale is riveting</content>
+	<content contentuid="h06c7146eg3e10g45a2g99efga7cc3af432ba" version="1">Chip Chocolate</content>
+	<content contentuid="hbb4b62beg2c67g48c5gaceeg30b67840aa98" version="1">Legendary Muffin</content>
+	<content contentuid="h07fde134g2789g4d4eg8bd2g1a5b9a3bcc9e" version="1">First Tattered Page of Muffin Lore</content>
+	<content contentuid="h869ae85dg80a3g438egb7d9g1bcab175c508" version="1">The page is hardly legible, but you can make out something about a muffin</content>
+	<content contentuid="h1f612d34gc0a4g4525g8cdcgff9db4421b65" version="1">Second Tattered Page of Muffin Lore</content>
+	<content contentuid="he0bc99c3gcb12g404bg8272gf1cc9d5588f0" version="1">The page appears to be part of a book about a wizard</content>
+	<content contentuid="hfa9ef6a9g4bd6g4c4ega1a5g485004cbdf34" version="1">The Legend of Chip Chocolate, Legendary Muffin</content>
+	<content contentuid="hb021d620gb23fg4b05ga445g9d8d1d6e7253" version="1">Chip Chocolate is a famous wizard known for transforming himself into a chocolate chip muffin</content>
+	<content contentuid="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1">Add muffin legend here</content>
+	<content contentuid="h8f208074gd2c5g4030g8235g9795b1bca320" version="1">Left Ripped Page of Chip Chocolate Revelations</content>
+	<content contentuid="hab372d69g47ecg4861g9181g9934bf0ac2ed" version="1">The page details a powerful transformation</content>
+	<content contentuid="ha4410059gded6g4bf9gab40g3a401e636cbc" version="1">Right Ripped Page of Chip Chocolate Revelations</content>
+	<content contentuid="h64bcce1ag3123g4fc8gab9bg37187a5cc0c1" version="1">The ripped page contains references to arcane revelations</content>
+	<content contentuid="h57708a66ge50cg461fgb6d2g66bc2c4e5340" version="1">Revelations of Chip Chocolate, Legendary Muffin</content>
+	<content contentuid="h6fc7e346g7198g4384g99cbg2123b95e098b" version="1">The tome is thick and heavy, its binding made of rich leather</content>
+	<content contentuid="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1">Upgrade lore here</content>
+	<content contentuid="h5e21d670g32bag4fc9g9184gfb14a351f122" version="1">First Tattered Scrap of a Prayer Book</content>
+	<content contentuid="h6860af51gb6c1g4df9g937bgac1eae2e9805" version="1">This appears to be part of a prayer book</content>
+	<content contentuid="h22afee6cg75b5g4a1cgb80cg70a0eb7365cd" version="1">Second Tattered Scrap of a Prayer Book</content>
+	<content contentuid="hcf7d9d8bgd07cg4f59gb986g737386fc0169" version="1">This appears to be part of a prayer book</content>
+	<content contentuid="hcc990375ge2cag4bc2ga82egb30134bc0db3" version="1">Desperate Prayers</content>
+	<content contentuid="h33a3949eg3e2ag4e29g8d0eg3f1f057f6b80" version="1">A blessed tome brimming with power</content>
+	<content contentuid="hb7bfb8dcg7e3fg4febg91eeg0dd1affe901f" version="1">We beseech thee!</content>
+	<content contentuid="h0abe5f42g55cfg4703gabafg13e1413a3ea6" version="1">Scroll of Summon Chip Chocolate</content>
+	<content contentuid="h1da13e1dg30b9g4811gb9ebgd71a76145011" version="1">Scroll of Muffin Revelations I</content>
+	<content contentuid="h1114e926g187dg4827g988bg7cff3e77f2a7" version="1">The scroll's arcane energy charges the parchment, leaving a tingling sensation</content>
+	<content contentuid="h9b122ebeg8bf2g4621g9d8fg6df2ea374d98" version="1">Tut tut tut tut tut tut</content>
 </contentList>

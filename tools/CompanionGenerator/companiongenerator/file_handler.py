@@ -28,7 +28,8 @@ class FileHandler:
 
     def write_string_to_file(self, file_path: str, contents: str) -> bool:
         """
-        Writes list to file
+        Writes list to file and confirms it was successful by checking
+        that it exists
         """
         if not self.is_dry_run:
             if not os.path.exists(file_path):

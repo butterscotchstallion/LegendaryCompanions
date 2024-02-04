@@ -1,12 +1,9 @@
-import io
-import itertools as IT
 import os
 import xml.etree.ElementTree as ET
 
 from companiongenerator.logger import logger
 from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
-
-StringIO = io.StringIO
+from companiongenerator.xml_utils import get_error_message, get_tag_with_id_from_root
 
 
 class RootTemplateParser:
@@ -14,25 +11,11 @@ class RootTemplateParser:
     Handles parsing XML in root templates
     """
 
-    def get_error_message(self, content: str, err: ET.ParseError):
-        lineno, column = err.position
-        line = next(IT.islice(StringIO(content), lineno))
-        caret = "{:=>{}}".format("^", column)
-        return "{}\n{}\n{}".format(err, line, caret)
-
-    def get_tag_with_id_from_root(
-        self, root, tag_name: str, tag_id: str
-    ) -> ET.Element | None:
-        for tag in root.findall(tag_name):
-            tree_tag_id = tag.attrib.get("id")
-            if tree_tag_id is not None and tree_tag_id == tag_id:
-                return tag
-
-    def get_templates_children(self, root) -> ET.Element | None:
+    def get_templates_children(self, root: ET.Element) -> ET.Element | None:
         # Get region#Templates
-        templates_region = self.get_tag_with_id_from_root(root, "region", "Templates")
+        templates_region = get_tag_with_id_from_root(root, "region", "Templates")
         if templates_region is not None:
-            node = self.get_tag_with_id_from_root(templates_region, "node", "Templates")
+            node = get_tag_with_id_from_root(templates_region, "node", "Templates")
             if node is not None:
                 return node.find("children")
 
@@ -88,7 +71,7 @@ class RootTemplateParser:
 
         except ET.ParseError as err:
             if new_node:
-                err_msg = self.get_error_message(new_node.root_template_xml, err)
+                err_msg = get_error_message(new_node.root_template_xml, err)
             else:
                 err_msg = "unknown"
             logger.error(f"Failed to parse XML: {err_msg}")

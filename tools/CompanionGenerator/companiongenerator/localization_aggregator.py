@@ -17,7 +17,7 @@ class LocalizationAggregator:
     entries: list[LocalizationEntry] = []
 
     def __init__(self, **kwargs):
-        self.entries = []
+        self.entries: list[LocalizationEntry] = []
         self.is_dry_run = True
 
         if "is_dry_run" in kwargs:

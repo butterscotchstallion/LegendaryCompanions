@@ -27,5 +27,8 @@ class LocalizationEntry(TemplateReplacerBase):
     def to_xml(self):
         return self.get_tpl_with_replacements()
 
+    def __str__(self):
+        return self.text
+
     def __repr__(self):
         return self.text
