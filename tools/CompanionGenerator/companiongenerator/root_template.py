@@ -1,5 +1,7 @@
 from uuid import uuid4
 
+from companiongenerator.localization_aggregator import LocalizationAggregator
+from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
 
@@ -14,18 +16,20 @@ class RootTemplate(TemplateReplacerBase):
     """
 
     def __init__(self, **kwargs) -> None:
-        self.base_path = "../templates/"
+        self.base_path: str = "../templates/"
         self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
-        self.rt_aggregator = kwargs["root_template_aggregator"]
-        self.loca_aggregator = kwargs["localization_aggregator"]
-        self.name = kwargs["name"]
-        self.display_name = kwargs["displayName"]
-        self.display_name_handle = self.loca_aggregator.add_entry_and_return_handle(
-            text=kwargs["displayName"],
-            comment=kwargs["displayName"],
-            template_fetcher=self.template_fetcher,
+        self.rt_aggregator: RootTemplateAggregator = kwargs["root_template_aggregator"]
+        self.loca_aggregator: LocalizationAggregator = kwargs["localization_aggregator"]
+        self.name: str = kwargs["name"]
+        self.display_name: str = kwargs["displayName"]
+        self.display_name_handle: str = (
+            self.loca_aggregator.add_entry_and_return_handle(
+                text=kwargs["displayName"],
+                comment=kwargs["displayName"],
+                template_fetcher=self.template_fetcher,
+            )
         )
-        self.map_key = str(uuid4())
+        self.map_key: str = str(uuid4())
         self.replacements: dict[str, str] = {
             "{{name}}": self.name,
             "{{displayNameHandle}}": self.display_name_handle,
@@ -44,8 +48,8 @@ class CompanionRT(RootTemplate):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_companion.xml"
-        self.title = ""
+        self.filename: str = f"{self.base_path}rt_companion.xml"
+        self.title: str = ""
 
         # Companion specific replacements below
         archetype: str = "melee_smart"
@@ -63,8 +67,6 @@ class CompanionRT(RootTemplate):
                 template_fetcher=self.template_fetcher,
             )
             self.replacements["{{titleHandle}}"] = self.title_handle
-        else:
-            raise RuntimeError("No title specified")
 
         if "tagList" in kwargs:
             tag_list = kwargs["tagList"]
