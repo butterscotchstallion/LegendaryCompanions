@@ -2,8 +2,8 @@ import os
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from companiongenerator import logger
 from companiongenerator.localization_entry import LocalizationEntry
+from companiongenerator.logger import logger
 from companiongenerator.xml_utils import (
     get_comment_preserving_parser,
     get_error_message,

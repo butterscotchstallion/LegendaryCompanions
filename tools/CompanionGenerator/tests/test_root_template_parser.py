@@ -19,6 +19,10 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
     rt_names: list[str] = []
     num_skipped: int = 0
     for node_child in node_children:
+        # Don't try to parse comments
+        if node_child.tag is ET.Comment:
+            continue
+
         """
         Each node has a series of attribute tags
         """
@@ -30,7 +34,7 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
             if attr.attrib["id"] == "Name":
                 name_value = attr.attrib["value"]
                 if name_value in rt_names:
-                    logger.error(
+                    logger.info(
                         f"Duplicate entry found: \"{attr.attrib['value']}\"! Skipping"
                     )
                     num_skipped = num_skipped + 1

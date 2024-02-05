@@ -77,4 +77,28 @@
 	<content contentuid="h1114e926g187dg4827g988bg7cff3e77f2a7" version="1">The scroll's arcane energy charges the parchment, leaving a tingling sensation</content>
 	<!--This is a comment about where this localization is used-->
 	<content contentuid="h31be97f1g20a5g42b7ga9feg062f3dc4c47c" version="1">Tut tut tut tut tut</content>
+	<!--Display name-->
+	<content contentuid="h92e603f0gfbe9g4039gaad4ga8a45f58e2d8" version="1">Display name</content>
+	<!--Summon Chip Chocolate-->
+	<content contentuid="h994d2651ge0aeg4fbdg9783g86819951b60c" version="1">Summon Chip Chocolate</content>
+	<!--A powerful summoning scroll-->
+	<content contentuid="haf1e856ag9a19g4c62gad54g90a6daf4ad56" version="1">A powerful summoning scroll</content>
+	<!--A tattered page-->
+	<content contentuid="hce72e72bg83dag41adga222g4040be592479" version="1">A tattered page</content>
+	<!--Page description-->
+	<content contentuid="h3f7aad5fg4be5g4958g8694ga6c62fe16a40" version="1">Page description</content>
+	<!--Page 2 description-->
+	<content contentuid="h62c96eb7gda10g4447gaa27gd77f51478a0d" version="1">Page 2 description</content>
+	<!--Book of Testing-->
+	<content contentuid="h64e656ddg62beg4ff8gbeebg42e97fc2f963" version="1">Book of Testing</content>
+	<!--A thick leather bound tome-->
+	<content contentuid="hff2f0422gd4feg4c65ga211g9c4aeb838b93" version="1">A thick leather bound tome</content>
+	<!--Scroll of Testing-->
+	<content contentuid="hed526b01g0675g4b33gb313g7392ca508ec3" version="1">Scroll of Testing</content>
+	<!--Scroll description-->
+	<content contentuid="hac694714g8d4dg4a9dg857dga64d301436d9" version="1">Scroll description</content>
+	<!--This is a book about how much I love testing-->
+	<content contentuid="hd409f217g9ef3g4624g8adegbf03f0a8540c" version="1">This is a book about how much I love testing</content>
+	<!--This is the unknown description-->
+	<content contentuid="hfc29d8ccg9e52g4c0agab62g72cc472c52ba" version="1">This is the unknown description</content>
 </contentList>

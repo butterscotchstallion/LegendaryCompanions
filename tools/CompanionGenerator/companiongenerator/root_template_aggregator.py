@@ -1,3 +1,4 @@
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
 from companiongenerator.root_template_parser import RootTemplateParser
@@ -32,8 +33,10 @@ class RootTemplateAggregator:
             bool | None: Returns true if successful
         """
         xml_merged_str = self.root_template_parser.append_nodes_to_children(
-            "./companiongenerator/templates/merged_with_contents.lsf.lsx", self.entries
+            MOD_FILENAMES["root_template_merged"], self.entries
         )
 
         if xml_merged_str:
-            return self.file_handler.write_string_to_file(file_path, xml_merged_str)
+            # Returns None
+            self.root_template_parser.write()
+            return True

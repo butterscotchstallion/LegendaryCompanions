@@ -1,11 +1,14 @@
 import datetime
 import os
+from pathlib import Path
 from uuid import uuid4
 
 from companiongenerator.book_loca_entry import BookLocaEntry
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.localization_aggregator import LocalizationAggregator
+from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -103,19 +106,33 @@ class AutomationDirector:
         file_path = f"{self.output_dir_path}/{filename}.loca.xml"
         return self.localization_aggregator.write_entries(file_path)
 
-    def create_book_localization_file(self, **kwargs):
+    def update_book_localization_file(self, **kwargs):
         """
-        Creates localization file (the books)
+        Updates localization file (the books)
         """
-        ## This is not working!
         book_loca_entry = BookLocaEntry(
             localization_manager=self.localization_aggregator, **kwargs
         )
         self.book_content_handle = book_loca_entry.content_handle
         self.book_description_handle = book_loca_entry.unknown_description_handle
-        book_entry_xml = book_loca_entry.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/Books.lsf.lsx"
-        return self.file_handler.write_string_to_file(file_path, book_entry_xml)
+        parser = LocalizationParser()
+        content_list = parser.append_entries(
+            MOD_FILENAMES["localization"], self.localization_aggregator.entries
+        )
+        logger.info(f"Localization entries: {content_list}")
+
+        if content_list is not None:
+            backup_created = self.file_handler.create_backup_file(
+                MOD_FILENAMES["localization"]
+            )
+            if backup_created:
+                parser.write_tree()
+                logger.info(
+                    f"Wrote updated localization file: {Path(parser.loca_filename).stem}"
+                )
+                return True
+            else:
+                logger.error("Failed to create backup file!")
 
     def create_item_combos(self, **kwargs):
         """

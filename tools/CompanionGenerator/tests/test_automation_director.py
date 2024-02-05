@@ -110,14 +110,14 @@ def test_create():
         book_name = "Book of Testing"
         book_contents = "This is a book about how much I love testing"
         unknown_description = "This is the unknown description"
-        created_book_loca_file = director.create_book_localization_file(
+        updated_book_loca_file = director.update_book_localization_file(
             name=book_name,
             content=book_contents,
             unknownDescription=unknown_description,
             template_fetcher=TemplateFetcher(),
             localization_aggregator=director.localization_aggregator,
         )
-        assert created_book_loca_file, "Failed to create book localization file"
+        assert updated_book_loca_file, "Failed to update book localization file"
         assert director.localization_aggregator.entry_with_text_exists(book_contents)
         assert director.localization_aggregator.entry_with_handle_exists(
             director.book_content_handle

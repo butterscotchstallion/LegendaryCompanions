@@ -1,6 +1,9 @@
 """Mod file paths"""
 BASE_PATH = "../replica_mod_directory"
 PUBLIC_PATH = f"{BASE_PATH}/Public/LegendaryCompanions"
+# tools\replica_mod_directory\Mods\LegendaryCompanions
+MOD_PATH = f"{BASE_PATH}/Mods/LegendaryCompanions"
+BOOKS_PATH = f"{MOD_PATH}/Localization"
 STATS_PATH = f"{PUBLIC_PATH}/Stats/Generated"
 TAGS_PATH = f"{PUBLIC_PATH}/Tags"
 STATS_DATA_PATH = f"{STATS_PATH}/Data"
@@ -12,4 +15,5 @@ MOD_FILENAMES: dict = {
     "stats": STATS_PATH,
     "stats_data": STATS_DATA_PATH,
     "tags": TAGS_PATH,
+    "books": f"{BOOKS_PATH}/LegendaryCompanions.lsf.lsx",
 }
