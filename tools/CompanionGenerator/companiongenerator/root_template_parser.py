@@ -69,20 +69,23 @@ class RootTemplateParser:
                             )
                             break
 
-                    # Iterate supplied nodes and append if not existent
-                    nodes_added = 0
-                    for new_node in nodes:
-                        if new_node.name not in existing_names:
-                            if new_node.comment:
-                                node_children.append(ET.Comment(new_node.comment))
-                            node_children.append(
-                                ET.fromstring(new_node.root_template_xml)
-                            )
-                            nodes_added = nodes_added + 1
+                    if len(existing_names) > 0:
+                        # Iterate supplied nodes and append if not existent
+                        nodes_added = 0
+                        for new_node in nodes:
+                            if new_node.name not in existing_names:
+                                if new_node.comment:
+                                    node_children.append(ET.Comment(new_node.comment))
+                                node_children.append(
+                                    ET.fromstring(new_node.root_template_xml)
+                                )
+                                nodes_added = nodes_added + 1
 
-                    if nodes_added > 0:
-                        ET.indent(self.tree, space="\t", level=0)
-                        return ET.tostring(root, encoding="unicode")
+                        if nodes_added > 0:
+                            ET.indent(self.tree, space="\t", level=0)
+                            return ET.tostring(root, encoding="unicode")
+                    else:
+                        logger.error("Found 0 existing names. This should not happen")
 
         except ET.ParseError as err:
             if new_node:
