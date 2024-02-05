@@ -17,6 +17,7 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
     then we know there is a duplicate and this test should fail
     """
     rt_names: list[str] = []
+    num_skipped: int = 0
     for node_child in node_children:
         """
         Each node has a series of attribute tags
@@ -32,11 +33,11 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
                     logger.error(
                         f"Duplicate entry found: \"{attr.attrib['value']}\"! Skipping"
                     )
+                    num_skipped = num_skipped + 1
                     continue
                 else:
                     if name_value:
                         rt_names.append(name_value)
-
             # Example: <attribute id="MapKey" type="FixedString" value="{{mapKey}}" />
             is_map_key = attr.attrib["id"] == "MapKey"
             has_value = "value" in attr.attrib
@@ -46,6 +47,10 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
             )
             if is_map_key and map_key_match:
                 return True
+
+    if num_skipped > 0:
+        return True
+
     return False
 
 

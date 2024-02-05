@@ -1,5 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 from companiongenerator.logger import logger
 from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
@@ -35,6 +36,7 @@ class RootTemplateParser:
         updated structure.
         """
         new_node = None
+        node_child = None
         try:
             if not os.path.exists(filename):
                 raise FileNotFoundError()
@@ -57,6 +59,10 @@ class RootTemplateParser:
 
                 if all_nodes is not None:
                     for node_child in node_children:
+                        # Don't try to parse comments
+                        if node_child.tag is ET.Comment:
+                            continue
+
                         attributes = node_child.findall("attribute")
                         if attributes and len(attributes) > 0:
                             for attribute_tag in attributes:
@@ -81,10 +87,15 @@ class RootTemplateParser:
                                 )
                                 nodes_added = nodes_added + 1
 
-                        if nodes_added > 0:
-                            ET.indent(self.tree, space="\t", level=0)
-                            return ET.tostring(root, encoding="unicode")
+                        logger.info(
+                            f"{nodes_added} root templates added to {Path(self.filename).stem}"
+                        )
+
+                        ET.indent(self.tree, space="\t", level=0)
+                        return ET.tostring(root, encoding="unicode")
                     else:
+                        if node_child is not None:
+                            ET.dump(node_child)
                         logger.error("Found 0 existing names. This should not happen")
 
         except ET.ParseError as err:

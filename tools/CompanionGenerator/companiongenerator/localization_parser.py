@@ -1,5 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 from companiongenerator import logger
 from companiongenerator.localization_entry import LocalizationEntry
@@ -77,9 +78,14 @@ class LocalizationParser:
                         content_list.append(loca_entry_element)
                         entries_added = entries_added + 1
 
+                logger.info(
+                    f"{entries_added} localization entries added to {Path(self.loca_filename)}"
+                )
+
                 if entries_added > 0:
                     ET.indent(content_list, "\t")
-                    return content_list
+
+                return content_list
             else:
                 logger.error("Failed to find content list loca XML tree")
         except ET.ParseError as err:
