@@ -1,47 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <save>
 	<version major="4" minor="0" revision="9" build="322" />
 	<region id="TranslatedStringKeys">
 		<node id="TranslatedStringKeys">
 			<children>
-				<!-- Gith'zerai -->
-				<node id="TranslatedStringKey"> Gith'zerai combined tome
-					<attribute id="Content" type="TranslatedString" handle="h2c03a7e3g463fg42b1g861ag748be71bf4f8" version="1" />
-					<attribute id="UUID" type="FixedString" value="LC_Githzerai_Combined_Tome" />
-					<attribute id="Speaker" type="FixedString" value="" />
-					<attribute id="ExtraData" type="LSString" value="" />
-					<attribute id="Stub" type="bool" value="True" />
-					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
-				</node>
-
-				<!-- RSO -->
-				<node id="TranslatedStringKey"> RSO combined tome
-					<attribute id="Content" type="TranslatedString" handle="h41830e55g5bbeg4e64ga8a7gf1a5e80fcde9" version="1" />
-					<attribute id="UUID" type="FixedString" value="LC_RSO_Combined_Tome" />
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="hd5944cf1g4470g451ag8155g66d168af0ccb" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing de0bf159-6ffe-4998-be79-14087788f3c9" />
 					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
 					<attribute id="ExtraData" type="LSString" value="" />
 					<attribute id="Stub" type="bool" value="True" />
-					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="hb77b6bd6gc5d2g41ceg97c6g169a241cbb17" version="1" />
 				</node>
-
-				<!-- Muffin -->
-				<node id="TranslatedStringKey"> Muffin combined tome
-					<attribute id="Content" type="TranslatedString" handle="h59f19954g6c2bg4fb8g80c4g2b8ce87909bd" version="1" />
-					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Tome" />
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h90b0e8cfge9c3g42e2g99d9ge997241bfa4d" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing ebcf3998-60f3-456a-997c-5d3a296521f0" />
 					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
 					<attribute id="ExtraData" type="LSString" value="" />
 					<attribute id="Stub" type="bool" value="True" />
-					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="hb71ecc3ag94adg4499g89f0g8ea03e87d337" version="1" />
 				</node>
-				<node id="TranslatedStringKey"> LC_Muffin_Combined_Upgrade_Tome
-					<attribute id="Content" type="TranslatedString" handle="hdc6d594ag52feg42f0g84c4g711c42720c1a" version="1" />
-					<attribute id="UUID" type="FixedString" value="LC_Muffin_Combined_Upgrade_Tome" />
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="hc68192abgf057g4032gb9c1g25382085c830" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing b923bd72-3628-4b5e-a99f-2ce136d90b2b" />
 					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
 					<attribute id="ExtraData" type="LSString" value="" />
 					<attribute id="Stub" type="bool" value="True" />
-					<attribute id="UnknownDescription" type="TranslatedString" handle="h207f51e2g3770g456fg9859ga8fd4482c74b" version="1" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h1ed48fb3g6fb1g4a81gb5b2gd0aa09a722bd" version="1" />
 				</node>
-
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h22eff426gaf0eg4a21gb467gc28bb236cd91" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing 82db11e4-574a-4f87-83ea-156f0cdbcd22" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="hd77eef4cg2e41g42d5g808bgd5a358434d22" version="1" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="hdb146342ga2f5g4684g936fg8fcba145f581" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing 9ab93f1e-104d-4412-a223-2c45425b169d" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h8cb4a58dgd3dfg460bg906ag57793de477de" version="1" />
+				</node>
 			</children>
 		</node>
 	</region>

@@ -10,13 +10,19 @@ def get_comment_preserving_parser():
     return ElementTree.XMLParser(target=ElementTree.TreeBuilder(insert_comments=True))
 
 
+def get_text_from_entries(entries: list) -> list[str]:
+    """Extracts text from elements and localization entries"""
+    return [entry.text for entry in entries if entry.text]
+
+
 def get_tag_with_id_from_root(
     root: ET.Element, tag_name: str, tag_id: str
 ) -> ET.Element | None:
-    for tag in root.findall(tag_name):
-        tree_tag_id = tag.attrib.get("id")
-        if tree_tag_id is not None and tree_tag_id == tag_id:
-            return tag
+    for el in root.findall(tag_name):
+        if el.tag == tag_name:
+            tree_tag_id = el.attrib.get("id")
+            if tree_tag_id is not None and tree_tag_id == tag_id:
+                return el
 
 
 def get_error_message(content: str, err: ET.ParseError):

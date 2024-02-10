@@ -14,3 +14,5 @@ from .logger import logger
 from .root_template_node_entry import RootTemplateNodeEntry
 from .root_template_parser import RootTemplateParser
 from .constants import MOD_FILENAMES
+from .book_loca_entry import BookLocaEntry
+from .book_parser import BookParser

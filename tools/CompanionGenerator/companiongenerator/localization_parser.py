@@ -7,6 +7,7 @@ from companiongenerator.logger import logger
 from companiongenerator.xml_utils import (
     get_comment_preserving_parser,
     get_error_message,
+    get_text_from_entries,
 )
 
 
@@ -14,20 +15,14 @@ class LocalizationParser:
     """Handles parses and modifying localization XML"""
 
     tree: ET.ElementTree
-    loca_filename: str
+    filename: str
 
     def __init__(self):
         self.original_parsed_entries: list[str] = []
-        self.loca_filename = ""
+        self.filename = ""
 
     def get_content_list(self, root: ET.Element) -> list[ET.Element]:
         return root.findall("content")
-
-    def get_text_from_entries(
-        self, entries: list[ET.Element] | list[LocalizationEntry]
-    ) -> list[str]:
-        """Extracts text from elements and localization entries"""
-        return [entry.text for entry in entries if entry.text]
 
     def append_entries(
         self, filename: str, entries: list[LocalizationEntry]
@@ -38,13 +33,13 @@ class LocalizationParser:
             if not os.path.exists(filename):
                 raise FileNotFoundError()
 
-            self.loca_filename = filename
+            self.filename = filename
 
             parser = get_comment_preserving_parser()
             self.tree = ET.parse(filename, parser)
             # Root is contentList
             content_list = self.tree.getroot()
-
+            content_entries = self.get_content_list(content_list)
             """
             Example structure
             <contentList>
@@ -53,17 +48,11 @@ class LocalizationParser:
                 </content>
             </contentList>
             """
-            content_entries = self.get_content_list(content_list)
-
             if content_entries is not None:
-                self.original_parsed_entries = self.get_text_from_entries(
-                    content_entries
-                )
+                self.original_parsed_entries = get_text_from_entries(content_entries)
 
                 # Build list of text so we don't add duplicates
-                content_text_list: list[str] = self.get_text_from_entries(
-                    content_entries
-                )
+                content_text_list: list[str] = get_text_from_entries(content_entries)
 
                 # Append new entries
                 entries_added = 0
@@ -79,7 +68,7 @@ class LocalizationParser:
                         entries_added = entries_added + 1
 
                 logger.info(
-                    f"{entries_added} localization entries added to {Path(self.loca_filename)}"
+                    f"{entries_added} localization entries added to {Path(self.filename)}"
                 )
 
                 if entries_added > 0:
@@ -92,4 +81,4 @@ class LocalizationParser:
             logger.error(f"Error parsing loca file: {get_error_message(new_node, err)}")
 
     def write_tree(self):
-        self.tree.write(self.loca_filename, "unicode", True)
+        self.tree.write(self.filename, "unicode", True)

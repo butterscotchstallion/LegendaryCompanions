@@ -3,12 +3,12 @@ import os
 from pathlib import Path
 from uuid import uuid4
 
-from companiongenerator.book_loca_entry import BookLocaEntry
+from companiongenerator.book_loca_aggregator import BookLocaAggregator
+from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.localization_aggregator import LocalizationAggregator
-from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -25,6 +25,7 @@ class AutomationDirector:
     is_dry_run: bool = True
     output_dir_path: str | None = None
     localization_aggregator: LocalizationAggregator
+    book_loca_aggregator: BookLocaAggregator
     rt_aggregator: RootTemplateAggregator
     integration_name: str = ""
     default_localization_filename: str = "English"
@@ -39,8 +40,11 @@ class AutomationDirector:
         self.localization_aggregator = LocalizationAggregator(
             is_dry_run=self.is_dry_run
         )
+        self.book_loca_aggregator = BookLocaAggregator()
         self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
-        logger.info("\nInitializing new automation run!")
+        logger.info("=================================================")
+        logger.info("Initializing new automation run!")
+        logger.info("=================================================")
 
     def create_output_dir_if_not_exists(self):
         if not self.output_dir_path:
@@ -98,41 +102,47 @@ class AutomationDirector:
                 else:
                     logger.error(f"File exists: {file_path}")
 
-    def create_localization_file(self):
+    def update_book_file(self, **kwargs):
         """
-        Creates main localization file (not the books)
+        Updates book file
+        1. Add new book to book loca aggregator
+        2. Create book file if not existing
+        3. Create backup of file
+        4. Obtain modified XML tree of book structure with new books
+        5. Write new XML tree to file
         """
-        filename = self.integration_name or self.default_localization_filename
-        file_path = f"{self.output_dir_path}/{filename}.loca.xml"
-        return self.localization_aggregator.write_entries(file_path)
-
-    def update_book_localization_file(self, **kwargs):
-        """
-        Updates localization file (the books)
-        """
-        book_loca_entry = BookLocaEntry(
-            localization_manager=self.localization_aggregator, **kwargs
+        book_filename = MOD_FILENAMES["books"]
+        book = self.book_loca_aggregator.add_book_and_return_book(
+            localization_aggregator=self.localization_aggregator,
+            **kwargs,
         )
-        self.book_content_handle = book_loca_entry.content_handle
-        self.book_description_handle = book_loca_entry.unknown_description_handle
-        parser = LocalizationParser()
-        content_list = parser.append_entries(
-            MOD_FILENAMES["localization"], self.localization_aggregator.entries
-        )
-        logger.info(f"Localization entries: {content_list}")
 
-        if content_list is not None:
-            backup_created = self.file_handler.create_backup_file(
-                MOD_FILENAMES["localization"]
+        self.book_content_handle = book.content_handle
+
+        create_ok = self.file_handler.create_template_if_not_exists(
+            book_filename, MOD_FILENAMES["book_template_file"]
+        )
+
+        if create_ok:
+            parser = BookParser()
+            books = parser.update_book_file(
+                book_filename, self.book_loca_aggregator.entries
             )
-            if backup_created:
-                parser.write_tree()
-                logger.info(
-                    f"Wrote updated localization file: {Path(parser.loca_filename).stem}"
-                )
-                return True
-            else:
-                logger.error("Failed to create backup file!")
+
+            logger.debug(f"Books: {books}")
+
+            if books is not None:
+                backup_created = self.file_handler.create_backup_file(book_filename)
+                if backup_created:
+                    parser.write_tree()
+                    logger.info(
+                        f"Wrote updated book file: {Path(parser.filename).stem}"
+                    )
+                    return books
+                else:
+                    logger.error("Failed to create backup file!")
+        else:
+            logger.error("Failed to create book template")
 
     def create_item_combos(self, **kwargs):
         """

@@ -1,4 +1,5 @@
 from companiongenerator.loca_helper import generate_handle
+from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
 
 
@@ -9,7 +10,7 @@ class LocalizationEntry(TemplateReplacerBase):
     """
 
     def __init__(self, **kwargs):
-        self.template_fetcher = kwargs["template_fetcher"]
+        self.template_fetcher = TemplateFetcher()
         self.filename = "localization_entry.xml"
         self.handle = generate_handle()
         self.comment = ""

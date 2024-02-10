@@ -1,4 +1,3 @@
-from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.localization_aggregator import (
     LocalizationAggregator,
 )
@@ -64,7 +63,8 @@ def test_add_entry() -> None:
     assert len(loca_aggregator.entries) == 4
 
     entry_map: dict[str, LocalizationEntry] = {}
-    for entry in loca_aggregator.entries:
+    entries = loca_aggregator.entries
+    for entry in entries:
         assert not is_valid_handle_uuid(entry.text), "Text should not be a handle"
         entry_map[entry.handle] = entry
 
@@ -89,22 +89,3 @@ def test_deduplication():
     loca_aggregator.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
     loca_aggregator.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
     assert len(loca_aggregator.entries) == 1, "Failed to de-duplicate loca entries"
-
-
-def test_book_content_loca_added():
-    """
-    Ensures book loca content is in the localization file
-    """
-    loca_aggregator = LocalizationAggregator()
-    fetcher = TemplateFetcher()
-    # Instantiating the entry will add to the loca aggregator
-    BookLocaEntry(
-        content="Marshmallow",
-        name="Book of Testing",
-        unknownDescription="Malla malla",
-        template_fetcher=fetcher,
-        localization_aggregator=loca_aggregator,
-    )
-    # There should be two entries: one for content
-    # and one for unknown description
-    assert len(loca_aggregator.entries) == 2

@@ -1,8 +1,13 @@
+from typing import Literal
 from uuid import uuid4
 
 from companiongenerator.automation_director import AutomationDirector
+from companiongenerator.book_loca_entry import BookLocaEntry
+from companiongenerator.book_parser import BookParser
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
+
+from tests.template_validity_helper import is_valid_handle_uuid
 
 
 def test_create():
@@ -72,7 +77,7 @@ def test_create():
             name=book_stats_name,
             displayName="Book of Testing",
             description="A thick leather bound tome",
-            bookId=uuid4(),
+            bookId=str(uuid4()),
             statsName=book_stats_name,
             localization_aggregator=director.localization_aggregator,
             template_fetcher=TemplateFetcher(),
@@ -102,30 +107,54 @@ def test_create():
         )
 
         ## Append to root template using the above RTs
+        # TODO: REPLACE ME with replica merged path
         merged_path = f"{director.output_dir_path}/merged.lsf.lsx"
         appended_rt = director.append_root_template(merged_path)
         assert appended_rt, "Failed to append root template"
 
         # Write book localization file (book contents)
-        book_name = "Book of Testing"
+        book_name = f"Book of Testing {uuid4()}"
         book_contents = "This is a book about how much I love testing"
         unknown_description = "This is the unknown description"
-        updated_book_loca_file = director.update_book_localization_file(
+        updated_book_children = director.update_book_file(
             name=book_name,
             content=book_contents,
-            unknownDescription=unknown_description,
-            template_fetcher=TemplateFetcher(),
-            localization_aggregator=director.localization_aggregator,
+            unknown_description=unknown_description,
         )
-        assert updated_book_loca_file, "Failed to update book localization file"
-        assert director.localization_aggregator.entry_with_text_exists(book_contents)
-        assert director.localization_aggregator.entry_with_handle_exists(
-            director.book_content_handle
-        )
-        assert director.localization_aggregator.entry_with_handle_exists(
-            director.book_description_handle
-        )
+        assert (
+            updated_book_children is not None
+        ), "Failed to update book localization file"
 
-        # Write localization
-        created_loca_file = director.create_localization_file()
-        assert created_loca_file, "Failed to create localization file"
+        book: BookLocaEntry | Literal[
+            False
+        ] = director.book_loca_aggregator.get_book_with_name(book_name)
+
+        assert book is not False, "Returned False from get_book_with_name"
+        assert is_valid_handle_uuid(book.content_handle)
+        assert is_valid_handle_uuid(book.unknown_description_handle)
+
+        # Verify book XML
+        parser = BookParser()
+        all_book_attrs = parser.get_attrs_from_children(updated_book_children)
+        assert all_book_attrs, "Failed to get book attrs"
+
+        # Verify the above values match the XML
+        if all_book_attrs is not None:
+            for book_attrs in all_book_attrs:
+                for attrs in book_attrs:
+                    book_match = (
+                        attrs.attrib["id"] == "UUID"
+                        and attrs.attrib["value"] == book_name
+                    )
+                    if book_match:
+                        # Handle values use the attribute "handle" for values!
+                        if attrs.attrib["id"] == "Content":
+                            assert (
+                                attrs.attrib["handle"] == book.content_handle
+                            ), "Content handle mismatch"
+                        if attrs.attrib["id"] == "UnknownDescription":
+                            assert (
+                                attrs.attrib["handle"]
+                                == book.unknown_description_handle
+                            ), "Unknown description mismatch"
+                        break

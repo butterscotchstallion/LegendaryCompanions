@@ -6,22 +6,20 @@ from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.template_fetcher import TemplateFetcher
+from companiongenerator.xml_utils import get_text_from_entries
 
 from tests.template_validity_helper import is_valid_handle_uuid
 
 
 def verify_localization_added(
-    parser: LocalizationParser,
     updated_content_list: list[ET.Element],
     loca_entries: list[LocalizationEntry],
 ) -> bool:
     """Build updated content text list and compare loca entries"""
 
     # Build text list from both
-    updated_content_texts: list[str] = parser.get_text_from_entries(
-        updated_content_list
-    )
-    loca_texts = parser.get_text_from_entries(loca_entries)
+    updated_content_texts: list[str] = get_text_from_entries(updated_content_list)
+    loca_texts = get_text_from_entries(loca_entries)
 
     # Return true if all of the loca entries added exist in the updated list
     return set(loca_texts).issubset(updated_content_texts)
@@ -56,17 +54,14 @@ def test_append_localization_entries():
 
     # Parse loca XML and return tree for verification
     parser = LocalizationParser()
-    content_list = parser.append_entries(
-        MOD_FILENAMES["localization"], loca_aggregator.entries
-    )
+    entries = loca_aggregator.entries
+    content_list = parser.append_entries(MOD_FILENAMES["localization"], entries)
 
     assert content_list is not None, "Failed to append to loca entries"
 
     # Verify updated tree
     content_entries = content_list.findall("content")
-    verification_ok = verify_localization_added(
-        parser, content_entries, loca_aggregator.entries
-    )
+    verification_ok = verify_localization_added(content_entries, entries)
     assert verification_ok, "Failed to verify loca entries"
 
     # Write tree
