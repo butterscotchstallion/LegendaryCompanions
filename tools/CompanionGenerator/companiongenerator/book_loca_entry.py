@@ -11,6 +11,7 @@ class BookLocaEntry(TemplateReplacerBase):
     # Book file entry
     content: str
     unknown_description: str
+    # AKA UUID
     name: str
     # Handles
     content_handle: str
@@ -31,11 +32,11 @@ class BookLocaEntry(TemplateReplacerBase):
 
         # Generate handles for what must be localized
         self.content_handle = self.localization_aggregator.add_entry_and_return_handle(
-            text=self.content
+            comment=self.name, text=self.content
         )
         self.unknown_description_handle = (
             self.localization_aggregator.add_entry_and_return_handle(
-                text=self.unknown_description
+                comment=self.name, text=self.unknown_description
             )
         )
 

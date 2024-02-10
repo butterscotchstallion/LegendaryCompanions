@@ -138,7 +138,13 @@ def test_create():
         all_book_attrs = parser.get_attrs_from_children(updated_book_children)
         assert all_book_attrs, "Failed to get book attrs"
 
-        # Verify the above values match the XML
+        """
+        Verify the above values match the XML
+        NOTE: the books here can be books that existed before
+        we added our book, so we identify the book with our
+        UUID and stop there. Comparing to other books would
+        result in a test failure, as those are different books.
+        """
         if all_book_attrs is not None:
             for book_attrs in all_book_attrs:
                 for attrs in book_attrs:
@@ -157,4 +163,5 @@ def test_create():
                                 attrs.attrib["handle"]
                                 == book.unknown_description_handle
                             ), "Unknown description mismatch"
+                        # Stop here because we do not care about other books.
                         break
