@@ -129,8 +129,6 @@ class AutomationDirector:
                 book_filename, self.book_loca_aggregator.entries
             )
 
-            logger.debug(f"Books: {books}")
-
             if books is not None:
                 backup_created = self.file_handler.create_backup_file(book_filename)
                 if backup_created:

@@ -14,6 +14,8 @@ class Spell:
     """
 
     def __init__(self, **kwargs) -> None:
+        self.base_spell_name = ""
+        self.spell_properties = ""
         self.loca_mgr = kwargs["localization_manager"]
         self.template_fetcher = kwargs["template_fetcher"]
         self.spell_name = kwargs["spell_name"]

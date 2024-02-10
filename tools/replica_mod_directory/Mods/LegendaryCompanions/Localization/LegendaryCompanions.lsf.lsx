@@ -44,6 +44,14 @@
 					<attribute id="Stub" type="bool" value="True" />
 					<attribute id="UnknownDescription" type="TranslatedString" handle="h8cb4a58dgd3dfg460bg906ag57793de477de" version="1" />
 				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h9c145043g55a5g4b7egab2bgade89d48e0db" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book of Testing 2745cb2c-6cbc-4da7-be09-cea9a820a6d6" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h462940ecge7aeg44b5gabb8ga077cccb3666" version="1" />
+				</node>
 			</children>
 		</node>
 	</region>

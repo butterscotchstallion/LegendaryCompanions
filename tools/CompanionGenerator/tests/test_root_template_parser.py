@@ -53,6 +53,7 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
                 return True
 
     if num_skipped > 0:
+        logger.debug(f"Skipped {num_skipped} RT entries")
         return True
 
     return False
