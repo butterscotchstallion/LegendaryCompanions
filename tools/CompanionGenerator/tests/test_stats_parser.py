@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.stats_parser import StatsParser
 
 parser = StatsParser()
@@ -28,10 +31,10 @@ def test_parse_stats():
     parsed_spell = parser.parse_spell(spell_text)
 
     assert parsed_spell["name"] == spell_name
+    assert parsed_spell["base_spell_name"] == base_spell_name
     assert parsed_spell["DisplayName"] == display_name_handle
     assert parsed_spell["Description"] == description_handle
     assert parsed_spell["SpellProperties"] == spell_properties
-    assert parsed_spell["base_spell_name"] == base_spell_name
 
 
 def test_get_spell_name_from_lines():
@@ -56,3 +59,33 @@ def test_parse_quoted_value():
     assert (
         mal_actual_value == expected_value
     ), "Unexpected value for malformed spell input"
+
+
+def test_get_spells_from_file():
+    """Gets a list of all spells in a file and
+    tests parsing spell names from those results
+    """
+    handle = Path(MOD_FILENAMES["spell_text_file_summons"])
+    spell_text_file_contents = handle.read_text()
+    spells = parser.get_spells_from_spell_text(spell_text_file_contents)
+    expected_length = 5
+    actual_length = len(spells)
+
+    assert expected_length == actual_length
+
+    expected_spell_names: list[str] = [
+        "LC_Summon",
+        "LC_Summon_RSO_Legendary",
+        "LC_Summon_Githzerai_Legendary",
+        "LC_Summon_Muffin_Legendary",
+        "LC_Upgrade_Companion",
+    ]
+    parsed_spells = []
+
+    for spell_text in spells:
+        parsed_spell = parser.parse_spell(spell_text)
+        parsed_spells.append(parsed_spell)
+
+    actual_spell_names = [spell["name"] for spell in parsed_spells]
+
+    assert expected_spell_names == actual_spell_names

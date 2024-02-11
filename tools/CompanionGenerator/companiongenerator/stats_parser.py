@@ -1,3 +1,6 @@
+from os import linesep
+
+
 class StatsParser:
     """Parses spell files into a dictionary
 
@@ -84,3 +87,32 @@ class StatsParser:
         if len(values):
             value = values[0]
         return value
+
+    def get_spells_from_spell_text(self, spell_text: str) -> list[str]:
+        """Parses spells from text, creating a list
+        of strings representing each spell
+        1. Parse entire file contents into spell text lines
+        2. Iterate the lines, splitting each spell by the "new entry" keyword
+        3. Return list of spell strings
+        """
+        spell_text_lines = self.get_spell_text_lines(spell_text)
+        spells: list[str] = []
+        spell: list[str] = []
+
+        for line in spell_text_lines:
+            appending_to_spell = False
+            is_new_entry = line.startswith("new entry ")
+
+            if is_new_entry:
+                appending_to_spell = True
+
+            if appending_to_spell:
+                spell.append(line)
+
+            # We have hit another new entry. This is a new spell
+            if is_new_entry and appending_to_spell:
+                appending_to_spell = False
+                spells.append(linesep.join(spell))
+                spell = []
+
+        return spells
