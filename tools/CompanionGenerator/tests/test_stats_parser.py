@@ -31,7 +31,7 @@ def test_parse_stats():
     parsed_spell = parser.parse_spell(spell_text)
 
     assert parsed_spell["name"] == spell_name
-    assert parsed_spell["base_spell_name"] == base_spell_name
+    assert parsed_spell["using"] == base_spell_name
     assert parsed_spell["DisplayName"] == display_name_handle
     assert parsed_spell["Description"] == description_handle
     assert parsed_spell["SpellProperties"] == spell_properties
@@ -72,6 +72,14 @@ def test_get_spells_from_file():
     actual_length = len(spells)
 
     assert expected_length == actual_length
+
+    # I was verifying the whole spell here but I realized
+    # that I only need the name. This is here in case
+    # I find a reason to parse the entire spell again
+
+    # Each spell should be at least three lines
+    # for spell in spells:
+    #    assert len(spell.splitlines()) >= 3, "Spell should be at least three lines"
 
     expected_spell_names: list[str] = [
         "LC_Summon",
