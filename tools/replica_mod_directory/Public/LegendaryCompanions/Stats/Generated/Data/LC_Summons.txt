@@ -43,3 +43,11 @@ new entry "LC_Upgrade_Companion"
 		data "AmountOfTargets" "1"
 		data "TargetConditions" "Tagged('LC_COMPANION') and Character() and not Enemy() and not Dead() and not HasStatus('DOWNED')"
 		data "UseCosts" ""
+
+new entry "LC_Summon_Legendary_Kobold"
+	using "LC_Summon"
+		// Summon Kobold
+		data "DisplayName" "h6bc7ad82g6087g4a63g805fg75570aaeb8ec"
+		// A powerful summoning scroll
+		data "Description" "hb3e16600gf918g4b5cg93bag5d9f6d0cae64"
+		data "SpellProperties" "GROUND:Summon(b24a3af1-cf2a-441d-b5ac-f14d0a9ab74b,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"

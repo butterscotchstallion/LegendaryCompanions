@@ -13,6 +13,7 @@ from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
+from companiongenerator.stats_parser import StatsParser
 
 
 class AutomationDirector:
@@ -80,27 +81,53 @@ class AutomationDirector:
             logger.error(f"Directory {dir_path} exists!")
             return False
 
-    def create_summon_spell(self, **kwargs):
+    def update_summon_spells(self, **kwargs):
         """
-        Create spell based on supplied info
+        Updates spell file and appends new spell
         """
         summon_spell = SummonSpell(
             **kwargs, localization_manager=self.localization_aggregator
         )
 
-        if summon_spell:
-            generated_spell_text = summon_spell.get_tpl_with_replacements()
+        generated_spell_text = summon_spell.get_tpl_with_replacements()
 
-            if generated_spell_text:
-                file_path = f"{self.output_dir_path}/{summon_spell.spell_name}.txt"
+        # Open spell file and append new spell if it doesn't exist
+        try:
+            # Open file for reading and writing, creating if not exists
+            with open(MOD_FILENAMES["spell_text_file_summons"], "a+") as handle:
+                parser = StatsParser()
+                # Since we started at the end of the file, we have to seek to the beginning
+                # to get the file contents
+                handle.seek(0)
+                spell_text = handle.read()
 
-                if not os.path.exists(file_path) and not os.path.isfile(file_path):
-                    is_write_successful = self.file_handler.write_list_to_file(
-                        file_path, generated_spell_text.splitlines()
+                spell_name_exists = parser.spell_name_exists_in_spell_text(
+                    summon_spell.spell_name, spell_text
+                )
+                # Not really a big deal if it exists. We just bail out here
+                if spell_name_exists:
+                    logger.info(
+                        f"Spell name {summon_spell.spell_name} exists! Skipping"
                     )
-                    return is_write_successful
+                    return True
                 else:
-                    logger.error(f"File exists: {file_path}")
+                    # Seek to end before appending
+                    handle.seek(os.SEEK_END)
+                    # Append to existing file
+                    spell_with_new_line = f"{os.linesep}{generated_spell_text}"
+                    success = handle.write(spell_with_new_line)
+
+                    if success:
+                        logger.info(
+                            f'Appended spell "{summon_spell.spell_name}" to spell file'
+                        )
+                    else:
+                        logger.error("Failed to append to spell file")
+
+                    return success
+        except IOError as err:
+            logger.error(f"Error opening summon spell file: {err}")
+            return False
 
     def update_book_file(self, **kwargs):
         """

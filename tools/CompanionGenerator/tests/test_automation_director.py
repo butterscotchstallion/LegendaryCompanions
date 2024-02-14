@@ -1,10 +1,13 @@
+from pathlib import Path
 from typing import Literal
 from uuid import uuid4
 
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
+from companiongenerator.stats_parser import StatsParser
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import is_valid_handle_uuid
@@ -34,18 +37,27 @@ def test_create():
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
         )
 
-        # Create spell
-        created_spell_file = director.create_summon_spell(
-            display_name="Summon Chip Chocolate",
+        # Update spell
+        updated_spell_file = director.update_summon_spells(
+            display_name="Summon Kobold",
             description="A powerful summoning scroll",
-            spell_name="LC_Summon_Legendary_Muffin",
+            spell_name="LC_Summon_Legendary_Kobold",
             integration_name="LegendaryCompanions",
             summon_uuid=director.companion.map_key,
             template_fetcher=TemplateFetcher(),
             root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
             is_dry_run=False,
         )
-        assert created_spell_file, "Failed to create spell file"
+        assert updated_spell_file, "Failed to update spell file"
+
+        # Verify that we didn't add duplicates to the file
+        parser = StatsParser()
+        handle = Path(MOD_FILENAMES["spell_text_file_summons"])
+        spell_text_file_contents = handle.read_text()
+        spell_list = parser.get_spell_names_from_spell_text(spell_text_file_contents)
+        spells_set: set[str] = set(spell_list)
+
+        assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
 
         ## Page 1 RT
         page_one_stats_name = "LC_Page_1"

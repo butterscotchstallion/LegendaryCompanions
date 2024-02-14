@@ -67,33 +67,20 @@ def test_get_spells_from_file():
     """
     handle = Path(MOD_FILENAMES["spell_text_file_summons"])
     spell_text_file_contents = handle.read_text()
-    spells = parser.get_spells_from_spell_text(spell_text_file_contents)
-    expected_length = 5
-    actual_length = len(spells)
+    spell_list = parser.get_spell_names_from_spell_text(spell_text_file_contents)
+    spells_set: set[str] = set(spell_list)
 
-    assert expected_length == actual_length
+    if len(spell_text_file_contents) > 0 and len(spell_list) == 0:
+        assert len(spell_list) > 0, "No spells in list!"
 
-    # I was verifying the whole spell here but I realized
-    # that I only need the name. This is here in case
-    # I find a reason to parse the entire spell again
+    expected_spell_names: set[str] = set(
+        [
+            "LC_Summon",
+            "LC_Summon_RSO_Legendary",
+            "LC_Summon_Githzerai_Legendary",
+            "LC_Summon_Muffin_Legendary",
+            "LC_Upgrade_Companion",
+        ]
+    )
 
-    # Each spell should be at least three lines
-    # for spell in spells:
-    #    assert len(spell.splitlines()) >= 3, "Spell should be at least three lines"
-
-    expected_spell_names: list[str] = [
-        "LC_Summon",
-        "LC_Summon_RSO_Legendary",
-        "LC_Summon_Githzerai_Legendary",
-        "LC_Summon_Muffin_Legendary",
-        "LC_Upgrade_Companion",
-    ]
-    parsed_spells = []
-
-    for spell_text in spells:
-        parsed_spell = parser.parse_spell(spell_text)
-        parsed_spells.append(parsed_spell)
-
-    actual_spell_names = [spell["name"] for spell in parsed_spells]
-
-    assert expected_spell_names == actual_spell_names
+    assert expected_spell_names.issubset(spells_set)

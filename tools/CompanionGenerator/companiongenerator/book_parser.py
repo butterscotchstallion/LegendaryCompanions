@@ -37,7 +37,6 @@ class BookParser:
         """
         book_uuids: list[str] = []
         all_book_attrs = self.get_attrs_from_children(children_node)
-        logger.info(all_book_attrs)
         if all_book_attrs:
             for book_attr_set in all_book_attrs:
                 for attr in book_attr_set:

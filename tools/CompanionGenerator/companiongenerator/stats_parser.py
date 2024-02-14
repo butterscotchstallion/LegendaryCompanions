@@ -16,6 +16,9 @@ class StatsParser:
     """
 
     def get_spell_name_from_lines(self, spell_text_lines: list[str]) -> str | None:
+        """
+        Parses out spell name from a single spell
+        """
         for line in spell_text_lines:
             if line.startswith("new entry"):
                 return self.get_value_from_line_in_quotes(line)
@@ -63,7 +66,6 @@ class StatsParser:
         for line in spell_text_lines:
             line_parts = [ls.strip() for ls in line.split('"') if ls.strip()]
 
-            logger.debug(f"Line parts: {line_parts}")
             if len(line_parts) >= 2:
                 first_element = line_parts[0]
                 # Data line: we only care about what's after data
@@ -74,29 +76,6 @@ class StatsParser:
                     spell["name"] = line_parts[1]
                 else:
                     spell[first_element] = line_parts[1]
-
-        logger.info("NEW SPELL")
-        logger.info(spell)
-        # logger.info(parsed_structure)
-
-        """
-        quoted_value_props = ["DisplayName", "Description", "SpellProperties"]
-        spell_text_lines = self.get_spell_text_lines(spell_text)
-        # Spell name
-        spell_name = self.get_spell_name_from_lines(spell_text_lines)
-        if spell_name:
-            spell["name"] = spell_name
-        # Base spell
-        base_spell_name = self.get_base_spell_name_from_lines(spell_text_lines)
-        if base_spell_name:
-            spell["base_spell_name"] = base_spell_name
-
-        # Named properties
-        for quoted_value in quoted_value_props:
-            value = self.get_property_value_by_name(spell_text_lines, quoted_value)
-            if value:
-                spell[quoted_value] = value
-        """
         return spell
 
     def get_quoted_values(self, input: str) -> list[str]:
@@ -111,31 +90,31 @@ class StatsParser:
             value = values[0]
         return value
 
-    def get_spells_from_spell_text(self, spell_text: str) -> list[str]:
-        """Parses spells from text, creating a list
-        of strings representing the lines of each spell
-        1. Parse entire file contents into spell text lines
-        2. Iterate the lines, splitting each spell by the "new entry" keyword
-        3. Return list of spell strings
+    def spell_name_exists_in_spell_text(
+        self, spell_name: str, spell_text_file_contents: str
+    ) -> bool:
         """
+        1. Get spells from supplied spell file text
+        2. Parse each spell to get spell names
+        3. Check if supplied spell name exists in this set
+        """
+        spell_name_list: list[str] = self.get_spell_names_from_spell_text(
+            spell_text_file_contents
+        )
+
+        if len(spell_text_file_contents) > 0 and len(spell_name_list) == 0:
+            logger.error("Failed to parse spells from file!")
+        else:
+            logger.info(f"Spell list: {spell_name_list}")
+
+        return spell_name in spell_name_list
+
+    def get_spell_names_from_spell_text(self, spell_text: str) -> list[str]:
+        """Parses spell name from file contents"""
         spell_text_lines = self.get_spell_text_lines(spell_text)
         spells: list[str] = []
-
-        """
-        Parsing list of spells
-        1. If we see "new entry" this is a new spell
-        2. Keep appending lines until we see another
-        new spell entry
-
-        This is currently broken because it only works
-        for the first spell. Each subsequent spell only has
-        the first line, which is wrong
-
-        1. Mark new entry lines
-        2. When we hit a new entry and the last line was a data line,
-        this is a new spell
-        """
-        for idx, line in enumerate(spell_text_lines):
+        for line in spell_text_lines:
             if line.startswith("new entry"):
-                spells.append(line)
+                spell_name = self.get_value_from_line_in_quotes(line)
+                spells.append(spell_name)
         return spells
