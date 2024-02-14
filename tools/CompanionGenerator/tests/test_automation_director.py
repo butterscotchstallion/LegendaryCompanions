@@ -125,7 +125,7 @@ def test_create():
         assert appended_rt, "Failed to append root template"
 
         # Write book localization file (book contents)
-        book_name = f"Book of Testing {uuid4()}"
+        book_name = "Book of Testing"
         book_contents = "This is a book about how much I love testing"
         unknown_description = "This is the unknown description"
         updated_book_children = director.update_book_file(

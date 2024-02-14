@@ -85,49 +85,62 @@ class AutomationDirector:
         """
         Updates spell file and appends new spell
         """
-        summon_spell = SummonSpell(
-            **kwargs, localization_manager=self.localization_aggregator
-        )
+        filename = MOD_FILENAMES["spell_text_file_summons"]
+        handler = FileHandler()
+        backup_created = handler.create_backup_file(filename)
 
-        generated_spell_text = summon_spell.get_tpl_with_replacements()
+        if backup_created:
+            summon_spell = SummonSpell(
+                **kwargs, localization_manager=self.localization_aggregator
+            )
 
-        # Open spell file and append new spell if it doesn't exist
-        try:
-            # Open file for reading and writing, creating if not exists
-            with open(MOD_FILENAMES["spell_text_file_summons"], "a+") as handle:
-                parser = StatsParser()
-                # Since we started at the end of the file, we have to seek to the beginning
-                # to get the file contents
-                handle.seek(0)
-                spell_text = handle.read()
+            generated_spell_text = summon_spell.get_tpl_with_replacements()
 
-                spell_name_exists = parser.spell_name_exists_in_spell_text(
-                    summon_spell.spell_name, spell_text
-                )
-                # Not really a big deal if it exists. We just bail out here
-                if spell_name_exists:
-                    logger.info(
-                        f"Spell name {summon_spell.spell_name} exists! Skipping"
+            # Open spell file and append new spell if it doesn't exist
+            try:
+                # Open file for reading and writing, creating if not exists
+                with open(filename, "a+") as handle:
+                    parser = StatsParser()
+                    # Since we started at the end of the file, we have to seek to the beginning
+                    # to get the file contents
+                    handle.seek(0)
+                    spell_text = handle.read()
+
+                    spell_name_exists = parser.spell_name_exists_in_spell_text(
+                        summon_spell.spell_name, spell_text
                     )
-                    return True
-                else:
-                    # Seek to end before appending
-                    handle.seek(os.SEEK_END)
-                    # Append to existing file
-                    spell_with_new_line = f"{os.linesep}{generated_spell_text}"
-                    success = handle.write(spell_with_new_line)
-
-                    if success:
+                    # Not really a big deal if it exists. We just bail out here
+                    if spell_name_exists:
                         logger.info(
-                            f'Appended spell "{summon_spell.spell_name}" to spell file'
+                            f"Spell name {summon_spell.spell_name} exists! Skipping"
                         )
+                        return True
                     else:
-                        logger.error("Failed to append to spell file")
+                        # New spell: create backup before proceeding
+                        handler = FileHandler()
+                        backup_created = handler.create_backup_file(filename)
 
-                    return success
-        except IOError as err:
-            logger.error(f"Error opening summon spell file: {err}")
-            return False
+                        if backup_created:
+                            # Seek to end before appending
+                            handle.seek(os.SEEK_END)
+                            # Append to existing file
+                            spell_with_new_line = f"{os.linesep}{generated_spell_text}"
+                            success = handle.write(spell_with_new_line)
+
+                            if success:
+                                logger.info(
+                                    f'Appended spell "{summon_spell.spell_name}" to spell file'
+                                )
+                            else:
+                                logger.error("Failed to append to spell file")
+
+                            return success
+                        else:
+                            logger.error(f"Failed to create backup of {filename}")
+                            return False
+            except IOError as err:
+                logger.error(f"Error opening summon spell file: {err}")
+                return False
 
     def update_book_file(self, **kwargs):
         """
