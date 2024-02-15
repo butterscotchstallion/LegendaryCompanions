@@ -32,6 +32,9 @@ class ItemCombosParser:
         """
         combo_names: list[str] = []
         combo_result_names: list[str] = []
+        combo_name_prefix = "new ItemCombination"
+        combo_result_name_prefix = "new ItemCombinationResult"
+
         self.is_file_empty = not file_contents or bool(
             file_contents and len(file_contents) == 0
         )
@@ -41,14 +44,17 @@ class ItemCombosParser:
             stats_parser = StatsParser()
             for combo_line in combo_file_lines:
                 """
-                We need a quote after the ItemCombination otherwise
-                we get result names too!
+                These names are pretty similar so we need to check
+                that the combo name doesn't start with the result name
+                too
                 """
-                if combo_line.startswith('new ItemCombination "'):
+                if combo_line.startswith(
+                    combo_name_prefix
+                ) and not combo_line.startswith(combo_result_name_prefix):
                     combo_name = stats_parser.get_value_from_line_in_quotes(combo_line)
                     combo_names.append(combo_name)
 
-                if combo_line.startswith("new ItemCombinationResult"):
+                if combo_line.startswith(combo_result_name_prefix):
                     combo_result_name = stats_parser.get_value_from_line_in_quotes(
                         combo_line
                     )
