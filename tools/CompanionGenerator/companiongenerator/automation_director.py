@@ -202,10 +202,21 @@ class AutomationDirector:
                     item_combo.combo_name, item_combo_contents
                 )
             if not combo_exists:
-                handle.seek(os.SEEK_END)
-                combo_text = f"{os.linesep}{item_combo_tpl}"
-                logger.info(f"Added item combo {item_combo.combo_name} to file")
-                return handle.write(combo_text)
+                handler = FileHandler()
+                created_backup = handler.create_backup_file(
+                    MOD_FILENAMES["item_combos"]
+                )
+                if created_backup:
+                    logger.info(f"Backup created for {MOD_FILENAMES["item_combos"]}")
+                    handle.seek(os.SEEK_END)
+                    combo_text = f"{os.linesep}{item_combo_tpl}"
+                    logger.info(f"Added item combo {item_combo.combo_name} to file")
+                    return handle.write(combo_text)
+                else:
+                    logger.error(
+                        f"Failed to create backup of {MOD_FILENAMES["item_combos"]}"
+                    )
+                    return False
             else:
                 logger.info(f"Item combo {item_combo.combo_name} exists")
                 return True
