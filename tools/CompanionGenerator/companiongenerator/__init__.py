@@ -16,3 +16,4 @@ from .root_template_node_entry import RootTemplateNodeEntry
 from .root_template_parser import RootTemplateParser
 from .book_parser import BookParser
 from .stats_parser import StatsParser
+from .item_combos_parser import ItemCombosParser

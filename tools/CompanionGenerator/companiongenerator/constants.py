@@ -18,4 +18,5 @@ MOD_FILENAMES: dict[str, str] = {
     "books": f"{BOOKS_PATH}/LegendaryCompanions.lsf.lsx",
     "book_template_file": f"{XML_TEMPLATES}/book_loca_file.xml",
     "spell_text_file_summons": f"{STATS_DATA_PATH}/LC_Summons.txt",
+    "item_combos": f"{STATS_PATH}/ItemCombos.txt",
 }
