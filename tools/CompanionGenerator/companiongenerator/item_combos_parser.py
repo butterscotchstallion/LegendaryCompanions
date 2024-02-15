@@ -24,6 +24,13 @@ class ItemCombosParser:
     def get_combo_file_lines(self, file_contents: str):
         return [line.strip() for line in file_contents.splitlines() if line.strip()]
 
+    def combo_name_exists(self, combo_name: str, file_contents: str) -> bool:
+        entries = self.get_combo_entries_from_file_contents(file_contents)
+        if len(entries["combo_names"]) > 0:
+            return combo_name in entries["combo_names"]
+        else:
+            return False
+
     def get_combo_entries_from_file_contents(
         self, file_contents: str
     ) -> dict[str, list[str]]:

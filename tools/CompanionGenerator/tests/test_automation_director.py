@@ -97,14 +97,14 @@ def test_create():
         )
 
         # Write item combos
-        created_item_combos = director.create_item_combos(
+        updated_item_combos = director.update_item_combos(
             combo_name="Book_of_Testing_Combo",
             object_one_name=page_one_stats_name,
             object_two_name=page_two_stats_name,
             combo_result_item_name=book_stats_name,
             template_fetcher=TemplateFetcher(),
         )
-        assert created_item_combos, "Failed to create item combos file"
+        assert updated_item_combos, "Failed to update item combos file"
 
         ## Scroll RT
         director.add_scroll_rt(

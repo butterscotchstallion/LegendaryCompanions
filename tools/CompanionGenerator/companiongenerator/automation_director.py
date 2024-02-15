@@ -8,6 +8,7 @@ from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
+from companiongenerator.item_combos_parser import ItemCombosParser
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
@@ -182,14 +183,32 @@ class AutomationDirector:
         else:
             logger.error("Failed to create book template")
 
-    def create_item_combos(self, **kwargs):
+    def update_item_combos(self, **kwargs):
         """
-        Creates item combos file
+        Updates item combos file. Returns True if file update
+        succeeds or the combo exists already
         """
-        item_combos = ItemCombo(**kwargs)
-        item_combo_tpl = item_combos.get_tpl_with_replacements()
-        file_path = f"{self.output_dir_path}/{item_combos.filename}"
-        return self.file_handler.write_string_to_file(file_path, item_combo_tpl)
+        item_combo = ItemCombo(**kwargs)
+        item_combo_tpl = item_combo.get_tpl_with_replacements()
+
+        with open(MOD_FILENAMES["item_combos"], "a+") as handle:
+            handle.seek(0)
+            item_combo_contents = handle.read()
+            combo_exists = False
+
+            if len(item_combo_contents) > 0:
+                parser = ItemCombosParser()
+                combo_exists = parser.combo_name_exists(
+                    item_combo.combo_name, item_combo_contents
+                )
+            if not combo_exists:
+                handle.seek(os.SEEK_END)
+                combo_text = f"{os.linesep}{item_combo_tpl}"
+                logger.info(f"Added item combo {item_combo.combo_name} to file")
+                return handle.write(combo_text)
+            else:
+                logger.info(f"Item combo {item_combo.combo_name} exists")
+                return True
 
     def append_root_template(self, file_path: str) -> bool | None:
         """
