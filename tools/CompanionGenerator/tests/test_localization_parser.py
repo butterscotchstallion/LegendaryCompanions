@@ -5,6 +5,7 @@ from companiongenerator.file_handler import FileHandler
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.localization_parser import LocalizationParser
+from companiongenerator.logger import logger
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.xml_utils import get_text_from_entries
 
@@ -36,6 +37,8 @@ def test_append_localization_entries():
     handler = FileHandler()
     backup_created = handler.create_backup_file(MOD_FILENAMES["localization"])
     assert backup_created, "Failed to create backup file"
+
+    logger.info("Testing overwriting of backup file")
 
     # Test overwriting last backup file
     overwrote_backup_file = handler.create_backup_file(MOD_FILENAMES["localization"])
