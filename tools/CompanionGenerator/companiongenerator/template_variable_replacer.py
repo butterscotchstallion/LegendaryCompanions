@@ -3,7 +3,7 @@ class TemplateVariableReplacer:
         """Replaces template variables and returns text with replacements"""
         replaced_text = input_text
 
-        if len(replacements) == 0:
+        if not replacements or len(replacements) == 0:
             raise RuntimeError("No replacements set!")
 
         for replacer_var_name in replacements:
