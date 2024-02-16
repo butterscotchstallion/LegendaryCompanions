@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.logger import logger
 from companiongenerator.stats_parser import StatsParser
 
 parser = StatsParser()
@@ -17,7 +18,7 @@ spell_text = """
 
 
 def get_spell_text_lines() -> list[str]:
-    return parser.get_spell_text_lines(spell_text)
+    return parser.get_stripped_text_lines(spell_text)
 
 
 def test_parse_stats():
@@ -28,7 +29,7 @@ def test_parse_stats():
     description_handle = "hee641648g2248g4ea5g8dc4g78fb27c8e7c7"
     spell_properties = "GROUND:Summon(01b2da71-18fb-45de-9e21-a50cfc09a1bd,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
 
-    parsed_spell = parser.parse_spell(spell_text)
+    parsed_spell = parser.parse_stats_entry(spell_text)
 
     assert parsed_spell["name"] == spell_name
     assert parsed_spell["using"] == base_spell_name
@@ -37,10 +38,10 @@ def test_parse_stats():
     assert parsed_spell["SpellProperties"] == spell_properties
 
 
-def test_get_spell_name_from_lines():
+def test_get_entry_name_from_lines():
     expected = "LC_Summon_Legendary_Kobold"
-    lines = parser.get_spell_text_lines(spell_text)
-    actual = parser.get_spell_name_from_lines(lines)
+    lines = parser.get_stripped_text_lines(spell_text)
+    actual = parser.get_entry_name_from_lines(lines)
     assert expected == actual
 
 
@@ -61,13 +62,13 @@ def test_parse_quoted_value():
     ), "Unexpected value for malformed spell input"
 
 
-def test_get_spells_from_file():
-    """Gets a list of all spells in a file and
-    tests parsing spell names from those results
+def test_get_entry_names_from_file():
+    """Gets a list of all entries in a file and
+    tests parsing entry names from those results
     """
     handle = Path(MOD_FILENAMES["spell_text_file_summons"])
     spell_text_file_contents = handle.read_text()
-    spell_list = parser.get_spell_names_from_spell_text(spell_text_file_contents)
+    spell_list = parser.get_entry_names_from_text(spell_text_file_contents)
     spells_set: set[str] = set(spell_list)
 
     if len(spell_text_file_contents) > 0 and len(spell_list) == 0:
@@ -84,3 +85,14 @@ def test_get_spells_from_file():
     )
 
     assert expected_spell_names.issubset(spells_set)
+
+
+def test_parse_book_objects_file():
+    handle = Path(MOD_FILENAMES["books_object_file"])
+    objects_file_text = handle.read_text()
+    book_name_list = parser.get_entry_names_from_text(objects_file_text)
+
+    if objects_file_text:
+        assert len(book_name_list) > 0, "Failed to get book object names"
+    else:
+        logger.info("Empty object file")

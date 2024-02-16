@@ -50,7 +50,7 @@ def test_create():
     parser = StatsParser()
     handle = Path(MOD_FILENAMES["spell_text_file_summons"])
     spell_text_file_contents = handle.read_text()
-    spell_list = parser.get_spell_names_from_spell_text(spell_text_file_contents)
+    spell_list = parser.get_entry_names_from_text(spell_text_file_contents)
     spells_set: set[str] = set(spell_list)
 
     assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"

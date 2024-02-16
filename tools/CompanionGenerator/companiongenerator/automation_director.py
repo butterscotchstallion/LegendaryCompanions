@@ -70,7 +70,7 @@ class AutomationDirector:
                     handle.seek(0)
                     spell_text = handle.read()
 
-                    spell_name_exists = parser.spell_name_exists_in_spell_text(
+                    spell_name_exists = parser.entry_name_exists_in_text(
                         summon_spell.spell_name, spell_text
                     )
                     # Not really a big deal if it exists. We just bail out here
