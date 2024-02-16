@@ -94,5 +94,6 @@ def test_parse_book_objects_file():
 
     if objects_file_text:
         assert len(book_name_list) > 0, "Failed to get book object names"
+
     else:
         logger.info("Empty object file")

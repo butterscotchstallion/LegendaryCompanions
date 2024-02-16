@@ -1,0 +1,8 @@
+new entry "{{stats_name}}"
+	type "Object"
+	using "OBJ_GenericLootItem"
+		data "RootTemplate" "{{root_template_id}}"
+		data "ObjectCategory" "LC_BOOK"
+		data "MinAmount" "1"
+		data "MaxAmount" "1"
+		data "Priority" "1"
