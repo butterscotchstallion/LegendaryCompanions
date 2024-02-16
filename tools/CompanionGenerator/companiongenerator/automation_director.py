@@ -1,7 +1,5 @@
-import datetime
 import os
 from pathlib import Path
-from uuid import uuid4
 
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
@@ -25,7 +23,6 @@ class AutomationDirector:
 
     base_dir = "../output"
     is_dry_run: bool = True
-    output_dir_path: str | None = None
     localization_aggregator: LocalizationAggregator
     book_loca_aggregator: BookLocaAggregator
     rt_aggregator: RootTemplateAggregator
@@ -47,40 +44,6 @@ class AutomationDirector:
         logger.info("=================================================")
         logger.info("Initializing new automation run!")
         logger.info("=================================================")
-
-    def create_output_dir_if_not_exists(self):
-        if not self.output_dir_path:
-            output_dir_path = self._create_output_dir()
-
-            if output_dir_path:
-                self.output_dir_path = output_dir_path
-                return output_dir_path
-
-    def _create_output_dir(self):
-        """
-        Creates output directory where mod files will be created
-        """
-        ahorita = datetime.datetime.now()
-        shortened_uuid = str(uuid4())[0:7]
-        dir_name = f"{ahorita.strftime('%Y-%m-%d_%I-%M-%S')}_{shortened_uuid}"
-        dir_path = f"{self.base_dir}/{dir_name}"
-        if not os.path.exists(dir_path) and not os.path.isdir(dir_path):
-            if not self.is_dry_run:
-                os.makedirs(dir_path)
-
-                is_created_successfully = os.path.isdir(dir_path)
-
-                if is_created_successfully:
-                    logger.info(f"Created directory {dir_path}")
-                    return dir_path
-                else:
-                    logger.error(f"Failed to create directory: {dir_path}")
-            else:
-                logger.info(f"Dry run: not creating directory {dir_path}")
-                return dir_path
-        else:
-            logger.error(f"Directory {dir_path} exists!")
-            return False
 
     def update_summon_spells(self, **kwargs):
         """
@@ -221,12 +184,12 @@ class AutomationDirector:
                 logger.info(f"Item combo {item_combo.combo_name} exists")
                 return True
 
-    def append_root_template(self, file_path: str) -> bool | None:
+    def append_root_template(self) -> bool | None:
         """
         Appends to existing root template using
         RootTemplateAggregator.
         """
-        return self.rt_aggregator.append_root_template(file_path)
+        return self.rt_aggregator.append_root_template()
 
     def add_companion_rt(self, **kwargs):
         rt = CompanionRT(**kwargs)

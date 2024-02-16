@@ -19,7 +19,7 @@ class RootTemplateAggregator:
             )
         )
 
-    def append_root_template(self, file_path: str) -> bool | None:
+    def append_root_template(self) -> bool | None:
         """
         1. Find existing backups, if any
         2. Overwrite existing backup if exists, or create new one

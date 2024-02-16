@@ -79,8 +79,6 @@ class FileHandler:
             origin_parent = origin_path_obj.parent
             origin_filename = origin_path_obj.stem
             backup_path = f"{origin_parent}/{origin_filename}.lcbackup"
-            logger.debug(f"Copying {file_path} to {backup_path}")
-
             result = shutil.copy2(file_path, backup_path)
             if result:
                 logger.info(f"Created backup file: {backup_path}")
