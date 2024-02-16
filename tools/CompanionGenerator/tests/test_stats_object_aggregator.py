@@ -10,3 +10,7 @@ def test_stats_obj_aggregator():
     stats_obj_aggregator.add_entry(book)
 
     assert len(stats_obj_aggregator.entries) == 1
+
+    # Attempt to add duplicate object and make sure it isn't actually added
+    stats_obj_aggregator.add_entry(book)
+    assert len(stats_obj_aggregator.entries) == 1
