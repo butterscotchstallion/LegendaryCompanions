@@ -81,7 +81,7 @@ class BookParser:
             if len(books) == 0:
                 logger.error("No books provided. This is probably an error")
 
-            logger.debug(f"Parsing {filename}")
+            logger.debug(f"Parsing {Path(filename).stem}")
 
             self.filename = filename
             parser = get_comment_preserving_parser()
@@ -128,7 +128,7 @@ class BookParser:
                         children.append(book_element)
                         books_added = books_added + 1
 
-                logger.info(f"{books_added} books added to {Path(self.filename)}")
+                logger.info(f"{books_added} books added to {Path(self.filename).stem}")
 
                 if books_added > 0:
                     ET.indent(root, "\t")

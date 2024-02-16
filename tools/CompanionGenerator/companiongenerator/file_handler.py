@@ -81,7 +81,7 @@ class FileHandler:
             backup_path = f"{origin_parent}/{origin_filename}.lcbackup"
             result = shutil.copy2(file_path, backup_path)
             if result:
-                logger.info(f"Created backup file: {backup_path}")
+                logger.info(f"Created backup file: {origin_filename}.lcbackup")
                 return True
             else:
                 raise RuntimeError("Error creating backup file: failed to copy")

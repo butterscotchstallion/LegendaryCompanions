@@ -104,8 +104,6 @@ class StatsParser:
 
         if len(spell_text_file_contents) > 0 and len(spell_name_list) == 0:
             logger.error("Failed to parse spells from file!")
-        else:
-            logger.info(f"Spell list: {spell_name_list}")
 
         return spell_name in spell_name_list
 

@@ -68,7 +68,7 @@ class LocalizationParser:
                         entries_added = entries_added + 1
 
                 logger.info(
-                    f"{entries_added} localization entries added to {Path(self.filename)}"
+                    f"{entries_added} localization entries added to {Path(self.filename).stem}"
                 )
 
                 if entries_added > 0:
