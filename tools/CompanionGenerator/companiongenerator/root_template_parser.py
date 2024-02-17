@@ -56,13 +56,14 @@ class RootTemplateParser:
                 # Build name list from children
                 existing_names: list[str] = []
                 all_nodes = node_children.findall("node")
-
+                total_children = 0
                 if all_nodes is not None:
                     for node_child in node_children:
                         # Don't try to parse comments
                         if node_child.tag is ET.Comment:
                             continue
 
+                        total_children = total_children + 1
                         attributes = node_child.findall("attribute")
                         if attributes and len(attributes) > 0:
                             for attribute_tag in attributes:
@@ -75,7 +76,16 @@ class RootTemplateParser:
                             )
                             break
 
-                    if len(existing_names) > 0:
+                    total_existing_names = len(existing_names)
+
+                    if total_existing_names != total_children:
+                        logger.error(
+                            f"Total names doesn't match total children: {total_existing_names} != {total_children}!"
+                        )
+
+                    if total_existing_names > 0:
+                        logger.info(f"There are {total_existing_names} existing names")
+
                         # Iterate supplied nodes and append if not existent
                         nodes_added = 0
                         for new_node in nodes:
