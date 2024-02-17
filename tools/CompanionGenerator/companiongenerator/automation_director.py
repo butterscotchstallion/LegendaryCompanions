@@ -12,6 +12,7 @@ from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
+from companiongenerator.stats_object_aggregator import StatsObjectAggregator
 from companiongenerator.stats_parser import StatsParser
 
 
@@ -26,6 +27,7 @@ class AutomationDirector:
     localization_aggregator: LocalizationAggregator
     book_loca_aggregator: BookLocaAggregator
     rt_aggregator: RootTemplateAggregator
+    stats_object_aggregator: StatsObjectAggregator
     integration_name: str = ""
     default_localization_filename: str = "English"
 
@@ -40,7 +42,9 @@ class AutomationDirector:
             is_dry_run=self.is_dry_run
         )
         self.book_loca_aggregator = BookLocaAggregator()
+        self.stats_object_aggregator = StatsObjectAggregator()
         self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
+
         logger.info("=================================================")
         logger.info("Initializing new automation run!")
         logger.info("=================================================")
@@ -188,23 +192,27 @@ class AutomationDirector:
         """
         return self.rt_aggregator.append_root_template()
 
-    def add_companion_rt(self, **kwargs):
+    def add_companion_rt(self, **kwargs) -> str:
         rt = CompanionRT(**kwargs)
         self.companion = rt
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
+        return rt.map_key
 
-    def add_page_rt(self, **kwargs):
+    def add_page_rt(self, **kwargs) -> str:
         rt = PageRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
+        return rt.map_key
 
-    def add_book_rt(self, **kwargs):
+    def add_book_rt(self, **kwargs) -> str:
         rt = BookRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
+        return rt.map_key
 
-    def add_scroll_rt(self, **kwargs):
+    def add_scroll_rt(self, **kwargs) -> str:
         rt = ScrollRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
+        return rt.map_key

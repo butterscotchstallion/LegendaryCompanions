@@ -94,3 +94,15 @@ class FileHandler:
         except FileNotFoundError:
             logger.error(f"File not found: {file_path}")
             return ""
+
+    def append_to_file(self, file_path: str, contents: str) -> bool:
+        """
+        Appends content file at supplied path.
+        """
+        try:
+            with open(file_path, "a+") as handle:
+                handle.seek(os.SEEK_END)
+                return bool(handle.write(contents))
+        except IOError as err:
+            logger.error(f"Error appending to file {file_path}: {err}")
+            return False

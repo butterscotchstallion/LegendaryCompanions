@@ -7,6 +7,7 @@ from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
+from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import StatsParser
 from companiongenerator.template_fetcher import TemplateFetcher
 
@@ -81,7 +82,7 @@ def test_create():
 
     ## Book RT
     book_stats_name = "LC_Book_of_Testing"
-    director.add_book_rt(
+    book_rt_id = director.add_book_rt(
         name=book_stats_name,
         displayName="Book of Testing",
         description="A thick leather bound tome",
@@ -91,6 +92,10 @@ def test_create():
         template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
+
+    # Add book object file
+    book_obj = StatsObject(stats_name=book_stats_name, root_template_id=book_rt_id)
+    director.stats_object_aggregator.add_entry(book_obj)
 
     # Write item combos
     updated_item_combos = director.update_item_combos(
