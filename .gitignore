@@ -52,3 +52,4 @@ __pycache__
 tools/output/*
 tools/logs/*
 *.lcbackup
+.coverage
