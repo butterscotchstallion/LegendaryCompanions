@@ -58,7 +58,7 @@ def test_create():
 
     ## Page 1 RT
     page_one_stats_name = "LC_Page_1"
-    director.add_page_rt(
+    page_one_rt_id = director.add_page_rt(
         name=page_one_stats_name,
         displayName="A tattered page",
         description="Page description",
@@ -67,10 +67,15 @@ def test_create():
         template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
+    # Add page 1 obj file
+    page_1_obj = StatsObject(
+        stats_name=page_one_stats_name, root_template_id=page_one_rt_id
+    )
+    director.stats_object_aggregator.add_entry(page_1_obj)
 
     ## Page 2 RT
     page_two_stats_name = "LC_Page_2"
-    director.add_page_rt(
+    page_2_rt_id = director.add_page_rt(
         name=page_two_stats_name,
         displayName="A tattered page",
         description="Page 2 description",
@@ -79,6 +84,12 @@ def test_create():
         template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
+
+    # Add page 2 obj file
+    page_2_obj = StatsObject(
+        stats_name=page_two_stats_name, root_template_id=page_2_rt_id
+    )
+    director.stats_object_aggregator.add_entry(page_2_obj)
 
     ## Book RT
     book_stats_name = "LC_Book_of_Testing"
@@ -108,16 +119,29 @@ def test_create():
     assert updated_item_combos, "Failed to update item combos file"
 
     ## Scroll RT
-    director.add_scroll_rt(
+    scroll_stats_name = "LC_Scroll_of_Testing"
+    scroll_rt_id = director.add_scroll_rt(
         name="LC_Scroll_of_Testing",
         displayName="Scroll of Testing",
         description="Scroll description",
         scrollSpellName="LC_Scroll_of_Testing",
-        statsName="LC_Scroll_of_Testing",
+        statsName=scroll_stats_name,
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
+    # Add scroll object file
+    scroll_obj = StatsObject(
+        stats_name=scroll_stats_name, root_template_id=scroll_rt_id
+    )
+    director.stats_object_aggregator.add_entry(scroll_obj)
+
+    ####################################################################
+    ################### END OBJECT ENTRIES #############################
+    ####################################################################
+
+    wrote_obj_entries = director.stats_object_aggregator.append_entries()
+    assert wrote_obj_entries, "Failed to append entries"
 
     ## Append to root template using the above RTs
     appended_rt = director.append_root_template()

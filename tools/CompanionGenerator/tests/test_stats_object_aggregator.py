@@ -13,7 +13,3 @@ def test_stats_obj_aggregator():
     # Attempt to add duplicate object and make sure it isn't actually added
     stats_obj_aggregator.add_entry(book)
     assert len(stats_obj_aggregator.entries) == 1
-
-    # Test writing to file
-    success = stats_obj_aggregator.append_entries()
-    assert success, "Failed to append entries"

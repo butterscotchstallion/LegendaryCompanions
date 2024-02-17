@@ -20,12 +20,21 @@ class StatsObjectAggregator:
         Appends all entries that do not exist already
         to the object file
         """
-        success = False
+        success: bool = False
         parser = StatsParser()
         handle = Path(MOD_FILENAMES["books_object_file"])
-        object_file_contents = handle.read_text()
-        entry_names = parser.get_entry_names_from_text(object_file_contents)
+        object_file_contents: str = handle.read_text()
+        entry_names: list[str] = parser.get_entry_names_from_text(object_file_contents)
         append_entries: set[str] = set([])
+
+        total_existing_entries: int = len(entry_names)
+
+        logger.info(
+            f"There are {total_existing_entries} entries in the object file: {','.join(entry_names)}"
+        )
+
+        if total_existing_entries == 0:
+            logger.info("There are NO existing object entries")
 
         """
         1. Find all entries that don't exist in the file
