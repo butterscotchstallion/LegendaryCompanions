@@ -9,7 +9,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.stats_object import StatsObject
-from companiongenerator.stats_parser import StatsParser
+from companiongenerator.stats_parser import ParserType, StatsParser
 from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import is_valid_handle_uuid
@@ -57,7 +57,9 @@ def test_create():
     assert updated_spell_file, "Failed to update spell file"
 
     # Verify that we didn't add duplicates to the file
-    parser = StatsParser()
+    parser = StatsParser(
+        filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
+    )
     handle = Path(MOD_FILENAMES["spell_text_file_summons"])
     spell_text_file_contents = handle.read_text()
     spell_list = parser.get_entry_names_from_text(spell_text_file_contents)

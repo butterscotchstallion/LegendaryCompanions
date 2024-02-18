@@ -15,7 +15,7 @@ from companiongenerator.root_template import BookRT, CompanionRT, PageRT, Scroll
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
 from companiongenerator.stats_object_aggregator import StatsObjectAggregator
-from companiongenerator.stats_parser import StatsParser
+from companiongenerator.stats_parser import ParserType, StatsParser
 
 
 class AutomationDirector:
@@ -80,7 +80,7 @@ class AutomationDirector:
         try:
             # Open file for reading and writing, creating if not exists
             with open(filename, "a+") as handle:
-                parser = StatsParser()
+                parser = StatsParser(filename=filename, parser_type=ParserType.SPELL)
                 # Since we started at the end of the file, we have to seek to the beginning
                 # to get the file contents
                 handle.seek(0)

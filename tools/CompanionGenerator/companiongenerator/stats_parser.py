@@ -1,8 +1,22 @@
 import os
+from enum import StrEnum
 from pathlib import Path
+from typing import TypedDict, Unpack
 
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
+
+
+class ParserType(StrEnum):
+    SPELL = "Spell"
+    EQUIPMENT = "Equipment"
+    BOOK = "Book"
+    ITEM_COMBOS = "ItemCombos"
+
+
+class StatsParserKeywords(TypedDict):
+    filename: str
+    parser_type: ParserType
 
 
 class StatsParser:
@@ -19,17 +33,15 @@ class StatsParser:
 
     """
 
-    def __init__(self, filename=""):
+    def __init__(self, **kwargs: Unpack[StatsParserKeywords]):
         """
         This is what the line for a new entry starts with in Stats entries.
         In other files, like equipment sets, the format is similar but it
         starts with "new equipment" instead.
         """
         self.new_entry_text: str = "new entry"
-        self.filename: str = ""
-
-        if filename:
-            self.filename = filename
+        self.filename: str = kwargs["filename"] or ""
+        self.parser_type: ParserType | str = kwargs["parser_type"] or ""
 
     def get_entry_name_from_lines(self, text_lines: list[str]) -> str | None:
         """
@@ -165,7 +177,12 @@ class StatsParser:
                     if not contents.startswith(os.linesep):
                         contents = os.linesep + contents
 
-                    return bool(handle.write(contents))
+                    success = bool(handle.write(contents))
+
+                    if success:
+                        logger.info(f"Added {self.parser_type} entry to file")
+
+                    return success
             else:
                 return False
         else:

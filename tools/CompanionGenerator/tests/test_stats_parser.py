@@ -2,9 +2,11 @@ from pathlib import Path
 
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.logger import logger
-from companiongenerator.stats_parser import StatsParser
+from companiongenerator.stats_parser import ParserType, StatsParser
 
-parser = StatsParser()
+parser = StatsParser(
+    filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
+)
 spell_text = """
     new entry "LC_Summon_Legendary_Kobold"
     type "SpellData"

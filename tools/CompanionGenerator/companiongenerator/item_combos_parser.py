@@ -1,4 +1,5 @@
-from companiongenerator.stats_parser import StatsParser
+from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.stats_parser import ParserType, StatsParser
 
 
 class ItemCombosParser:
@@ -14,7 +15,10 @@ class ItemCombosParser:
 
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
-            stats_parser = StatsParser()
+            stats_parser = StatsParser(
+                filename=MOD_FILENAMES["item_combos"],
+                parser_type=ParserType.ITEM_COMBOS,
+            )
             for combo_line in combo_file_lines:
                 if combo_line.startswith("new ItemCombination"):
                     combo_name = stats_parser.get_value_from_line_in_quotes(combo_line)
@@ -48,7 +52,10 @@ class ItemCombosParser:
 
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
-            stats_parser = StatsParser()
+            stats_parser = StatsParser(
+                filename=MOD_FILENAMES["item_combos"],
+                parser_type=ParserType.ITEM_COMBOS,
+            )
             for combo_line in combo_file_lines:
                 """
                 These names are pretty similar so we need to check
