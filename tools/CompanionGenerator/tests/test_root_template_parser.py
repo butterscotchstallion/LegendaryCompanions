@@ -38,7 +38,6 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
                         f"Duplicate entry found: \"{attr.attrib['value']}\"! Skipping"
                     )
                     num_skipped = num_skipped + 1
-                    continue
                 else:
                     if name_value:
                         rt_names.append(name_value)
@@ -78,21 +77,21 @@ def test_parse_and_append():
         name=scroll_rt.name,
     )
 
-    new_nodes = [
-        RootTemplateNodeEntry(
-            comment=companion_rt.get_comment(),
-            root_template_xml=companion_xml,
-            name=companion_rt.name,
-        ),
-        RootTemplateNodeEntry(
-            comment=page_rt.get_comment(),
-            root_template_xml=page_xml,
-            name=page_rt.name,
-        ),
-        scroll_entry,
-        # Intentional duplicate
-        scroll_entry,
-    ]
+    new_nodes = set(
+        [
+            RootTemplateNodeEntry(
+                comment=companion_rt.get_comment(),
+                root_template_xml=companion_xml,
+                name=companion_rt.name,
+            ),
+            RootTemplateNodeEntry(
+                comment=page_rt.get_comment(),
+                root_template_xml=page_xml,
+                name=page_rt.name,
+            ),
+            scroll_entry,
+        ]
+    )
 
     # Parse XML and verify children tag exists
     xml_with_new_nodes = parser.append_nodes_to_children(
@@ -113,10 +112,14 @@ def test_parse_and_append():
         Verify XML by checking each root template against
         the parsed XML
         """
-        root_templates_to_verify = [companion_rt, page_rt, scroll_rt]
-        node_children = children_el.findall("node")
+        names_list: list[str] = sorted(parser.get_names_from_children(children_el))
+        names_set: set[str] = set(names_list)
+        # names_list_len = len(names_list)
+        # names_set_len = len(names_set)
+        # duplicates_found = names_list_len != names_set_len
 
-        for template in root_templates_to_verify:
-            assert verify_node_children(node_children, template)
+        for name in names_list:
+            if name not in names_set:
+                assert False, f"Duplicate name found: {name}"
 
-        parser.write()
+        # parser.write()

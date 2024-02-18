@@ -1366,16 +1366,16 @@
 				<!--Legendary Muffin-->
 				<node id="GameObjects">
 					<attribute id="Archetype" type="FixedString" value="melee_smart" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h0592893eg57b2g446ag9a5dgfc8275b1dda9" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h76d1c1b2gf8a6g422bg9bd5g836938642f68" version="1" />
 					<attribute id="Equipment" type="FixedString" value="LC_EQP_Legendary" />
-					<attribute id="MapKey" type="FixedString" value="f7d3f49a-cda8-492d-9b9c-1675c1f79e95" />
+					<attribute id="MapKey" type="FixedString" value="62f534f2-2834-4104-a704-2f8224a78238" />
 					<attribute id="Name" type="LSString" value="Chip Chocolate" />
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Stats" type="FixedString" value="LC_Legendary_Muffin" />
 					<attribute id="ShowEquipmentVisuals" type="bool" value="True" />
 					<attribute id="Floating" type="bool" value="True" />
-					<attribute id="Title" type="TranslatedString" handle="h25015540g606ag4695ga136g5de48ed70c4c" version="1" />
-					<attribute id="ParentTemplateId" type="FixedString" value="c67db250-0fee-4cf2-9d00-b517eeb55c4e" />
+					<attribute id="Title" type="TranslatedString" handle="hbeb68f33g4bd4g4af7g92b0g48e214bee21b" version="1" />
+					<attribute id="ParentTemplateId" type="FixedString" value="4cd70385-1d7c-4393-abac-0f541fe3d7f1" />
 					<attribute id="LevelOverride" type="int32" value="" />
 					<children>
 						<node id="Tags">
@@ -1406,11 +1406,11 @@
 				</node>
 				<!--LC_Page_1-->
 				<node id="GameObjects">
-					<attribute id="Description" type="TranslatedString" handle="hb4933aa3gebfag48b9g8abcg61c3ba53f89a" version="1" />
-					<attribute id="DisplayName" type="TranslatedString" handle="hb3942372gf5ebg4247gbac6g685a8702cc43" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="h8037a8ecg2590g4863ga3faga24cb13d17db" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="hd588fbaag4d76g4ef5gb630g6e57f0c726ee" version="1" />
 					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="fe3d6c75-299a-411e-8d43-df5ba31b0acf" />
+					<attribute id="MapKey" type="FixedString" value="11a80f90-af41-46b6-ad24-8a2af27d0981" />
 					<attribute id="Name" type="LSString" value="LC_Page_1" />
 					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />
@@ -1467,11 +1467,11 @@
 				</node>
 				<!--LC_Page_2-->
 				<node id="GameObjects">
-					<attribute id="Description" type="TranslatedString" handle="haff12d4cg3b69g4918g8b15g2b1d87b4f3f4" version="1" />
-					<attribute id="DisplayName" type="TranslatedString" handle="hb3942372gf5ebg4247gbac6g685a8702cc43" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="hd29c56a3g3f67g4fcaga3acga1c533881c43" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="hd588fbaag4d76g4ef5gb630g6e57f0c726ee" version="1" />
 					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="396f96d2-356c-4b9e-ac69-fd1288b56edb" />
+					<attribute id="MapKey" type="FixedString" value="dceeb1fa-0895-4e80-8116-eb40b7438899" />
 					<attribute id="Name" type="LSString" value="LC_Page_2" />
 					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />
@@ -1528,12 +1528,12 @@
 				</node>
 				<!--LC_Book_of_Testing-->
 				<node id="GameObjects">
-					<attribute id="Description" type="TranslatedString" handle="h4fd874fdg2cadg4bebga5edgd1f3df432a38" version="1" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h43d779bagc0b5g4224g9687g9a7550eaf6c3" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="h881b7e36gd62ag4455gb8ffgabec06f780d5" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h4c1c72bdg42fag46a4gaebdg3f74a771c396" version="1" />
 					<attribute id="Flag" type="int32" value="0" />
 					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="b7f8d796-21ab-467e-b679-3cce3ba74923" />
+					<attribute id="MapKey" type="FixedString" value="28a7a2f5-57b6-4e48-ba04-e4accf34ee0d" />
 					<attribute id="Name" type="LSString" value="LC_Book_of_Testing" />
 					<attribute id="ParentTemplateId" type="FixedString" value="23f65dff-a1ca-42fb-91ee-4cbb69450336" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="74eb44d4-f1a9-c08c-fd8a-4cc98285f2c2" />
@@ -1576,7 +1576,7 @@
 									<children>
 										<node id="Attributes">
 											<attribute id="Animation" type="FixedString" value="" />
-											<attribute id="BookId" type="FixedString" value="ab4f7e41-871f-48fa-a265-adc8a0037cef" />
+											<attribute id="BookId" type="FixedString" value="1f7cd9b2-3e71-4967-a1d4-1d1dafa0fa84" />
 											<attribute id="Conditions" type="LSString" value="" />
 										</node>
 									</children>
@@ -1587,12 +1587,12 @@
 				</node>
 				<!--Scroll of Testing-->
 				<node id="GameObjects">
-					<attribute id="DisplayName" type="TranslatedString" handle="hf32b131dg7e3eg43edg9149g7c79887313b2" version="1" />
-					<attribute id="Description" type="TranslatedString" handle="h2ebdde3cg8cf5g41eagbb41gc2cc137fad4d" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h7bface31g26a2g488fg8621gb29fef56e708" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="h04f2454fg6e4fg4ecagae0bg9d481313c832" version="1" />
 					<attribute id="Flag" type="int32" value="0" />
 					<attribute id="Icon" type="FixedString" value="Item_LOOT_SCROLL_ArcaneEye" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="b8ec3e45-9119-4573-bef7-86442daab87e" />
+					<attribute id="MapKey" type="FixedString" value="867d9617-bfec-4dfa-a6e7-7f5ae9f1607e" />
 					<attribute id="Name" type="LSString" value="LC_Scroll_of_Testing" />
 					<attribute id="ParentTemplateId" type="FixedString" value="4ffd5c4b-4c56-4f05-a228-a33754bb1806" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="94a7c400-b2df-c54c-1675-1937920b7714" />
@@ -1647,15 +1647,15 @@
 				<!--Legendary Muffin-->
 				<node id="GameObjects">
 					<attribute id="Archetype" type="FixedString" value="melee_smart" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h4faedf86g9370g4babgaee1g2280a5ba3f95" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h93f1b75dgf71bg4019g98a6g6825cb5658f5" version="1" />
 					<attribute id="Equipment" type="FixedString" value="LC_EQP_Legendary_Muffin" />
-					<attribute id="MapKey" type="FixedString" value="2bc790d6-79b5-41d8-8bd2-710cfe27eddb" />
+					<attribute id="MapKey" type="FixedString" value="6fc47580-c8b3-4667-a11d-b90b69e24459" />
 					<attribute id="Name" type="LSString" value="LC_Legendary_Muffin" />
 					<attribute id="Type" type="FixedString" value="character" />
 					<attribute id="Stats" type="FixedString" value="LC_Legendary_Muffin" />
 					<attribute id="ShowEquipmentVisuals" type="bool" value="True" />
 					<attribute id="Floating" type="bool" value="True" />
-					<attribute id="Title" type="TranslatedString" handle="hfdd4fd32ge8a9g47f9ga712g3eba78306113" version="1" />
+					<attribute id="Title" type="TranslatedString" handle="hba49276ag9502g4a34g96b2g563f64dd4ada" version="1" />
 					<attribute id="ParentTemplateId" type="FixedString" value="1234" />
 					<attribute id="LevelOverride" type="int32" value="" />
 					<children>
@@ -1687,11 +1687,11 @@
 				</node>
 				<!--OBJ_LC_Page_1-->
 				<node id="GameObjects">
-					<attribute id="Description" type="TranslatedString" handle="ha3926396g827ag484cg85ebg46a6c9607cf5" version="1" />
-					<attribute id="DisplayName" type="TranslatedString" handle="h5b6440fbg0442g4cdbgacb6gf8d94c01d11b" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="he9e411e6gd794g4af9g8931g638aa6142a22" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h2fe2d071g3fdbg45ddg9966g622927a238eb" version="1" />
 					<attribute id="Icon" type="FixedString" value="book_icon_name" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="f30dbaf1-31ba-4309-a107-b6e7ceb0d95a" />
+					<attribute id="MapKey" type="FixedString" value="109d1e42-cac7-4f77-ba86-769b16fe1ef7" />
 					<attribute id="Name" type="LSString" value="OBJ_LC_Page_1" />
 					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />
@@ -1748,12 +1748,12 @@
 				</node>
 				<!--Scroll of Summon Chip Chocolate-->
 				<node id="GameObjects">
-					<attribute id="DisplayName" type="TranslatedString" handle="hd89e736dg0e84g4838g8d8eg71d4116e616c" version="1" />
-					<attribute id="Description" type="TranslatedString" handle="h6556800bgfde0g4952g905bg28a470857c95" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h220d405fgb614g4fbcg95b4g4a5f6975e3dc" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="h3580cad4g7c6bg4e6ag8a4bg508b2985180c" version="1" />
 					<attribute id="Flag" type="int32" value="0" />
 					<attribute id="Icon" type="FixedString" value="Item_LOOT_SCROLL_ArcaneEye" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="1e3183d3-931c-47b0-acde-8dc4999c5426" />
+					<attribute id="MapKey" type="FixedString" value="769b797d-5d9e-4cf2-b47a-29c622b3c2bd" />
 					<attribute id="Name" type="LSString" value="OBJ_LC_SCROLL" />
 					<attribute id="ParentTemplateId" type="FixedString" value="4ffd5c4b-4c56-4f05-a228-a33754bb1806" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="94a7c400-b2df-c54c-1675-1937920b7714" />
@@ -1807,12 +1807,12 @@
 				</node>
 				<!--Scroll of Summon Chip Chocolate-->
 				<node id="GameObjects">
-					<attribute id="DisplayName" type="TranslatedString" handle="hd89e736dg0e84g4838g8d8eg71d4116e616c" version="1" />
-					<attribute id="Description" type="TranslatedString" handle="h6556800bgfde0g4952g905bg28a470857c95" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h220d405fgb614g4fbcg95b4g4a5f6975e3dc" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="h3580cad4g7c6bg4e6ag8a4bg508b2985180c" version="1" />
 					<attribute id="Flag" type="int32" value="0" />
 					<attribute id="Icon" type="FixedString" value="Item_LOOT_SCROLL_ArcaneEye" />
 					<attribute id="LevelName" type="FixedString" value="" />
-					<attribute id="MapKey" type="FixedString" value="1e3183d3-931c-47b0-acde-8dc4999c5426" />
+					<attribute id="MapKey" type="FixedString" value="769b797d-5d9e-4cf2-b47a-29c622b3c2bd" />
 					<attribute id="Name" type="LSString" value="OBJ_LC_SCROLL" />
 					<attribute id="ParentTemplateId" type="FixedString" value="4ffd5c4b-4c56-4f05-a228-a33754bb1806" />
 					<attribute id="PhysicsTemplate" type="FixedString" value="94a7c400-b2df-c54c-1675-1937920b7714" />

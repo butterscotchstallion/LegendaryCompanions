@@ -28,8 +28,51 @@ class RootTemplateParser:
             if node is not None:
                 return node.find("children")
 
+    def get_names_from_children(self, node_children: ET.Element) -> list[str]:
+        """
+        Need to get all the names at once from the entire node collection
+        instead of iterating
+        """
+        existing_names: list[str] = []
+
+        # Build name list from children
+        all_nodes = node_children.findall("node")
+        total_children = 0
+        if all_nodes is not None:
+            for node_child in node_children:
+                # Don't try to parse comments
+                if node_child.tag is ET.Comment:
+                    continue
+
+                total_children = total_children + 1
+                attributes = node_child.findall("attribute")
+                if attributes and len(attributes) > 0:
+                    for attribute_tag in attributes:
+                        if attribute_tag.attrib["id"] == "Name":
+                            name_value = attribute_tag.attrib["value"]
+                            existing_names.append(name_value)
+                else:
+                    logger.error(
+                        "Unexpected XML format: no attributes found in node tag!"
+                    )
+                    break
+
+            total_existing_names = len(existing_names)
+
+            if total_existing_names != total_children:
+                logger.error(
+                    f"Total names doesn't match total children: {total_existing_names} != {total_children}!"
+                )
+
+            if total_existing_names > 0:
+                logger.info(
+                    f"There are {total_existing_names} existing names in the RT"
+                )
+
+        return existing_names
+
     def append_nodes_to_children(
-        self, filename: str, nodes: list[RootTemplateNodeEntry]
+        self, filename: str, nodes: set[RootTemplateNodeEntry]
     ) -> str | None:
         """
         Finds templates node, appends nodes, and returns
@@ -53,61 +96,31 @@ class RootTemplateParser:
             """
             node_children = self.get_templates_children(root)
             if node_children is not None:
-                # Build name list from children
-                existing_names: list[str] = []
-                all_nodes = node_children.findall("node")
-                total_children = 0
-                if all_nodes is not None:
-                    for node_child in node_children:
-                        # Don't try to parse comments
-                        if node_child.tag is ET.Comment:
-                            continue
+                existing_names = self.get_names_from_children(node_children)
 
-                        total_children = total_children + 1
-                        attributes = node_child.findall("attribute")
-                        if attributes and len(attributes) > 0:
-                            for attribute_tag in attributes:
-                                if attribute_tag.attrib["id"] == "Name":
-                                    name_value = attribute_tag.attrib["value"]
-                                    existing_names.append(name_value)
-                        else:
-                            logger.error(
-                                "Unexpected XML format: no attributes found in node tag!"
+                # Iterate supplied nodes and append if not existent
+                if existing_names is not None:
+                    nodes_added = 0
+                    for new_node in nodes:
+                        if new_node.name not in existing_names:
+                            if new_node.comment:
+                                node_children.append(ET.Comment(new_node.comment))
+
+                            node_children.append(
+                                ET.fromstring(new_node.root_template_xml)
                             )
-                            break
+                            nodes_added = nodes_added + 1
 
-                    total_existing_names = len(existing_names)
+                    logger.info(
+                        f"{nodes_added} root templates added to {Path(self.filename).stem}"
+                    )
 
-                    if total_existing_names != total_children:
-                        logger.error(
-                            f"Total names doesn't match total children: {total_existing_names} != {total_children}!"
-                        )
-
-                    if total_existing_names > 0:
-                        logger.info(f"There are {total_existing_names} existing names")
-
-                        # Iterate supplied nodes and append if not existent
-                        nodes_added = 0
-                        for new_node in nodes:
-                            if new_node.name not in existing_names:
-                                if new_node.comment:
-                                    node_children.append(ET.Comment(new_node.comment))
-                                node_children.append(
-                                    ET.fromstring(new_node.root_template_xml)
-                                )
-                                nodes_added = nodes_added + 1
-
-                        logger.info(
-                            f"{nodes_added} root templates added to {Path(self.filename).stem}"
-                        )
-
-                        ET.indent(self.tree, space="\t", level=0)
-                        return ET.tostring(root, encoding="unicode")
-                    else:
-                        if node_child is not None:
-                            ET.dump(node_child)
-                        logger.error("Found 0 existing names. This should not happen")
-
+                    ET.indent(self.tree, space="\t", level=0)
+                    return ET.tostring(root, encoding="unicode")
+                else:
+                    if node_child is not None:
+                        ET.dump(node_child)
+                    logger.error("Found 0 existing names. This should not happen")
         except ET.ParseError as err:
             if new_node:
                 err_msg = get_error_message(new_node.root_template_xml, err)

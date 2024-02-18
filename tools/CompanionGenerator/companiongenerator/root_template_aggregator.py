@@ -8,10 +8,10 @@ class RootTemplateAggregator:
     def __init__(self, **kwargs) -> None:
         self.file_handler = FileHandler(is_dry_run=kwargs["is_dry_run"])
         self.root_template_parser = RootTemplateParser()
-        self.entries: list[RootTemplateNodeEntry] = []
+        self.entries: set[RootTemplateNodeEntry] = set([])
 
     def add_entry(self, rt_xml: str, comment: str, name: str):
-        self.entries.append(
+        self.entries.add(
             RootTemplateNodeEntry(
                 comment=comment,
                 root_template_xml=rt_xml,
