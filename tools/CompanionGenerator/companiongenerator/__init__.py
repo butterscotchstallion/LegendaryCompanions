@@ -18,3 +18,4 @@ from .book_parser import BookParser
 from .stats_parser import StatsParser
 from .item_combos_parser import ItemCombosParser
 from .stats_object import StatsObject
+from .equipment_parser import EquipmentParser

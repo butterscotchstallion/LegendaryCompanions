@@ -6,6 +6,7 @@ from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import StatsParser
@@ -22,17 +23,25 @@ def test_create():
     director = AutomationDirector(is_dry_run=False)
 
     ## Companion RT
+    eqp_set_name = "LC_EQP_Legendary"
     director.add_companion_rt(
         title="Legendary Muffin",
         name="Chip Chocolate",
         displayName="Display name",
         parentTemplateId=uuid4(),
-        equipmentSetName="LC_EQP_Legendary",
+        equipmentSetName=eqp_set_name,
         statsName="LC_Legendary_Muffin",
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
     )
+
+    # Update equipment file
+    updated_equipment = director.update_equipment(
+        equipment_set_name=eqp_set_name, equipment_set_type=EquipmentSetType.MELEE_PLATE
+    )
+
+    assert updated_equipment, "Failed to update equipment"
 
     # Update spell
     updated_spell_file = director.update_summon_spells(

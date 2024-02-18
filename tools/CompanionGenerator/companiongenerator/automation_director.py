@@ -4,6 +4,8 @@ from pathlib import Path
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.equipment_parser import EquipmentParser
+from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combos_parser import ItemCombosParser
@@ -48,6 +50,19 @@ class AutomationDirector:
         logger.info("=================================================")
         logger.info("Initializing new automation run!")
         logger.info("=================================================")
+
+    def update_equipment(
+        self, equipment_set_name: str, equipment_set_type: EquipmentSetType
+    ):
+        """
+        Updates equipment file with new set, if it doesn't exist
+        """
+        parser = EquipmentParser()
+        equipment_set = EquipmentSet(
+            name=equipment_set_name, equipment_set_type=equipment_set_type
+        )
+        equipment_text = equipment_set.get_tpl_with_replacements()
+        return parser.add_entry(equipment_set_name, equipment_text)
 
     def update_summon_spells(self, **kwargs):
         """

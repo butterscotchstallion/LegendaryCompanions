@@ -24,7 +24,7 @@ class StatsObjectAggregator:
         parser = StatsParser()
         handle = Path(MOD_FILENAMES["books_object_file"])
         object_file_contents: str = handle.read_text()
-        entry_names: list[str] = parser.get_entry_names_from_text(object_file_contents)
+        entry_names: set[str] = parser.get_entry_names_from_text(object_file_contents)
         append_entries: set[str] = set([])
 
         total_existing_entries: int = len(entry_names)

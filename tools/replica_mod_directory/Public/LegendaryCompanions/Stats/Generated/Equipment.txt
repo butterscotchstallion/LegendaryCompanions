@@ -70,4 +70,26 @@ new equipment "EQP_Muffin_Legendary"
     add equipmentgroup
     add equipment entry "WPN_HandCrossbow_1"
 
+new equipment "LC_EQP_Legendary"
+    add initialweaponset "Melee"
+    add equipmentgroup
+    add equipment entry "MAG_OfSpellPower_Quarterstaff"
+    add equipmentgroup
+    add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Leather_G"
+    add initialweaponset "Ranged"
+    add equipmentgroup
+    add equipment entry "WPN_HandCrossbow_1"
 
+new equipment "test_equipment_entry"
+    add initialweaponset "Melee"
+    add equipmentgroup
+    add equipment entry "MAG_OfSpellPower_Quarterstaff"
+    add equipmentgroup
+    add equipment entry "UNI_DarkUrge_Bhaal_Cloak"
+    add equipmentgroup
+    add equipment entry "ARM_Boots_Leather_G"
+    add initialweaponset "Ranged"
+    add equipmentgroup
+    add equipment entry "WPN_HandCrossbow_1"

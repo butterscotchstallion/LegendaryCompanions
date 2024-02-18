@@ -38,6 +38,11 @@ class LocalizationAggregator:
     def add_entry_and_return_handle(self, **kwargs) -> str:
         existing_entry = self.entry_with_text_exists(kwargs["text"])
 
+        """
+        NOTE: this breaks without the check
+        even though we're using sets. Maybe figure
+        this out later.
+        """
         if existing_entry is not False:
             return existing_entry.handle
         else:

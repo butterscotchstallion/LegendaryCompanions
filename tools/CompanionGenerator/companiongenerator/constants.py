@@ -20,4 +20,5 @@ MOD_FILENAMES: dict[str, str] = {
     "spell_text_file_summons": f"{STATS_DATA_PATH}/LC_Summons.txt",
     "item_combos": f"{STATS_PATH}/ItemCombos.txt",
     "books_object_file": f"{STATS_DATA_PATH}/LC_Books.txt",
+    "equipment": f"{STATS_PATH}/Equipment.txt",
 }

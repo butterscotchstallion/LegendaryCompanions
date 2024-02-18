@@ -1,3 +1,7 @@
+import os
+from pathlib import Path
+
+from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
 
 
@@ -15,12 +19,24 @@ class StatsParser:
 
     """
 
+    def __init__(self, filename=""):
+        """
+        This is what the line for a new entry starts with in Stats entries.
+        In other files, like equipment sets, the format is similar but it
+        starts with "new equipment" instead.
+        """
+        self.new_entry_text: str = "new entry"
+        self.filename: str = ""
+
+        if filename:
+            self.filename = filename
+
     def get_entry_name_from_lines(self, text_lines: list[str]) -> str | None:
         """
         Parses out entry name from a single entry
         """
         for line in text_lines:
-            if line.startswith("new entry"):
+            if line.startswith(self.new_entry_text):
                 return self.get_value_from_line_in_quotes(line)
 
     def get_stripped_text_lines(self, stats_text: str) -> list[str]:
@@ -72,7 +88,7 @@ class StatsParser:
                 if first_element == "data":
                     spell[line_parts[1]] = line_parts[2]
                 # Non-data line has other keywords
-                elif first_element == "new entry":
+                elif first_element == self.new_entry_text:
                     spell["name"] = line_parts[1]
                 else:
                     spell[first_element] = line_parts[1]
@@ -98,7 +114,7 @@ class StatsParser:
         2. Parse each entry to get entry names
         3. Check if supplied entry name exists in this set
         """
-        spell_name_list: list[str] = self.get_entry_names_from_text(
+        spell_name_list: set[str] = self.get_entry_names_from_text(
             spell_text_file_contents
         )
 
@@ -107,12 +123,50 @@ class StatsParser:
 
         return spell_name in spell_name_list
 
-    def get_entry_names_from_text(self, stats_text: str) -> list[str]:
+    def get_entry_names_from_text(self, stats_text: str = "") -> set[str]:
         """Parses spell name from file contents"""
+
+        # Read from filename if no text supplied
+        if len(stats_text) == 0:
+            stats_text = self.get_file_contents()
+
         stripped_text_lines = self.get_stripped_text_lines(stats_text)
-        spells: list[str] = []
+        spells: set[str] = set([])
         for line in stripped_text_lines:
-            if line.startswith("new entry"):
+            if line.startswith(self.new_entry_text):
                 spell_name = self.get_value_from_line_in_quotes(line)
-                spells.append(spell_name)
+                spells.add(spell_name)
         return spells
+
+    def get_file_contents(self) -> str:
+        """
+        Gets file contents from stats file
+        """
+        handle = Path(self.filename)
+        return handle.read_text()
+
+    def add_entry(self, entry_name: str, entry_text: str) -> bool:
+        """
+        Adds new entry if it doesn't exist
+        """
+        existing_names: set[str] = self.get_entry_names_from_text(
+            self.get_file_contents()
+        )
+
+        if entry_name not in existing_names:
+            handler = FileHandler()
+            backup_created = handler.create_backup_file(self.filename)
+            if backup_created:
+                with open(self.filename, "a+") as handle:
+                    handle.seek(os.SEEK_END)
+
+                    # Make sure we add a new line if it's not there
+                    contents = entry_text
+                    if not contents.startswith(os.linesep):
+                        contents = os.linesep + contents
+
+                    return bool(handle.write(contents))
+            else:
+                return False
+        else:
+            return True
