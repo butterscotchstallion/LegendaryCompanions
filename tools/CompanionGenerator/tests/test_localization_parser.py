@@ -14,12 +14,12 @@ from tests.template_validity_helper import is_valid_handle_uuid
 
 def verify_localization_added(
     updated_content_list: list[ET.Element],
-    loca_entries: list[LocalizationEntry],
+    loca_entries: set[LocalizationEntry],
 ) -> bool:
     """Build updated content text list and compare loca entries"""
 
     # Build text list from both
-    updated_content_texts: list[str] = get_text_from_entries(updated_content_list)
+    updated_content_texts: list[str] = get_text_from_entries(set(updated_content_list))
     loca_texts = get_text_from_entries(loca_entries)
 
     # Return true if all of the loca entries added exist in the updated list

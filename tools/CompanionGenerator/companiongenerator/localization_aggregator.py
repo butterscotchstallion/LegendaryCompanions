@@ -13,7 +13,7 @@ class LocalizationAggregator:
     """
 
     def __init__(self, **kwargs):
-        self.entries: list[LocalizationEntry] = []
+        self.entries: set[LocalizationEntry] = set([])
         self.is_dry_run = True
 
         if "is_dry_run" in kwargs:
@@ -42,5 +42,5 @@ class LocalizationAggregator:
             return existing_entry.handle
         else:
             entry = LocalizationEntry(**kwargs)
-            self.entries.append(entry)
+            self.entries.add(entry)
             return entry.handle

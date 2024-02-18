@@ -71,12 +71,6 @@ def test_parse_and_append():
     scroll_rt = get_scroll_rt()
     scroll_xml = scroll_rt.get_tpl_with_replacements()
 
-    scroll_entry = RootTemplateNodeEntry(
-        comment=scroll_rt.get_comment(),
-        root_template_xml=scroll_xml,
-        name=scroll_rt.name,
-    )
-
     new_nodes = set(
         [
             RootTemplateNodeEntry(
@@ -89,7 +83,11 @@ def test_parse_and_append():
                 root_template_xml=page_xml,
                 name=page_rt.name,
             ),
-            scroll_entry,
+            RootTemplateNodeEntry(
+                comment=scroll_rt.get_comment(),
+                root_template_xml=scroll_xml,
+                name=scroll_rt.name,
+            ),
         ]
     )
 

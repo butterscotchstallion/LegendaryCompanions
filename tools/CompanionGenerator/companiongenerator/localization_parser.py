@@ -25,7 +25,7 @@ class LocalizationParser:
         return root.findall("content")
 
     def append_entries(
-        self, filename: str, entries: list[LocalizationEntry]
+        self, filename: str, entries: set[LocalizationEntry]
     ) -> ET.Element | None:
         # Appends localization entries and returns updated content list
         new_node = ""
@@ -49,10 +49,15 @@ class LocalizationParser:
             </contentList>
             """
             if content_entries is not None:
-                self.original_parsed_entries = get_text_from_entries(content_entries)
+                content_entries_set = set(content_entries)
+                self.original_parsed_entries = get_text_from_entries(
+                    content_entries_set
+                )
 
                 # Build list of text so we don't add duplicates
-                content_text_list: list[str] = get_text_from_entries(content_entries)
+                content_text_list: list[str] = get_text_from_entries(
+                    content_entries_set
+                )
 
                 # Append new entries
                 entries_added = 0

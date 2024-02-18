@@ -10,7 +10,7 @@ def get_comment_preserving_parser():
     return ElementTree.XMLParser(target=ElementTree.TreeBuilder(insert_comments=True))
 
 
-def get_text_from_entries(entries: list) -> list[str]:
+def get_text_from_entries(entries: set) -> list[str]:
     """Extracts text from elements and localization entries"""
     return [entry.text for entry in entries if entry.text]
 
