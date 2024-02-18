@@ -114,12 +114,13 @@ def test_parse_and_append():
         """
         names_list: list[str] = sorted(parser.get_names_from_children(children_el))
         names_set: set[str] = set(names_list)
-        # names_list_len = len(names_list)
-        # names_set_len = len(names_set)
+        names_list_len = len(names_list)
+        names_set_len = len(names_set)
         # duplicates_found = names_list_len != names_set_len
 
         for name in names_list:
             if name not in names_set:
                 assert False, f"Duplicate name found: {name}"
 
+        assert names_list_len == names_set_len
         # parser.write()
