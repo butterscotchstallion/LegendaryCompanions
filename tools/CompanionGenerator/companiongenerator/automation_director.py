@@ -11,6 +11,7 @@ from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combos_parser import ItemCombosParser
 from companiongenerator.localization_aggregator import LocalizationAggregator
+from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -118,6 +119,29 @@ class AutomationDirector:
         except IOError as err:
             logger.error(f"Error opening summon spell file: {err}")
             return False
+
+    def update_localization(self, parser: LocalizationParser) -> bool | None:
+        """
+        Update localization file with all entries
+        from localization aggregator
+        """
+        loca_file = MOD_FILENAMES["localization"]
+        entries = self.localization_aggregator.entries
+        num_entries = len(entries)
+
+        if num_entries:
+            logger.info(f"There are {num_entries} localization entries aggregated")
+
+            backup_created = self.file_handler.create_backup_file(loca_file)
+
+            if backup_created:
+                updated_content_list = parser.append_entries(loca_file, entries)
+
+                if updated_content_list is not None:
+                    parser.write_tree()
+                    return True
+        else:
+            logger.error("No localization entries!")
 
     def update_book_file(self, **kwargs):
         """

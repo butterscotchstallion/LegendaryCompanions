@@ -7,6 +7,7 @@ from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_set import EquipmentSetType
+from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import ParserType, StatsParser
@@ -207,6 +208,10 @@ def test_create():
                         ), "Unknown description mismatch"
                     # Stop here because we do not care about other books.
                     break
+    # Localization
+    parser = LocalizationParser()
+    updated_content_list = director.update_localization(parser)
+    assert updated_content_list is not None, "Failed to update localization"
 
 
 def verify_links():

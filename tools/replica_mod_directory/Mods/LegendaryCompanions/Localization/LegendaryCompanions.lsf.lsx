@@ -28,6 +28,46 @@
 					<attribute id="Stub" type="bool" value="True" />
 					<attribute id="UnknownDescription" type="TranslatedString" handle="h48f54740g0cf0g4d6cg8849g069dd8eec0ea" version="1" />
 				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h689fc1ccg9ef0g4d0bga8d9gb09c911fc435" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_13995a" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h28029609g7a7cg46e5g8993gcab49fdc6e41" version="1" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h89607a64g3515g4dadgacaagc8e184e7ae55" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_d6ef73" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="ha7815c9ege97fg49acg8bdfgda2daf5997ed" version="1" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="haf8d534dgd816g4477gb866g49f82c5f0fe8" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_f8f43e" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="he87ca5a4gfc2eg4444gaf52g20fb9980b9ac" version="1" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h102e198fgfe32g4c4bgad9dg4186a79e0482" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_d036ce" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h53350374g8bf8g4fedg9a8cg42ef0bceb9a0" version="1" />
+				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="h8a8a1af9g68acg4e74g9e51g3a2771d1ebe0" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_5bb777" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="hc250f375g174ag4ee5ga71age47764acfc28" version="1" />
+				</node>
 			</children>
 		</node>
 	</region>

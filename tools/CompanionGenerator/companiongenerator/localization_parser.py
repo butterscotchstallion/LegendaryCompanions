@@ -1,6 +1,5 @@
 import os
 import xml.etree.ElementTree as ET
-from pathlib import Path
 
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.logger import logger
@@ -14,11 +13,14 @@ from companiongenerator.xml_utils import (
 class LocalizationParser:
     """Handles parses and modifying localization XML"""
 
-    tree: ET.ElementTree
+    tree: ET.ElementTree | None
     filename: str
+    entries_added: int
 
     def __init__(self):
         self.filename = ""
+        self.entries_added = 0
+        self.tree = None
 
     def get_content_list(self, root: ET.Element) -> list[ET.Element]:
         return root.findall("content")
@@ -55,8 +57,11 @@ class LocalizationParser:
                     content_entries_set
                 )
 
+                logger.info(
+                    f"Localization content list has {len(content_text_list)} entries"
+                )
+
                 # Append new entries
-                entries_added = 0
                 for loca_entry in entries:
                     if loca_entry.text not in content_text_list:
                         loca_entry_element = ET.fromstring(
@@ -66,13 +71,9 @@ class LocalizationParser:
                         if loca_entry.comment:
                             content_list.append(ET.Comment(loca_entry.comment))
                         content_list.append(loca_entry_element)
-                        entries_added = entries_added + 1
+                        self.entries_added = self.entries_added + 1
 
-                logger.info(
-                    f"{entries_added} localization entries added to {Path(self.filename).stem}"
-                )
-
-                if entries_added > 0:
+                if self.entries_added > 0:
                     ET.indent(content_list, "\t")
 
                 return content_list
@@ -82,4 +83,6 @@ class LocalizationParser:
             logger.error(f"Error parsing loca file: {get_error_message(new_node, err)}")
 
     def write_tree(self):
-        self.tree.write(self.filename, "unicode", True)
+        if self.tree and self.entries_added > 0:
+            self.tree.write(self.filename, "unicode", True)
+            logger.info(f"Wrote {self.entries_added} localization entries")

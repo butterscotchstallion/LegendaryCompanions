@@ -112,8 +112,6 @@ class BookParser:
                 # Also, an empty list is valid when it's a new template
                 book_name_list = self.get_book_uuids(children)
 
-                logger.info(f"Existing Book names: {",".join(book_name_list)}")
-
                 # Append new books
                 books_added = 0
                 for book_entry in books:
