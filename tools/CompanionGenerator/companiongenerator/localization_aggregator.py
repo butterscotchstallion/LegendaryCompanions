@@ -27,7 +27,7 @@ class LocalizationAggregator:
         self, entry_handle: str
     ) -> LocalizationEntry | Literal[False]:
         for entry in self.entries:
-            if entry is LocalizationEntry and entry.handle == entry_handle:
+            if entry.handle == entry_handle:
                 return entry
         return False
 

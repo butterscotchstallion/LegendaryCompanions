@@ -107,4 +107,11 @@ new entry "LC_Summon_Legendary_Kobold_717973"
 		data "DisplayName" "hceaf18d5gb1f6g4dd0gbfb9gad0515a25a3c"
 		// A powerful summoning scroll
 		data "Description" "h95594629g72aag4d7bgbc7fgfb8a0432eb3b"
-		data "SpellProperties" "GROUND:Summon(4cb45182-9400-4655-afb0-ce420e7c0557,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+		data "SpellProperties" "GROUND:Summon(4cb45182-9400-4655-afb0-ce420e7c0557,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+new entry "LC_Summon_Legendary_Kobold_b8fcdb"
+	using "LC_Summon"
+		// Summon Kobold
+		data "DisplayName" "hdad32d6egec87g4233ga643ge7814395b492"
+		// A powerful summoning scroll
+		data "Description" "hd924748ag65a0g4278g999eg8baf459e5855"
+		data "SpellProperties" "GROUND:Summon(ee6cdf62-f38d-4dc3-afd0-924d477dace5,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"

@@ -20,6 +20,14 @@
 					<attribute id="Stub" type="bool" value="True" />
 					<attribute id="UnknownDescription" type="TranslatedString" handle="h6d21139dgbbd4g427dga9a5g9f3d7243ce37" version="1" />
 				</node>
+				<node id="TranslatedStringKey">
+					<attribute id="Content" type="TranslatedString" handle="he121c8b7g30dcg47c2ga19eg6caf20bfb161" version="1" />
+					<attribute id="UUID" type="FixedString" value="Book_of_Testing_b8fcdb" />
+					<attribute id="Speaker" type="FixedString" value="4a405fba-3000-4c63-97e5-a8001ebb883c" />
+					<attribute id="ExtraData" type="LSString" value="" />
+					<attribute id="Stub" type="bool" value="True" />
+					<attribute id="UnknownDescription" type="TranslatedString" handle="h48f54740g0cf0g4d6cg8849g069dd8eec0ea" version="1" />
+				</node>
 			</children>
 		</node>
 	</region>

@@ -151,11 +151,9 @@ class AutomationDirector:
                 if backup_created:
                     parser.write_tree()
                     logger.info(
-                        f"Wrote updated book file: {Path(parser.filename).stem}"
+                        f"Updated book file: {Path(parser.filename).stem} with book {book.name}"
                     )
                     return books
-                else:
-                    logger.error("Failed to create backup file!")
         else:
             logger.error("Failed to create book template")
 

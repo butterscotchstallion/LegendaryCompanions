@@ -18,7 +18,6 @@ class LocalizationParser:
     filename: str
 
     def __init__(self):
-        self.original_parsed_entries: list[str] = []
         self.filename = ""
 
     def get_content_list(self, root: ET.Element) -> list[ET.Element]:
@@ -50,9 +49,6 @@ class LocalizationParser:
             """
             if content_entries is not None:
                 content_entries_set = set(content_entries)
-                self.original_parsed_entries = get_text_from_entries(
-                    content_entries_set
-                )
 
                 # Build list of text so we don't add duplicates
                 content_text_list: list[str] = get_text_from_entries(
