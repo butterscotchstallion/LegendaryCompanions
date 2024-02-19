@@ -49,6 +49,8 @@ class AutomationDirector:
         logger.info(f"Initializing new automation run! [{self.unique_suffix}]")
         logger.info("=================================================")
 
+        self.localization_aggregator.load_localization_entries_from_file()
+
     def update_equipment(
         self, equipment_set_name: str, equipment_set_type: EquipmentSetType
     ):

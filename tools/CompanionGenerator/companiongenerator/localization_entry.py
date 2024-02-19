@@ -1,6 +1,14 @@
+from typing import TypedDict, Unpack
+
 from companiongenerator.loca_helper import generate_handle
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
+
+
+class LocalizationEntryKeyWords(TypedDict):
+    handle: str
+    comment: str
+    text: str
 
 
 class LocalizationEntry(TemplateReplacerBase):
@@ -9,7 +17,7 @@ class LocalizationEntry(TemplateReplacerBase):
     comment
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Unpack[LocalizationEntryKeyWords]):
         self.template_fetcher = TemplateFetcher()
         self.filename = "localization_entry.xml"
         self.handle = generate_handle()
