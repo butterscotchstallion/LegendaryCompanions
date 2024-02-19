@@ -31,9 +31,7 @@ class StatsObjectAggregator:
 
         total_existing_entries: int = len(entry_names)
 
-        logger.info(
-            f"There are {total_existing_entries} entries in the object file: {','.join(entry_names)}"
-        )
+        logger.info(f"There are {total_existing_entries} entries in the object file")
 
         if total_existing_entries == 0:
             logger.info("There are NO existing object entries")

@@ -100,7 +100,7 @@ class RootTemplateParser:
 
                 # Iterate supplied nodes and append if not existent
                 if existing_names is not None:
-                    nodes_added = 0
+                    nodes_names_added: set[str] = set([])
                     for new_node in nodes:
                         if new_node.name not in existing_names:
                             if new_node.comment:
@@ -109,10 +109,10 @@ class RootTemplateParser:
                             node_children.append(
                                 ET.fromstring(new_node.root_template_xml)
                             )
-                            nodes_added = nodes_added + 1
+                            nodes_names_added.add(new_node.name)
 
                     logger.info(
-                        f"{nodes_added} root templates added to {Path(self.filename).stem}"
+                        f"{len(nodes_names_added)} root templates added to {Path(self.filename).stem}: {','.join(nodes_names_added)}"
                     )
 
                     ET.indent(self.tree, space="\t", level=0)

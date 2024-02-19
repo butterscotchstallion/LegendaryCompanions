@@ -65,4 +65,25 @@ new entry "LC_Summon_Legendary_Kobold_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6"
 		data "DisplayName" "hb5798fcag194bg4404gbf70gbf6df4fdb1f7"
 		// A powerful summoning scroll
 		data "Description" "h44332a13gf1f3g46f6gb13bg0876c7d869d0"
-		data "SpellProperties" "GROUND:Summon(7d8c10e8-78b4-4978-941a-99838264b384,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+		data "SpellProperties" "GROUND:Summon(7d8c10e8-78b4-4978-941a-99838264b384,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+new entry "LC_Summon_Legendary_Kobold_4645112d-7b01-4c5a-8bba-b797637323da"
+	using "LC_Summon"
+		// Summon Kobold
+		data "DisplayName" "h378ed554gef10g4b2dg8132g7924343132d6"
+		// A powerful summoning scroll
+		data "Description" "hd89be82cgdec0g4078g86b9gb4f462d53469"
+		data "SpellProperties" "GROUND:Summon(7e762e8b-bbc9-49a6-8af2-97a965b63d9c,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+new entry "LC_Summon_Legendary_Kobold_465cdbe9-5bd2-4f37-8bff-2c093d660750"
+	using "LC_Summon"
+		// Summon Kobold
+		data "DisplayName" "hdfa6aea1gcd85g4238gb0e1g27f6608628bd"
+		// A powerful summoning scroll
+		data "Description" "h1c628f98g2ea8g45ffga108gcd0989e6ec53"
+		data "SpellProperties" "GROUND:Summon(61ae6dcc-1aaf-4955-b78f-0c6dbc7f6aa0,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+new entry "LC_Summon_Legendary_Kobold_4a0b4c"
+	using "LC_Summon"
+		// Summon Kobold
+		data "DisplayName" "hf6881fabgde9cg49e8g80fag4bba3d02cea9"
+		// A powerful summoning scroll
+		data "Description" "h379a7aefg1fb8g48e8g8f6eg43efd972ba7b"
+		data "SpellProperties" "GROUND:Summon(9b4518f1-7141-4d18-855f-edeafcaf4477,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"

@@ -62,6 +62,7 @@ class SummonSpell(Spell, TemplateReplacerBase):
         super().__init__(**kwargs)
         self.filename = "summon_spell.txt"
         self.replacements["{{summon_uuid}}"] = kwargs["summon_uuid"]
+        self.summon_uuid = kwargs["summon_uuid"]
 
         if not is_valid_uuid(kwargs["summon_uuid"]):
             raise ValueError(f'Invalid summon UUID supplied: {kwargs['summon_uuid']}')

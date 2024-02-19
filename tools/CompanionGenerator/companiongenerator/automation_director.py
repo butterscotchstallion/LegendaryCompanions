@@ -104,7 +104,7 @@ class AutomationDirector:
 
                         if success:
                             logger.info(
-                                f'Appended spell "{summon_spell.spell_name}" to spell file'
+                                f'Appended spell "{summon_spell.spell_name}" [Summon UUID: {summon_spell.summon_uuid}] to spell file'
                             )
                         else:
                             logger.error("Failed to append to spell file")
@@ -181,7 +181,6 @@ class AutomationDirector:
                     MOD_FILENAMES["item_combos"]
                 )
                 if created_backup:
-                    logger.info(f"Backup created for {MOD_FILENAMES["item_combos"]}")
                     handle.seek(os.SEEK_END)
                     combo_text = f"{os.linesep}{item_combo_tpl}"
                     logger.info(f"Added item combo {item_combo.combo_name} to file")
@@ -206,6 +205,7 @@ class AutomationDirector:
         rt = CompanionRT(**kwargs)
         self.companion = rt
         tpl = rt.get_tpl_with_replacements()
+        logger.info(f"Adding RT entry: {rt.display_name} [{rt.map_key}]")
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
 

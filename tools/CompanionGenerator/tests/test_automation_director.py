@@ -20,7 +20,7 @@ def test_create():
     managers in order to create the necessary structures and files
     """
     director = AutomationDirector()
-    unique_suffix = uuid4()
+    unique_suffix = str(uuid4())[0:6]
 
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
@@ -28,10 +28,11 @@ def test_create():
     parent_template_id = uuid4()
     # Name attribute, not display name
     companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
-    director.add_companion_rt(
+    rt_display_name = "Chip Chocolate"
+    companion_map_key = director.add_companion_rt(
         title="Legendary Muffin",
-        name="Chip Chocolate",
-        displayName="Display name",
+        name=companion_name_attr,
+        displayName=rt_display_name,
         parentTemplateId=parent_template_id,
         equipmentSetName=eqp_set_name,
         statsName=companion_name_attr,
@@ -53,7 +54,7 @@ def test_create():
         description="A powerful summoning scroll",
         spell_name=summon_spell_name,
         integration_name="LegendaryCompanions",
-        summon_uuid=director.companion.map_key,
+        summon_uuid=companion_map_key,
         root_template_aggregator=RootTemplateAggregator(),
     )
     assert updated_spell_file, "Failed to update spell file"
@@ -206,3 +207,27 @@ def test_create():
                         ), "Unknown description mismatch"
                     # Stop here because we do not care about other books.
                     break
+
+
+def verify_links():
+    """
+    Verify links between different parts of the process.
+    1. Companion RT -> equipment entry
+    2. Pages RTs -> object entry RT
+    3. Books RTs -> object entry RT
+    4. Scroll RT -> object entry RT
+    5. Scroll RT summon spell -> spell file
+    6. Companion RT DisplayName handle -> localization file
+    7. Companion RT Title handle -> localization file
+    8. Scroll RT DisplayName -> localization file
+    # NOTE: Maybe reuse page descriptions here?
+    9. Page 1 RT DisplayName -> localization file
+    10. Page 1 RT Description -> localization file
+    11. Page 2 RT DisplayName -> localization file
+    12. Page 2 RT DisplayName -> localization file
+    13. Page 1 name -> combo file
+    14. Page 2 name -> combo file
+    15. Book name -> combo file
+    16. Companion RT -> spell file summon UUID
+    """
+    pass
