@@ -6,7 +6,7 @@ from companiongenerator.root_template_parser import RootTemplateParser
 
 class RootTemplateAggregator:
     def __init__(self, **kwargs) -> None:
-        self.file_handler = FileHandler(is_dry_run=kwargs["is_dry_run"])
+        self.file_handler = FileHandler()
         self.root_template_parser = RootTemplateParser()
         self.entries: set[RootTemplateNodeEntry] = set([])
 

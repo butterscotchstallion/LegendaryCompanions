@@ -17,7 +17,7 @@ def get_page_rt() -> PageRT:
         icon=icon_name,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -36,7 +36,7 @@ def get_book_rt() -> BookRT:
         bookId=book_id,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -58,7 +58,7 @@ def get_companion_rt() -> CompanionRT:
         icon=icon,
         template_fetcher=fetcher,
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -75,5 +75,5 @@ def get_scroll_rt() -> ScrollRT:
         scrollSpellName=scroll_spell_name,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )

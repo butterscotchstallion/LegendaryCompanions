@@ -32,7 +32,7 @@ def test_add_entry() -> None:
         icon=icon,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=loca_aggregator,
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
     assert is_valid_handle_uuid(companion_rt.display_name_handle)
     assert is_valid_handle_uuid(companion_rt.title_handle)
@@ -50,7 +50,7 @@ def test_add_entry() -> None:
         icon=pg_icon_name,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=loca_aggregator,
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
     assert is_valid_handle_uuid(page_rt.display_name_handle)
     assert is_valid_handle_uuid(page_rt.description_handle)

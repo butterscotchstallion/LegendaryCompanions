@@ -25,7 +25,6 @@ class AutomationDirector:
     """
 
     base_dir = "../output"
-    is_dry_run: bool = True
     localization_aggregator: LocalizationAggregator
     book_loca_aggregator: BookLocaAggregator
     rt_aggregator: RootTemplateAggregator
@@ -34,18 +33,14 @@ class AutomationDirector:
     default_localization_filename: str = "English"
 
     def __init__(self, **kwargs):
-        if "is_dry_run" in kwargs:
-            self.is_dry_run = kwargs["is_dry_run"]
         if "integration_name" in kwargs:
             self.integration_name = kwargs["integration_name"]
 
-        self.rt_aggregator = RootTemplateAggregator(is_dry_run=self.is_dry_run)
-        self.localization_aggregator = LocalizationAggregator(
-            is_dry_run=self.is_dry_run
-        )
+        self.rt_aggregator = RootTemplateAggregator()
+        self.localization_aggregator = LocalizationAggregator()
         self.book_loca_aggregator = BookLocaAggregator()
         self.stats_object_aggregator = StatsObjectAggregator()
-        self.file_handler = FileHandler(is_dry_run=self.is_dry_run)
+        self.file_handler = FileHandler()
 
         logger.info("=================================================")
         logger.info("Initializing new automation run!")

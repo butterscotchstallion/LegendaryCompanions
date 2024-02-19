@@ -14,10 +14,6 @@ class LocalizationAggregator:
 
     def __init__(self, **kwargs):
         self.entries: set[LocalizationEntry] = set([])
-        self.is_dry_run = True
-
-        if "is_dry_run" in kwargs:
-            self.is_dry_run = kwargs["is_dry_run"]
 
     def entry_with_text_exists(
         self, entry_text: str

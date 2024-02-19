@@ -20,7 +20,7 @@ def test_create():
     Tests interactions between the automation director and various
     managers in order to create the necessary structures and files
     """
-    director = AutomationDirector(is_dry_run=False)
+    director = AutomationDirector()
 
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
@@ -33,7 +33,7 @@ def test_create():
         statsName="LC_Legendary_Muffin",
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Update equipment file
@@ -51,8 +51,7 @@ def test_create():
         integration_name="LegendaryCompanions",
         summon_uuid=director.companion.map_key,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
-        is_dry_run=False,
+        root_template_aggregator=RootTemplateAggregator(),
     )
     assert updated_spell_file, "Failed to update spell file"
 
@@ -76,7 +75,7 @@ def test_create():
         statsName=page_one_stats_name,
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
     # Add page 1 obj file
     page_1_obj = StatsObject(
@@ -93,7 +92,7 @@ def test_create():
         statsName=page_two_stats_name,
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Add page 2 obj file
@@ -112,7 +111,7 @@ def test_create():
         statsName=book_stats_name,
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Add book object file
@@ -139,7 +138,7 @@ def test_create():
         statsName=scroll_stats_name,
         localization_aggregator=director.localization_aggregator,
         template_fetcher=TemplateFetcher(),
-        root_template_aggregator=RootTemplateAggregator(is_dry_run=False),
+        root_template_aggregator=RootTemplateAggregator(),
     )
     # Add scroll object file
     scroll_obj = StatsObject(
