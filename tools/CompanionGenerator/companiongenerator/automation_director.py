@@ -199,7 +199,11 @@ class AutomationDirector:
         Appends to existing root template using
         RootTemplateAggregator.
         """
-        return self.rt_aggregator.append_root_template()
+        backup_created = self.file_handler.create_backup_file(
+            MOD_FILENAMES["root_template_merged"]
+        )
+        if backup_created:
+            return self.rt_aggregator.append_root_template()
 
     def add_companion_rt(self, **kwargs) -> str:
         rt = CompanionRT(**kwargs)

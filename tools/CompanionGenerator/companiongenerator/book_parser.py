@@ -81,8 +81,6 @@ class BookParser:
             if len(books) == 0:
                 logger.error("No books provided. This is probably an error")
 
-            logger.debug(f"Parsing {Path(filename).stem}")
-
             self.filename = filename
             parser = get_comment_preserving_parser()
             self.tree = ET.parse(filename, parser)

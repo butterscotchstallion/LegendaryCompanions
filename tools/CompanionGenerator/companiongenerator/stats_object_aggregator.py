@@ -54,7 +54,6 @@ class StatsObjectAggregator:
         append_content += os.linesep.join(append_entries)
 
         total_entries_to_append: int = len(append_entries)
-        logger.info(f"Appending {total_entries_to_append} entries to object file")
 
         if total_entries_to_append > 0:
             handler = FileHandler()
