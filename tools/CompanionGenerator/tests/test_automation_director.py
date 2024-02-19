@@ -20,7 +20,7 @@ def test_create():
     managers in order to create the necessary structures and files
     """
     director = AutomationDirector()
-    unique_suffix = str(uuid4())[0:6]
+    unique_suffix = director.unique_suffix
 
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
@@ -158,7 +158,7 @@ def test_create():
     assert appended_rt, "Failed to append root template"
 
     # Write book localization file (book contents)
-    book_name = "Book of Testing"
+    book_name = f"Book_of_Testing_{unique_suffix}"
     book_contents = "This is a book about how much I love testing"
     unknown_description = "This is the unknown description"
     updated_book_children = director.update_book_file(

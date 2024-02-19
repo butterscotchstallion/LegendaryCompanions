@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from uuid import uuid4
 
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
@@ -41,9 +42,10 @@ class AutomationDirector:
         self.book_loca_aggregator = BookLocaAggregator()
         self.stats_object_aggregator = StatsObjectAggregator()
         self.file_handler = FileHandler()
+        self.unique_suffix = str(uuid4())[0:6]
 
         logger.info("=================================================")
-        logger.info("Initializing new automation run!")
+        logger.info(f"Initializing new automation run! [{self.unique_suffix}]")
         logger.info("=================================================")
 
     def update_equipment(
