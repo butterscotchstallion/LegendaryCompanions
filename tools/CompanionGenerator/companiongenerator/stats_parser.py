@@ -136,7 +136,7 @@ class StatsParser:
         return spell_name in spell_name_list
 
     def get_entry_names_from_text(self, stats_text: str = "") -> set[str]:
-        """Parses spell name from file contents"""
+        """Parses entry names from file"""
 
         # Read from filename if no text supplied
         if len(stats_text) == 0:
@@ -149,6 +149,30 @@ class StatsParser:
                 spell_name = self.get_value_from_line_in_quotes(line)
                 spells.add(spell_name)
         return spells
+
+    def get_entry_info_from_text(self, stats_text: str = "") -> dict[str, str]:
+        """Parses entry name and root template id from file"""
+
+        # Read from filename if no text supplied
+        if len(stats_text) == 0:
+            stats_text = self.get_file_contents()
+
+        stripped_text_lines = self.get_stripped_text_lines(stats_text)
+        entry_info: dict[str, str] = {}
+        for line in stripped_text_lines:
+            quoted_values = self.get_quoted_values(line)
+
+            if len(quoted_values) > 0:
+                # Entry name
+                if line.startswith(self.new_entry_text):
+                    entry_name = quoted_values[0]
+                    logger.info(f"Entry name: {entry_name}")
+                # Root template id
+                if line.startswith('data "RootTemplate"'):
+                    logger.info(f"Root template ID: {quoted_values[1]}")
+                    entry_info[entry_name] = quoted_values[1]
+
+        return entry_info
 
     def get_file_contents(self) -> str:
         """

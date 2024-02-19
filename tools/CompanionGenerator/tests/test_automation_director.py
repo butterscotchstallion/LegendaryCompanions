@@ -6,6 +6,7 @@ from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -89,7 +90,7 @@ def test_create():
 
     ## Page 2 RT
     page_two_stats_name = f"LC_Page_2_{unique_suffix}"
-    page_2_rt_id = director.add_page_rt(
+    page_two_rt_id = director.add_page_rt(
         name=page_two_stats_name,
         displayName="A tattered page",
         description="Page 2 description",
@@ -100,7 +101,7 @@ def test_create():
 
     # Add page 2 obj file
     page_2_obj = StatsObject(
-        stats_name=page_two_stats_name, root_template_id=page_2_rt_id
+        stats_name=page_two_stats_name, root_template_id=page_two_rt_id
     )
     director.stats_object_aggregator.add_entry(page_2_obj)
 
@@ -213,8 +214,6 @@ def test_create():
     updated_content_list = director.update_localization(parser)
     assert updated_content_list is not None, "Failed to update localization"
 
-
-def verify_links():
     """
     Verify links between different parts of the process.
     1. Companion RT -> equipment entry
@@ -235,4 +234,34 @@ def verify_links():
     15. Book name -> combo file
     16. Companion RT -> spell file summon UUID
     """
-    pass
+
+    # Verify companion RT equipment set is in equipment file
+    equipment_parser = EquipmentParser()
+    equipment_set_names = equipment_parser.get_entry_names_from_text()
+    assert (
+        director.companion.equipment_set_name in equipment_set_names
+    ), "Failed to very equipment set in file"
+
+    # Verify page RT map key in object file
+    stats_parser = StatsParser(
+        filename=MOD_FILENAMES["books_object_file"], parser_type=ParserType.BOOK
+    )
+
+    # Entry info for all objects
+    object_entry_info: dict[str, str] = stats_parser.get_entry_info_from_text()
+
+    # Map of stats_name -> root template id
+    objects_to_verify = {
+        page_one_stats_name: page_one_rt_id,
+        page_two_stats_name: page_two_rt_id,
+        book_stats_name: book_rt_id,
+        scroll_stats_name: scroll_rt_id,
+    }
+    # Verify each object
+    for stats_name in objects_to_verify:
+        assert (
+            stats_name in object_entry_info
+        ), f"Failed to find entry name {stats_name}"
+        assert (
+            objects_to_verify[stats_name] == object_entry_info[stats_name]
+        ), "Root template id mismatch for page 1"

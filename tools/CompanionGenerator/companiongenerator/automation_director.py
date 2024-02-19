@@ -247,6 +247,8 @@ class AutomationDirector:
 
     def add_book_rt(self, **kwargs) -> str:
         rt = BookRT(**kwargs)
+        # Used to verify links in test
+        self.book_rt = rt
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key

@@ -49,6 +49,7 @@ class CompanionRT(RootTemplate):
         super().__init__(**kwargs)
         self.filename: str = f"{self.base_path}rt_companion.xml"
         self.title: str = ""
+        self.equipment_set_name: str = kwargs["equipmentSetName"]
 
         # Companion specific replacements below
         archetype: str = "melee_smart"
@@ -56,7 +57,7 @@ class CompanionRT(RootTemplate):
             archetype = kwargs["archetypeName"]
         self.replacements["{{archetypeName}}"] = archetype
         self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
-        self.replacements["{{equipmentSetName}}"] = kwargs["equipmentSetName"]
+        self.replacements["{{equipmentSetName}}"] = self.equipment_set_name
 
         if "title" in kwargs:
             self.title = kwargs["title"]
