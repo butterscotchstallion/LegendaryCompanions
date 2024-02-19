@@ -26,7 +26,6 @@ class RootTemplate(TemplateReplacerBase):
             self.loca_aggregator.add_entry_and_return_handle(
                 text=kwargs["displayName"],
                 comment=kwargs["displayName"],
-                template_fetcher=self.template_fetcher,
             )
         )
         self.map_key: str = str(uuid4())
@@ -64,7 +63,6 @@ class CompanionRT(RootTemplate):
             self.title_handle = self.loca_aggregator.add_entry_and_return_handle(
                 text=kwargs["title"],
                 comment=kwargs["title"],
-                template_fetcher=self.template_fetcher,
             )
             self.replacements["{{titleHandle}}"] = self.title_handle
 
@@ -95,7 +93,6 @@ class PageRT(RootTemplate):
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
-            template_fetcher=self.template_fetcher,
         )
         self.replacements["{{descriptionHandle}}"] = self.description_handle
 
@@ -116,7 +113,6 @@ class BookRT(PageRT):
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
-            template_fetcher=self.template_fetcher,
         )
         self.replacements["{{descriptionHandle}}"] = self.description_handle
 
@@ -134,6 +130,5 @@ class ScrollRT(RootTemplate):
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
-            template_fetcher=self.template_fetcher,
         )
         self.replacements["{{descriptionHandle}}"] = self.description_handle

@@ -84,8 +84,7 @@ def test_deduplication():
     Ensure that duplicate text entries aren't added
     """
     loca_aggregator = LocalizationAggregator()
-    fetcher = TemplateFetcher()
     text = "Chill: I ain't got none, but if I'm gonna be a mess I'm a hot one"
-    loca_aggregator.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
-    loca_aggregator.add_entry_and_return_handle(text=text, template_fetcher=fetcher)
+    loca_aggregator.add_entry_and_return_handle(text=text)
+    loca_aggregator.add_entry_and_return_handle(text=text)
     assert len(loca_aggregator.entries) == 1, "Failed to de-duplicate loca entries"

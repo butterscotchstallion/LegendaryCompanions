@@ -1,4 +1,4 @@
-from typing import TypedDict, Unpack
+from typing import NotRequired, TypedDict, Unpack
 
 from companiongenerator.loca_helper import generate_handle
 from companiongenerator.template_fetcher import TemplateFetcher
@@ -6,9 +6,9 @@ from companiongenerator.template_replacer_base import TemplateReplacerBase
 
 
 class LocalizationEntryKeyWords(TypedDict):
-    handle: str
-    comment: str
     text: str
+    comment: NotRequired[str]
+    handle: NotRequired[str]
 
 
 class LocalizationEntry(TemplateReplacerBase):
@@ -20,8 +20,16 @@ class LocalizationEntry(TemplateReplacerBase):
     def __init__(self, **kwargs: Unpack[LocalizationEntryKeyWords]):
         self.template_fetcher = TemplateFetcher()
         self.filename = "localization_entry.xml"
-        self.handle = generate_handle()
         self.comment = ""
+
+        """
+        Use handle if provided in the case of existing localization
+        entries
+        """
+        if "handle" in kwargs and kwargs["handle"]:
+            self.handle = kwargs["handle"]
+        else:
+            self.handle = generate_handle()
 
         if "comment" in kwargs:
             self.comment = kwargs["comment"]

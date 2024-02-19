@@ -33,12 +33,10 @@ class Spell:
         self.display_name_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["display_name"],
             comment=kwargs["display_name"],
-            template_fetcher=self.template_fetcher,
         )
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
             comment=kwargs["description"],
-            template_fetcher=self.template_fetcher,
         )
         self.replacements = {
             "{{display_name}}": kwargs["display_name"],

@@ -1,9 +1,10 @@
 import xml.etree.ElementTree as ET
-from typing import Literal
+from typing import Literal, Unpack
 
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.localization_entry import (
     LocalizationEntry,
+    LocalizationEntryKeyWords,
 )
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
@@ -52,13 +53,10 @@ class LocalizationAggregator:
         logger.info(f"Added {len(entries)} from localization file")
         self.entries = entries
 
-    def entry_with_text_exists(
-        self, entry_text: str
-    ) -> LocalizationEntry | Literal[False]:
+    def entry_with_text_exists(self, entry_text: str) -> LocalizationEntry | None:
         for entry in self.entries:
             if entry.text == entry_text:
                 return entry
-        return False
 
     def entry_with_handle_exists(
         self, entry_handle: str
@@ -68,7 +66,9 @@ class LocalizationAggregator:
                 return entry
         return False
 
-    def add_entry_and_return_handle(self, **kwargs) -> str:
+    def add_entry_and_return_handle(
+        self, **kwargs: Unpack[LocalizationEntryKeyWords]
+    ) -> str:
         existing_entry = self.entry_with_text_exists(kwargs["text"])
 
         """
@@ -76,7 +76,7 @@ class LocalizationAggregator:
         even though we're using sets. Maybe figure
         this out later.
         """
-        if existing_entry is not False:
+        if existing_entry is not None:
             return existing_entry.handle
         else:
             entry = LocalizationEntry(**kwargs)
