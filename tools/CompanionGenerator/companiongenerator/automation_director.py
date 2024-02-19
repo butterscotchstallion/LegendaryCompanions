@@ -66,7 +66,7 @@ class AutomationDirector:
         filename = MOD_FILENAMES["spell_text_file_summons"]
         handler = FileHandler()
         summon_spell = SummonSpell(
-            **kwargs, localization_manager=self.localization_aggregator
+            **kwargs, localization_aggregator=self.localization_aggregator
         )
 
         generated_spell_text = summon_spell.get_tpl_with_replacements()

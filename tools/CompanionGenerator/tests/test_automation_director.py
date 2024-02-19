@@ -10,7 +10,6 @@ from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import ParserType, StatsParser
-from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import is_valid_handle_uuid
 
@@ -21,18 +20,22 @@ def test_create():
     managers in order to create the necessary structures and files
     """
     director = AutomationDirector()
+    unique_suffix = uuid4()
 
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
+    # TODO: change this to something real. Maybe an enumeration
+    parent_template_id = uuid4()
+    # Name attribute, not display name
+    companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
     director.add_companion_rt(
         title="Legendary Muffin",
         name="Chip Chocolate",
         displayName="Display name",
-        parentTemplateId=uuid4(),
+        parentTemplateId=parent_template_id,
         equipmentSetName=eqp_set_name,
-        statsName="LC_Legendary_Muffin",
+        statsName=companion_name_attr,
         localization_aggregator=director.localization_aggregator,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
 
@@ -44,13 +47,13 @@ def test_create():
     assert updated_equipment, "Failed to update equipment"
 
     # Update spell
+    summon_spell_name = f"LC_Summon_Legendary_Kobold_{unique_suffix}"
     updated_spell_file = director.update_summon_spells(
         display_name="Summon Kobold",
         description="A powerful summoning scroll",
-        spell_name="LC_Summon_Legendary_Kobold",
+        spell_name=summon_spell_name,
         integration_name="LegendaryCompanions",
         summon_uuid=director.companion.map_key,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
     assert updated_spell_file, "Failed to update spell file"
@@ -67,14 +70,13 @@ def test_create():
     assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
 
     ## Page 1 RT
-    page_one_stats_name = "LC_Page_1"
+    page_one_stats_name = f"LC_Page_1_{unique_suffix}"
     page_one_rt_id = director.add_page_rt(
         name=page_one_stats_name,
         displayName="A tattered page",
         description="Page description",
         statsName=page_one_stats_name,
         localization_aggregator=director.localization_aggregator,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
     # Add page 1 obj file
@@ -84,14 +86,13 @@ def test_create():
     director.stats_object_aggregator.add_entry(page_1_obj)
 
     ## Page 2 RT
-    page_two_stats_name = "LC_Page_2"
+    page_two_stats_name = f"LC_Page_2_{unique_suffix}"
     page_2_rt_id = director.add_page_rt(
         name=page_two_stats_name,
         displayName="A tattered page",
         description="Page 2 description",
         statsName=page_two_stats_name,
         localization_aggregator=director.localization_aggregator,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
 
@@ -102,7 +103,7 @@ def test_create():
     director.stats_object_aggregator.add_entry(page_2_obj)
 
     ## Book RT
-    book_stats_name = "LC_Book_of_Testing"
+    book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
     book_rt_id = director.add_book_rt(
         name=book_stats_name,
         displayName="Book of Testing",
@@ -110,7 +111,6 @@ def test_create():
         bookId=str(uuid4()),
         statsName=book_stats_name,
         localization_aggregator=director.localization_aggregator,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
 
@@ -119,25 +119,24 @@ def test_create():
     director.stats_object_aggregator.add_entry(book_obj)
 
     # Write item combos
+    combo_name = f"Book_of_Testing_Combo_{unique_suffix}"
     updated_item_combos = director.update_item_combos(
-        combo_name="Book_of_Testing_Combo",
+        combo_name=combo_name,
         object_one_name=page_one_stats_name,
         object_two_name=page_two_stats_name,
         combo_result_item_name=book_stats_name,
-        template_fetcher=TemplateFetcher(),
     )
     assert updated_item_combos, "Failed to update item combos file"
 
     ## Scroll RT
-    scroll_stats_name = "LC_Scroll_of_Testing"
+    scroll_stats_name = f"LC_Scroll_of_Testing_{unique_suffix}"
     scroll_rt_id = director.add_scroll_rt(
-        name="LC_Scroll_of_Testing",
+        name=scroll_stats_name,
         displayName="Scroll of Testing",
         description="Scroll description",
-        scrollSpellName="LC_Scroll_of_Testing",
+        scrollSpellName=scroll_stats_name,
         statsName=scroll_stats_name,
         localization_aggregator=director.localization_aggregator,
-        template_fetcher=TemplateFetcher(),
         root_template_aggregator=RootTemplateAggregator(),
     )
     # Add scroll object file
@@ -168,6 +167,7 @@ def test_create():
     )
     assert updated_book_children is not None, "Failed to update book localization file"
 
+    ## TODO: move all this stuff into a dedicated verify function?
     book: BookLocaEntry | Literal[
         False
     ] = director.book_loca_aggregator.get_book_with_name(book_name)

@@ -17,7 +17,7 @@ class RootTemplate(TemplateReplacerBase):
 
     def __init__(self, **kwargs) -> None:
         self.base_path: str = "../templates/"
-        self.template_fetcher: TemplateFetcher = kwargs["template_fetcher"]
+        self.template_fetcher: TemplateFetcher = TemplateFetcher()
         self.rt_aggregator: RootTemplateAggregator = kwargs["root_template_aggregator"]
         self.loca_aggregator: LocalizationAggregator = kwargs["localization_aggregator"]
         self.name: str = kwargs["name"]

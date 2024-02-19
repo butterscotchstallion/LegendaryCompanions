@@ -1644,6 +1644,246 @@
 						</node>
 					</children>
 				</node>
+				<!--LC_Page_2_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6-->
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="h49ba554ag2325g48bfg997cgd4136060ed05" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h7fcb3c6age097g4bf3ga442g63598e1752d9" version="1" />
+					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="b48f7aa8-52b3-4d35-94a8-21c62681df16" />
+					<attribute id="Name" type="LSString" value="LC_Page_2_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />
+					<attribute id="Stats" type="FixedString" value="LC_Page_2_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="d9dc6f6d-a431-2200-5a3b-36f04573e7d5" />
+					<children>
+						<node id="Bounds">
+							<children>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.2165065" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="0" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.433013" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="1" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.433013" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="2" />
+								</node>
+							</children>
+						</node>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="23" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="CombineSlots" type="int8" value="1" />
+											<attribute id="IsBase" type="bool" value="True" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+				<!--LC_Book_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6-->
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="hacb09d3dg0124g4fa4gaaa5g703cc0ee2782" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h06cafcaag4de8g4c43g871cg5319de078d4b" version="1" />
+					<attribute id="Flag" type="int32" value="0" />
+					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="c395c48d-1624-4f91-b165-9ff6ec54b329" />
+					<attribute id="Name" type="LSString" value="LC_Book_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="ParentTemplateId" type="FixedString" value="23f65dff-a1ca-42fb-91ee-4cbb69450336" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="74eb44d4-f1a9-c08c-fd8a-4cc98285f2c2" />
+					<attribute id="Stats" type="FixedString" value="LC_Book_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="224e8aa7-8011-e18d-1a4a-ea5f83636769" />
+					<children>
+						<node id="Bounds">
+							<children>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.0783766" />
+									<attribute id="Max" type="fvec3" value="0.2151422 0.04755481 0.3511288" />
+									<attribute id="Min" type="fvec3" value="-0.220988 -0.008609086 -1.523746" />
+									<attribute id="Radius" type="float" value="0.2330765" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="0" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.0783766" />
+									<attribute id="Max" type="fvec3" value="0.2151422 0.04755481 0.3511288" />
+									<attribute id="Min" type="fvec3" value="-0.220988 -0.008609086 -1.523746" />
+									<attribute id="Radius" type="float" value="0.466153" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="1" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.0783766" />
+									<attribute id="Max" type="fvec3" value="0.2151422 0.04755481 0.3511288" />
+									<attribute id="Min" type="fvec3" value="-0.220988 -0.008609086 -1.523746" />
+									<attribute id="Radius" type="float" value="0.466153" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="2" />
+								</node>
+							</children>
+						</node>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="11" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="BookId" type="FixedString" value="ff140415-024c-4eaa-9f79-5133673169e0" />
+											<attribute id="Conditions" type="LSString" value="" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+				<!--Scroll of Testing-->
+				<node id="GameObjects">
+					<attribute id="DisplayName" type="TranslatedString" handle="ha449e858ged57g407cgb70cg6f9be9e413e0" version="1" />
+					<attribute id="Description" type="TranslatedString" handle="hcc966decgbfe4g4151gaae0gb088843f5422" version="1" />
+					<attribute id="Flag" type="int32" value="0" />
+					<attribute id="Icon" type="FixedString" value="Item_LOOT_SCROLL_ArcaneEye" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="d0d9f120-fe64-4f82-ae75-316abb259e5c" />
+					<attribute id="Name" type="LSString" value="LC_Scroll_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="ParentTemplateId" type="FixedString" value="4ffd5c4b-4c56-4f05-a228-a33754bb1806" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="94a7c400-b2df-c54c-1675-1937920b7714" />
+					<attribute id="Stats" type="FixedString" value="LC_Scroll_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="916f78a4-779b-3e43-28eb-eefc26d9683d" />
+					<children>
+						<node id="Bounds">
+							<children>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.191031" />
+									<attribute id="Max" type="fvec3" value="0.0772219 0.1343031 0.2977137" />
+									<attribute id="Min" type="fvec3" value="-0.0772219 -0.00765489 -0.2977137" />
+									<attribute id="Radius" type="float" value="0.215493" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="1" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.191031" />
+									<attribute id="Max" type="fvec3" value="0.0772219 0.1343031 0.2977137" />
+									<attribute id="Min" type="fvec3" value="-0.0772219 -0.00765489 -0.2977137" />
+									<attribute id="Radius" type="float" value="0.215493" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="0" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="0.191031" />
+									<attribute id="Max" type="fvec3" value="0.0772219 0.1343031 0.2977137" />
+									<attribute id="Min" type="fvec3" value="-0.0772219 -0.00765489 -0.2977137" />
+									<attribute id="Radius" type="float" value="0.215493" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="2" />
+								</node>
+							</children>
+						</node>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="12" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="Consume" type="bool" value="True" />
+											<attribute id="SkillID" type="FixedString" value="LC_Scroll_of_Testing_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
+				<!--LC_Page_1_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6-->
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="hf71371dcg14a1g4e6dgafceg5fda24691e79" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h7fcb3c6age097g4bf3ga442g63598e1752d9" version="1" />
+					<attribute id="Icon" type="FixedString" value="Item_BOOK_GEN_Paper_Sheet_F" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="6c6c276a-8525-4fc7-bc83-8afec5df078d" />
+					<attribute id="Name" type="LSString" value="LC_Page_1_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="ParentTemplateId" type="FixedString" value="c9e45e5a-f089-480b-ab3a-7f5f76dccc3b" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="f0d3d875-69c8-e61d-7339-5606a22f8ed2" />
+					<attribute id="Stats" type="FixedString" value="LC_Page_1_ded6d7ba-4ded-4ace-a51f-048f6b96b2f6" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="d9dc6f6d-a431-2200-5a3b-36f04573e7d5" />
+					<children>
+						<node id="Bounds">
+							<children>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.2165065" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="0" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.433013" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="1" />
+								</node>
+								<node id="Bound">
+									<attribute id="Height" type="float" value="1" />
+									<attribute id="IsIgnoringScale" type="bool" value="False" />
+									<attribute id="Max" type="fvec3" value="0.03063399 0.04816267 0.08726975" />
+									<attribute id="Min" type="fvec3" value="-0.04482888 -0.0006050318 -0.1086679" />
+									<attribute id="Radius" type="float" value="0.433013" />
+									<attribute id="Shape" type="uint8" value="1" />
+									<attribute id="Type" type="uint8" value="2" />
+								</node>
+							</children>
+						</node>
+						<node id="OnUsePeaceActions">
+							<children>
+								<node id="Action">
+									<attribute id="ActionType" type="int32" value="23" />
+									<children>
+										<node id="Attributes">
+											<attribute id="Animation" type="FixedString" value="" />
+											<attribute id="CombineSlots" type="int8" value="1" />
+											<attribute id="IsBase" type="bool" value="True" />
+										</node>
+									</children>
+								</node>
+							</children>
+						</node>
+					</children>
+				</node>
 			</children>
 		</node>
 	</region>

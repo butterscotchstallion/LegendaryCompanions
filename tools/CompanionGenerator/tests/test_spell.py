@@ -2,7 +2,6 @@ from uuid import uuid4
 
 from companiongenerator import SummonSpell
 from companiongenerator.localization_aggregator import LocalizationAggregator
-from companiongenerator.template_fetcher import TemplateFetcher
 
 
 def test_generate_spell():
@@ -13,16 +12,12 @@ def test_generate_spell():
     summon_uuid = str(uuid4())
     display_name = "h1150f154g3281g44d8gb790g461d6a3e9b84"
     description = "hcb9c97fcg3eafg43f0g81d7gc478ec34a6f0"
-    integration_name = "LC_Muffin_Integration"
-    fetcher = TemplateFetcher()
     spell = SummonSpell(
         spell_name=spell_name,
         summon_uuid=summon_uuid,
         display_name=display_name,
         description=description,
-        integration_name=integration_name,
-        template_fetcher=fetcher,
-        localization_manager=LocalizationAggregator(),
+        localization_aggregator=LocalizationAggregator(),
     )
 
     generated_spell_text = spell.get_tpl_with_replacements()
