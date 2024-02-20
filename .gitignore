@@ -53,3 +53,4 @@ tools/output/*
 tools/logs/*
 *.lcbackup
 .coverage
+tools/replica_mod_directory

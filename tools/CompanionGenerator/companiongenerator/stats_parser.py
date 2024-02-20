@@ -150,7 +150,7 @@ class StatsParser:
                 spells.add(spell_name)
         return spells
 
-    def get_entry_info_from_text(self, stats_text: str = "") -> dict[str, str]:
+    def get_entry_info_from_text(self, stats_text: str = "") -> dict[str, dict]:
         """Parses entry name and root template id from file"""
 
         # Read from filename if no text supplied
@@ -158,7 +158,7 @@ class StatsParser:
             stats_text = self.get_file_contents()
 
         stripped_text_lines = self.get_stripped_text_lines(stats_text)
-        entry_info: dict[str, str] = {}
+        entry_info: dict[str, dict] = {}
         for line in stripped_text_lines:
             quoted_values = self.get_quoted_values(line)
 
@@ -166,11 +166,37 @@ class StatsParser:
                 # Entry name
                 if line.startswith(self.new_entry_text):
                     entry_name = quoted_values[0]
-                    logger.info(f"Entry name: {entry_name}")
+                    # logger.info(f"Entry name: {entry_name}")
+
+                    # Initialize if not existent
+                    if entry_name not in entry_info:
+                        entry_info[entry_name] = {}
+
                 # Root template id
                 if line.startswith('data "RootTemplate"'):
-                    logger.info(f"Root template ID: {quoted_values[1]}")
-                    entry_info[entry_name] = quoted_values[1]
+                    # logger.info(f"Root template ID: {quoted_values[1]}")
+                    entry_info[entry_name]["root_template_id"] = quoted_values[1]
+
+                # Summon UUID
+                # data "SpellProperties"
+                # "GROUND:Summon(9b4518f1-7141-4d18-855f-edeafcaf4477,Permanent,,,UNSUMMON_ABLE,SHADOWCURSE_SUMMON_CHECK,LC_AUTOMATED)"
+                if len(quoted_values) == 2 and line.startswith(
+                    'data "SpellProperties"'
+                ):
+                    spell_properties_value = quoted_values[1]
+                    looks_like_summon_spell = (
+                        "Summon(" in spell_properties_value
+                        and ")" in spell_properties_value
+                    )
+                    if looks_like_summon_spell:
+                        # Get the values inside of the parenthesis
+                        summon_spell_params = spell_properties_value[
+                            spell_properties_value.find("(")
+                            + 1 : spell_properties_value.find(")")
+                        ]
+                        spell_props = summon_spell_params.split(",")
+                        if len(spell_props) > 0:
+                            entry_info[entry_name]["summon_uuid"] = spell_props[0]
 
         return entry_info
 

@@ -13,7 +13,7 @@ class LocalizationEntryKeyWords(TypedDict):
 
 class LocalizationEntry(TemplateReplacerBase):
     """
-    Creates a XML tag for localization entry with optional
+    Creates a XML tag for a localization entry with optional
     comment
     """
 

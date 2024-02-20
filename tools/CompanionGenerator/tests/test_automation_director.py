@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Literal
 from uuid import uuid4
 
@@ -9,7 +8,6 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.localization_parser import LocalizationParser
-from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import ParserType, StatsParser
 
@@ -39,7 +37,6 @@ def test_create():
         equipmentSetName=eqp_set_name,
         statsName=companion_name_attr,
         localization_aggregator=director.localization_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Update equipment file
@@ -57,7 +54,6 @@ def test_create():
         spell_name=summon_spell_name,
         integration_name="LegendaryCompanions",
         summon_uuid=companion_map_key,
-        root_template_aggregator=RootTemplateAggregator(),
     )
     assert updated_spell_file, "Failed to update spell file"
 
@@ -65,12 +61,24 @@ def test_create():
     parser = StatsParser(
         filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
     )
-    handle = Path(MOD_FILENAMES["spell_text_file_summons"])
-    spell_text_file_contents = handle.read_text()
-    spell_list = parser.get_entry_names_from_text(spell_text_file_contents)
+    spell_list = parser.get_entry_names_from_text()
     spells_set: set[str] = set(spell_list)
 
     assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
+
+    # Add upgrade scroll if not exists
+    ## Upgrade Scroll RT
+
+    upgrade_scroll_rt_name = "LC_Scroll_Upgrade_Companion"
+    upgrade_scroll_stats_name = "OBJ_LC_Scroll_Upgrade_Companion"
+    upgrade_spell_name = "LC_Upgrade_Companion"
+    director.add_scroll(
+        name=upgrade_scroll_rt_name,
+        display_name="Scroll of Revelations",
+        description="A glowing scroll, charged with chaotic energy",
+        spell_name=upgrade_spell_name,
+        stats_name=upgrade_scroll_stats_name,
+    )
 
     ## Page 1 RT
     page_one_stats_name = f"LC_Page_1_{unique_suffix}"
@@ -80,7 +88,6 @@ def test_create():
         description="Page description",
         statsName=page_one_stats_name,
         localization_aggregator=director.localization_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
     # Add page 1 obj file
     page_1_obj = StatsObject(
@@ -96,7 +103,6 @@ def test_create():
         description="Page 2 description",
         statsName=page_two_stats_name,
         localization_aggregator=director.localization_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Add page 2 obj file
@@ -114,7 +120,6 @@ def test_create():
         bookId=str(uuid4()),
         statsName=book_stats_name,
         localization_aggregator=director.localization_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
     # Add book object file
@@ -140,7 +145,6 @@ def test_create():
         scrollSpellName=scroll_stats_name,
         statsName=scroll_stats_name,
         localization_aggregator=director.localization_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
     # Add scroll object file
     scroll_obj = StatsObject(
@@ -216,10 +220,10 @@ def test_create():
 
     """
     Verify links between different parts of the process.
-    1. Companion RT -> equipment entry
-    2. Pages RTs -> object entry RT
-    3. Books RTs -> object entry RT
-    4. Scroll RT -> object entry RT
+    1. [✓] Companion RT -> equipment entry
+    2. [✓] Pages RTs -> object entry RT
+    3. [✓] Book RTs -> object entry RT
+    4. [✓] Scroll RT -> object entry RT
     5. Scroll RT summon spell -> spell file
     6. Companion RT DisplayName handle -> localization file
     7. Companion RT Title handle -> localization file
@@ -248,7 +252,7 @@ def test_create():
     )
 
     # Entry info for all objects
-    object_entry_info: dict[str, str] = stats_parser.get_entry_info_from_text()
+    object_entry_info: dict[str, dict] = stats_parser.get_entry_info_from_text()
 
     # Map of stats_name -> root template id
     objects_to_verify = {
@@ -263,5 +267,29 @@ def test_create():
             stats_name in object_entry_info
         ), f"Failed to find entry name {stats_name}"
         assert (
-            objects_to_verify[stats_name] == object_entry_info[stats_name]
+            objects_to_verify[stats_name]
+            == object_entry_info[stats_name]["root_template_id"]
         ), "Root template id mismatch for page 1"
+
+    """
+    Verify each spell made it into the file
+    1. [✓] Companion summon spell with
+    2. [✓] Check companion RT id in the summon spell
+    3. Scroll for upgrade spell (just need to check that the spell used
+    in the spell is there)
+    """
+    spell_parser = StatsParser(
+        filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
+    )
+
+    # Verify summon spell
+    spell_entry_info = spell_parser.get_entry_info_from_text()
+
+    assert (
+        summon_spell_name in spell_entry_info
+    ), "Failed to find summon spell in spell entry info"
+    summon_entry = spell_entry_info[summon_spell_name]
+
+    assert (
+        summon_entry["summon_uuid"] == companion_map_key
+    ), "Failed to find companion RT in summon spell"

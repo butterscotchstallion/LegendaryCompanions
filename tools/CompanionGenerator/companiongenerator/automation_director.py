@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import TypedDict, Unpack
 from uuid import uuid4
 
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
@@ -16,8 +17,17 @@ from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
+from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_object_aggregator import StatsObjectAggregator
 from companiongenerator.stats_parser import ParserType, StatsParser
+
+
+class AddSpellKeywords(TypedDict):
+    name: str
+    display_name: str
+    description: str
+    stats_name: str
+    spell_name: str
 
 
 class AutomationDirector:
@@ -50,6 +60,29 @@ class AutomationDirector:
         logger.info("=================================================")
 
         self.localization_aggregator.load_localization_entries_from_file()
+
+    def add_scroll(self, **kwargs: Unpack[AddSpellKeywords]) -> str:
+        """
+        Handles all the operations necessary to add a new scroll:
+        1. Add RT
+        2. Add object entry
+        3. Add to aggregator
+        """
+        scroll_rt_id = self.add_scroll_rt(
+            name=kwargs["name"],
+            displayName=kwargs["display_name"],
+            description=kwargs["description"],
+            scrollSpellName=["spell_name"],
+            statsName=["stats_name"],
+            localization_aggregator=self.localization_aggregator,
+        )
+        # Add scroll object file
+        scroll_obj = StatsObject(
+            stats_name=kwargs["stats_name"], root_template_id=scroll_rt_id
+        )
+        self.stats_object_aggregator.add_entry(scroll_obj)
+
+        return scroll_rt_id
 
     def update_equipment(
         self, equipment_set_name: str, equipment_set_type: EquipmentSetType
@@ -232,7 +265,7 @@ class AutomationDirector:
             return self.rt_aggregator.append_root_template()
 
     def add_companion_rt(self, **kwargs) -> str:
-        rt = CompanionRT(**kwargs)
+        rt = CompanionRT(**kwargs, root_template_aggregator=self.rt_aggregator)
         self.companion = rt
         tpl = rt.get_tpl_with_replacements()
         logger.info(f"Adding RT entry: {rt.display_name} [{rt.map_key}]")
@@ -240,13 +273,13 @@ class AutomationDirector:
         return rt.map_key
 
     def add_page_rt(self, **kwargs) -> str:
-        rt = PageRT(**kwargs)
+        rt = PageRT(**kwargs, root_template_aggregator=self.rt_aggregator)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
 
     def add_book_rt(self, **kwargs) -> str:
-        rt = BookRT(**kwargs)
+        rt = BookRT(**kwargs, root_template_aggregator=self.rt_aggregator)
         # Used to verify links in test
         self.book_rt = rt
         tpl = rt.get_tpl_with_replacements()
@@ -254,7 +287,7 @@ class AutomationDirector:
         return rt.map_key
 
     def add_scroll_rt(self, **kwargs) -> str:
-        rt = ScrollRT(**kwargs)
+        rt = ScrollRT(**kwargs, root_template_aggregator=self.rt_aggregator)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
