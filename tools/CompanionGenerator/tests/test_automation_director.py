@@ -66,9 +66,7 @@ def test_create():
 
     assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
 
-    # Add upgrade scroll if not exists
     ## Upgrade Scroll RT
-
     upgrade_scroll_rt_name = "LC_Scroll_Upgrade_Companion"
     upgrade_scroll_stats_name = "OBJ_LC_Scroll_Upgrade_Companion"
     upgrade_spell_name = "LC_Upgrade_Companion"
@@ -80,38 +78,31 @@ def test_create():
         stats_name=upgrade_scroll_stats_name,
     )
 
-    ## Page 1 RT
-    page_one_stats_name = f"LC_Page_1_{unique_suffix}"
-    page_one_rt_id = director.add_page_rt(
-        name=page_one_stats_name,
-        displayName="A tattered page",
-        description="Page description",
-        statsName=page_one_stats_name,
-        localization_aggregator=director.localization_aggregator,
+    """
+    Book Pages
+    """
+    ## Summon Page 1
+    summon_page_one_stats_name = f"LC_Page_1_{unique_suffix}"
+    summon_page_one_rt_id = director.add_page(
+        name=summon_page_one_stats_name,
+        display_name="Summon page 1",
+        description="Summon page description",
+        stats_name=summon_page_one_stats_name,
     )
-    # Add page 1 obj file
-    page_1_obj = StatsObject(
-        stats_name=page_one_stats_name, root_template_id=page_one_rt_id
-    )
-    director.stats_object_aggregator.add_entry(page_1_obj)
+    assert summon_page_one_rt_id, "Failed to add summon page one"
 
-    ## Page 2 RT
-    page_two_stats_name = f"LC_Page_2_{unique_suffix}"
-    page_two_rt_id = director.add_page_rt(
-        name=page_two_stats_name,
-        displayName="A tattered page",
-        description="Page 2 description",
-        statsName=page_two_stats_name,
-        localization_aggregator=director.localization_aggregator,
+    ## Summon Page 2
+    summon_page_two_stats_name = f"LC_Page_2_{unique_suffix}"
+    summon_page_two_rt_id = director.add_page(
+        name=summon_page_two_stats_name,
+        display_name="Summon page 2",
+        description="Summon page 2 description",
+        stats_name=summon_page_two_stats_name,
     )
-
-    # Add page 2 obj file
-    page_2_obj = StatsObject(
-        stats_name=page_two_stats_name, root_template_id=page_two_rt_id
-    )
-    director.stats_object_aggregator.add_entry(page_2_obj)
+    assert summon_page_two_rt_id, "Failed to add summon page two"
 
     ## Book RT
+    """
     book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
     book_rt_id = director.add_book_rt(
         name=book_stats_name,
@@ -121,17 +112,26 @@ def test_create():
         statsName=book_stats_name,
         localization_aggregator=director.localization_aggregator,
     )
-
     # Add book object file
     book_obj = StatsObject(stats_name=book_stats_name, root_template_id=book_rt_id)
     director.stats_object_aggregator.add_entry(book_obj)
+    """
+    book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
+    book_rt_id = director.add_book(
+        name=book_stats_name,
+        display_name=f"Book of Testing {unique_suffix}",
+        description="A thick leather bound tome",
+        stats_name=book_stats_name,
+        book_id=unique_suffix,
+    )
+    assert book_rt_id, "Failed to add summon book"
 
     # Write item combos
     combo_name = f"Book_of_Testing_Combo_{unique_suffix}"
     updated_item_combos = director.update_item_combos(
         combo_name=combo_name,
-        object_one_name=page_one_stats_name,
-        object_two_name=page_two_stats_name,
+        object_one_name=summon_page_one_stats_name,
+        object_two_name=summon_page_two_stats_name,
         combo_result_item_name=book_stats_name,
     )
     assert updated_item_combos, "Failed to update item combos file"
@@ -256,8 +256,8 @@ def test_create():
 
     # Map of stats_name -> root template id
     objects_to_verify = {
-        page_one_stats_name: page_one_rt_id,
-        page_two_stats_name: page_two_rt_id,
+        summon_page_one_stats_name: summon_page_one_rt_id,
+        summon_page_two_stats_name: summon_page_two_rt_id,
         book_stats_name: book_rt_id,
         scroll_stats_name: scroll_rt_id,
     }

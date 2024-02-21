@@ -22,12 +22,19 @@ from companiongenerator.stats_object_aggregator import StatsObjectAggregator
 from companiongenerator.stats_parser import ParserType, StatsParser
 
 
-class AddSpellKeywords(TypedDict):
+class StatsKeywords(TypedDict):
     name: str
     display_name: str
     description: str
     stats_name: str
+
+
+class SpellStatsKeywords(StatsKeywords):
     spell_name: str
+
+
+class BookKeywords(StatsKeywords):
+    book_id: str
 
 
 class AutomationDirector:
@@ -61,7 +68,7 @@ class AutomationDirector:
 
         self.localization_aggregator.load_localization_entries_from_file()
 
-    def add_scroll(self, **kwargs: Unpack[AddSpellKeywords]) -> str:
+    def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """
         Handles all the operations necessary to add a new scroll:
         1. Add RT
@@ -72,8 +79,8 @@ class AutomationDirector:
             name=kwargs["name"],
             displayName=kwargs["display_name"],
             description=kwargs["description"],
-            scrollSpellName=["spell_name"],
-            statsName=["stats_name"],
+            scrollSpellName=kwargs["spell_name"],
+            statsName=kwargs["stats_name"],
             localization_aggregator=self.localization_aggregator,
         )
         # Add scroll object file
@@ -83,6 +90,47 @@ class AutomationDirector:
         self.stats_object_aggregator.add_entry(scroll_obj)
 
         return scroll_rt_id
+
+    def add_page(self, **kwargs: Unpack[StatsKeywords]) -> str:
+        """
+        Add page
+        1. Add RT
+        2. Create page object
+        3. Add page object to stats_obj_aggregator
+        """
+        page_rt_id = self.add_page_rt(
+            name=kwargs["stats_name"],
+            displayName=kwargs["display_name"],
+            description=kwargs["description"],
+            statsName=kwargs["stats_name"],
+            localization_aggregator=self.localization_aggregator,
+        )
+        page_obj = StatsObject(
+            stats_name=kwargs["stats_name"], root_template_id=page_rt_id
+        )
+        self.stats_object_aggregator.add_entry(page_obj)
+        return page_rt_id
+
+    def add_book(self, **kwargs: Unpack[BookKeywords]) -> str:
+        """
+        Add book
+        1. Add RT
+        2. Create book object
+        3. Add book object to stats_obj_aggregator
+        """
+        book_rt_id = self.add_book_rt(
+            name=kwargs["stats_name"],
+            displayName=kwargs["display_name"],
+            description=kwargs["description"],
+            statsName=kwargs["stats_name"],
+            localization_aggregator=self.localization_aggregator,
+            book_id=kwargs["book_id"],
+        )
+        book_obj = StatsObject(
+            stats_name=kwargs["stats_name"], root_template_id=book_rt_id
+        )
+        self.stats_object_aggregator.add_entry(book_obj)
+        return book_rt_id
 
     def update_equipment(
         self, equipment_set_name: str, equipment_set_type: EquipmentSetType

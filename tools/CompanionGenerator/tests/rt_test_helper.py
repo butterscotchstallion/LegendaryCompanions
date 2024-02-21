@@ -33,7 +33,7 @@ def get_book_rt() -> BookRT:
         statsName=stats_name,
         name=stats_name,
         icon=icon_name,
-        bookId=book_id,
+        book_id=book_id,
         template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(),

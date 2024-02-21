@@ -109,7 +109,7 @@ class BookRT(PageRT):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.filename = f"{self.base_path}rt_object_book.xml"
-        self.replacements["{{bookId}}"] = kwargs["bookId"]
+        self.replacements["{{bookId}}"] = kwargs["book_id"]
 
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
             text=kwargs["description"],
