@@ -8,10 +8,9 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.localization_parser import LocalizationParser
-from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_parser import ParserType, StatsParser
 
-from tests.template_validity_helper import is_valid_handle_uuid
+from tests.template_validity_helper import is_valid_handle_uuid, is_valid_uuid
 
 
 def test_create():
@@ -25,8 +24,7 @@ def test_create():
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
     # TODO: change this to something real. Maybe an enumeration
-    parent_template_id = uuid4()
-    # Name attribute, not display name
+    parent_template_id = str(uuid4())
     companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
     rt_display_name = "Chip Chocolate"
     companion_map_key = director.add_companion_rt(
@@ -38,15 +36,13 @@ def test_create():
         statsName=companion_name_attr,
         localization_aggregator=director.localization_aggregator,
     )
-
     # Update equipment file
     updated_equipment = director.update_equipment(
         equipment_set_name=eqp_set_name, equipment_set_type=EquipmentSetType.MELEE_PLATE
     )
-
     assert updated_equipment, "Failed to update equipment"
 
-    # Update spell
+    # Update spells
     summon_spell_name = f"LC_Summon_Legendary_Kobold_{unique_suffix}"
     updated_spell_file = director.update_summon_spells(
         display_name="Summon Kobold",
@@ -66,18 +62,6 @@ def test_create():
 
     assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
 
-    ## Upgrade Scroll RT
-    upgrade_scroll_rt_name = "LC_Scroll_Upgrade_Companion"
-    upgrade_scroll_stats_name = "OBJ_LC_Scroll_Upgrade_Companion"
-    upgrade_spell_name = "LC_Upgrade_Companion"
-    director.add_scroll(
-        name=upgrade_scroll_rt_name,
-        display_name="Scroll of Revelations",
-        description="A glowing scroll, charged with chaotic energy",
-        spell_name=upgrade_spell_name,
-        stats_name=upgrade_scroll_stats_name,
-    )
-
     """
     Book Pages
     """
@@ -89,7 +73,7 @@ def test_create():
         description="Summon page description",
         stats_name=summon_page_one_stats_name,
     )
-    assert summon_page_one_rt_id, "Failed to add summon page one"
+    assert is_valid_uuid(summon_page_one_rt_id), "Failed to add summon page one"
 
     ## Summon Page 2
     summon_page_two_stats_name = f"LC_Page_2_{unique_suffix}"
@@ -99,58 +83,76 @@ def test_create():
         description="Summon page 2 description",
         stats_name=summon_page_two_stats_name,
     )
-    assert summon_page_two_rt_id, "Failed to add summon page two"
+    assert is_valid_uuid(summon_page_two_rt_id), "Failed to add summon page two"
 
-    ## Book RT
-    """
-    book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
-    book_rt_id = director.add_book_rt(
-        name=book_stats_name,
-        displayName="Book of Testing",
-        description="A thick leather bound tome",
-        bookId=str(uuid4()),
-        statsName=book_stats_name,
-        localization_aggregator=director.localization_aggregator,
-    )
-    # Add book object file
-    book_obj = StatsObject(stats_name=book_stats_name, root_template_id=book_rt_id)
-    director.stats_object_aggregator.add_entry(book_obj)
-    """
-    book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
-    book_rt_id = director.add_book(
-        name=book_stats_name,
+    ## Summon Book
+    summon_book_stats_name = f"LC_Book_of_Testing_{unique_suffix}"
+    summon_book_rt_id = director.add_book(
+        name=summon_book_stats_name,
         display_name=f"Book of Testing {unique_suffix}",
         description="A thick leather bound tome",
-        stats_name=book_stats_name,
+        stats_name=summon_book_stats_name,
         book_id=unique_suffix,
     )
-    assert book_rt_id, "Failed to add summon book"
+    assert is_valid_uuid(summon_book_rt_id), "Failed to add summon book"
 
-    # Write item combos
-    combo_name = f"Book_of_Testing_Combo_{unique_suffix}"
+    """
+    Upgrade pages, book, scroll
+    """
+
+    # TODO: Upgrade page 1
+
+    # TODO: Upgrade page 2
+
+    # TODO: Upgrade book
+
+    # Upgrade scroll
+    upgrade_scroll_rt_name = "LC_Scroll_Upgrade_Companion"
+    upgrade_scroll_stats_name = "OBJ_LC_Scroll_Upgrade_Companion"
+    upgrade_spell_name = "LC_Upgrade_Companion"
+    upgrade_scroll_rt_id = director.add_scroll(
+        name=upgrade_scroll_rt_name,
+        display_name="Scroll of Revelations",
+        description="A glowing scroll, charged with chaotic energy",
+        spell_name=upgrade_spell_name,
+        stats_name=upgrade_scroll_stats_name,
+    )
+    assert is_valid_uuid(upgrade_scroll_rt_id), "Invalid upgrade scroll RT id"
+
+    """
+    End pages/books
+    """
+
+    """
+    Combos
+    """
+
+    # Summon book combo
+    combo_name = f"Book_of_Summoning_Combo_{unique_suffix}"
     updated_item_combos = director.update_item_combos(
         combo_name=combo_name,
         object_one_name=summon_page_one_stats_name,
         object_two_name=summon_page_two_stats_name,
-        combo_result_item_name=book_stats_name,
+        combo_result_item_name=summon_book_stats_name,
     )
     assert updated_item_combos, "Failed to update item combos file"
 
-    ## Scroll RT
-    scroll_stats_name = f"LC_Scroll_of_Testing_{unique_suffix}"
-    scroll_rt_id = director.add_scroll_rt(
-        name=scroll_stats_name,
-        displayName="Scroll of Testing",
+    # TODO: Upgrade book combo
+
+    """
+    Summon/Upgrade Scrolls
+    """
+    ## Summon scroll
+    summon_scroll_stats_name = f"LC_Scroll_of_Summoning_{unique_suffix}"
+    summon_scroll_rt_id = director.add_scroll(
+        name=summon_scroll_stats_name,
+        display_name="Scroll of Testing",
         description="Scroll description",
-        scrollSpellName=scroll_stats_name,
-        statsName=scroll_stats_name,
-        localization_aggregator=director.localization_aggregator,
+        # This must match the summon spell above!
+        spell_name=summon_spell_name,
+        stats_name=summon_scroll_stats_name,
     )
-    # Add scroll object file
-    scroll_obj = StatsObject(
-        stats_name=scroll_stats_name, root_template_id=scroll_rt_id
-    )
-    director.stats_object_aggregator.add_entry(scroll_obj)
+    assert is_valid_uuid(summon_scroll_rt_id), "Failed to verify scroll RT id"
 
     ####################################################################
     ################### END OBJECT ENTRIES #############################
@@ -258,8 +260,9 @@ def test_create():
     objects_to_verify = {
         summon_page_one_stats_name: summon_page_one_rt_id,
         summon_page_two_stats_name: summon_page_two_rt_id,
-        book_stats_name: book_rt_id,
-        scroll_stats_name: scroll_rt_id,
+        summon_book_stats_name: summon_book_rt_id,
+        summon_scroll_stats_name: summon_scroll_rt_id,
+        # TODO: add upgrade book pages, book, scroll
     }
     # Verify each object
     for stats_name in objects_to_verify:
