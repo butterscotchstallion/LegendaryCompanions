@@ -1,5 +1,4 @@
 from companiongenerator.item_combo import ItemCombo
-from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import assert_template_validity
 
@@ -8,7 +7,6 @@ def test_item_combos():
     """
     Test generation of item combinations
     """
-    fetcher = TemplateFetcher()
     combo_name = "LC_Book_Pages_Combo"
     object_one_name = "page_1"
     object_two_name = "page_2"
@@ -18,7 +16,6 @@ def test_item_combos():
         object_one_name=object_one_name,
         object_two_name=object_two_name,
         combo_result_item_name=combo_result_item_name,
-        template_fetcher=fetcher,
     )
     value_line_map = {
         0: combo_name,

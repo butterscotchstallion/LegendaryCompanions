@@ -7,7 +7,9 @@ from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
+from companiongenerator.item_combos_parser import ItemCombosParser
 from companiongenerator.localization_parser import LocalizationParser
+from companiongenerator.logger import logger
 from companiongenerator.stats_parser import ParserType, StatsParser
 
 from tests.template_validity_helper import is_valid_handle_uuid, is_valid_uuid
@@ -261,19 +263,18 @@ def test_create():
 
     """
     Verify links between different parts of the process.
-    1. [✓] Companion RT -> equipment entry
-    2. [✓] Pages RTs -> object entry RT
-    3. [✓] Book RTs -> object entry RT
-    4. [✓] Scroll RT -> object entry RT
-    5. Scroll RT summon spell -> spell file
-    6. Companion RT DisplayName handle -> localization file
-    7. Companion RT Title handle -> localization file
-    8. Scroll RT DisplayName -> localization file
-    # NOTE: Maybe reuse page descriptions here?
-    9. Page 1 RT DisplayName -> localization file
-    10. Page 1 RT Description -> localization file
-    11. Page 2 RT DisplayName -> localization file
-    12. Page 2 RT DisplayName -> localization file
+    1.  [✓] Companion RT -> equipment entry
+    2.  [✓] Pages RTs -> object entry RT
+    3.  [✓] Book RTs -> object entry RT
+    4.  [✓] Scroll RT -> object entry RT
+    5.  [✓] Scroll RT summon spell -> spell file
+    6.  [✓] Companion RT DisplayName handle -> localization file [test_localization]
+    7.  [✓] Companion RT Title handle -> localization file [test_localization]
+    8.  [✓] Scroll RT DisplayName -> localization file [test_localization]
+    9.  [✓] Page 1 RT DisplayName -> localization file [test_localization]
+    10. [✓] Page 1 RT Description -> localization file [test_localization]
+    11. [✓] Page 2 RT DisplayName -> localization file [test_localization]
+    12. [✓] Page 2 RT DisplayName -> localization file [test_localization]
     13. Page 1 name -> combo file
     14. Page 2 name -> combo file
     15. Book name -> combo file
@@ -309,6 +310,7 @@ def test_create():
         # There is only one upgrade scroll so this won't match
         # upgrade_scroll_stats_name: upgrade_scroll_rt_id,
     }
+
     # Verify each object
     for stats_name in objects_to_verify:
         assert (
@@ -323,7 +325,7 @@ def test_create():
     Verify each spell made it into the file
     1. [✓] Companion summon spell with
     2. [✓] Check companion RT id in the summon spell
-    3. Scroll for upgrade spell (just need to check that the spell used
+    3. [✓] Scroll for upgrade spell (just need to check that the spell used
     in the spell is there)
     """
     spell_parser = StatsParser(
@@ -346,3 +348,33 @@ def test_create():
     assert (
         upgrade_spell_name in spell_entry_info
     ), "Failed to find upgrade spell in spell entry info"
+
+    combo_names = set([summon_combo_name, upgrade_combo_name])
+    combo_result_names = set([summon_book_stats_name, upgrade_book_stats_name])
+    verify_combos_file(combo_names, combo_result_names)
+
+
+def verify_combos_file(combo_names: set[str], result_names: set[str]) -> None:
+    """
+    Verifies that all pages and books made it
+    into the combo file
+    """
+    parser = ItemCombosParser()
+    combo_info = parser.get_combo_entries_from_file_contents()
+
+    # The template has "_1" at the end of every combo result
+    result_names_with_suffix = set([result_name + "_1" for result_name in result_names])
+
+    logger.info(f"Result names with suffix: {result_names_with_suffix}")
+
+    # Checking issubset here because there could be existing combos
+    is_combo_name_subset = combo_names.issubset(combo_info["combo_names"])
+    is_combo_result_name_subset = result_names_with_suffix.issubset(
+        combo_info["combo_result_names"]
+    )
+    assert is_combo_name_subset, "Combo mismatch"
+    assert is_combo_result_name_subset, "Combo result mismatch"
+
+    if not is_combo_result_name_subset:
+        logger.debug("Printing difference")
+        logger.info(result_names_with_suffix.difference(result_names))

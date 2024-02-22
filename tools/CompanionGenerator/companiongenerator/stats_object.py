@@ -24,3 +24,15 @@ class StatsObject(TemplateReplacerBase):
             "{{stats_name}}": self.stats_name,
             "{{root_template_id}}": self.root_template_id,
         }
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+    def __eq__(self, other):
+        return self.root_template_id == other.root_template_id
+
+    def __lt__(self, other):
+        return self.stats_name > other.stats_name
+
+    def __repr__(self) -> str:
+        return self.stats_name

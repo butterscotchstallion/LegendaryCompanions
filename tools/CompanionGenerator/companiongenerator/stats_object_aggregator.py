@@ -42,6 +42,7 @@ class StatsObjectAggregator:
         because we want the log lines telling us about what is
         a duplicate or not
         """
+        self.entries = set(sorted(self.entries))
         for entry in self.entries:
             if entry.stats_name in entry_names:
                 logger.info(f"Skipping existing entry '{entry.stats_name}'")

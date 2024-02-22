@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.stats_parser import ParserType, StatsParser
 
@@ -7,9 +9,17 @@ class ItemCombosParser:
 
     def __init__(self):
         self.is_file_empty = False
+        self.filename = MOD_FILENAMES["item_combos"]
 
-    def get_combo_names_from_file_contents(self, file_contents: str) -> list[str]:
+    def get_file_contents(self) -> str:
+        handle = Path(self.filename)
+        return handle.read_text()
+
+    def get_combo_names_from_file_contents(self, file_contents: str = "") -> list[str]:
         combo_names: list[str] = []
+
+        if len(file_contents) == 0:
+            file_contents = self.get_file_contents()
 
         self.is_file_empty = not file_contents or len(file_contents) == 0
 
@@ -36,7 +46,7 @@ class ItemCombosParser:
             return False
 
     def get_combo_entries_from_file_contents(
-        self, file_contents: str
+        self, file_contents: str = ""
     ) -> dict[str, list[str]]:
         """
         Fetches both combo names and result names from the file contents
@@ -45,6 +55,9 @@ class ItemCombosParser:
         combo_result_names: list[str] = []
         combo_name_prefix = "new ItemCombination"
         combo_result_name_prefix = "new ItemCombinationResult"
+
+        if len(file_contents) == 0:
+            file_contents = self.get_file_contents()
 
         self.is_file_empty = not file_contents or bool(
             file_contents and len(file_contents) == 0
