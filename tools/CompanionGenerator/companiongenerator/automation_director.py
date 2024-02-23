@@ -10,7 +10,7 @@ from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo
-from companiongenerator.item_combos_parser import ItemCombosParser
+from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
@@ -185,7 +185,7 @@ class AutomationDirector:
                         # Seek to end before appending
                         handle.seek(os.SEEK_END)
                         # Append to existing file
-                        spell_with_new_line = f"{os.linesep}{generated_spell_text}"
+                        spell_with_new_line = f"\n{generated_spell_text}"
                         success = handle.write(spell_with_new_line)
 
                         if success:
@@ -278,7 +278,7 @@ class AutomationDirector:
             combo_exists = False
 
             if len(item_combo_contents) > 0:
-                parser = ItemCombosParser()
+                parser = ItemComboParser()
                 combo_exists = parser.combo_name_exists(
                     item_combo.combo_name, item_combo_contents
                 )
@@ -289,7 +289,7 @@ class AutomationDirector:
                 )
                 if created_backup:
                     handle.seek(os.SEEK_END)
-                    combo_text = f"{os.linesep}{item_combo_tpl}"
+                    combo_text = f"\n{item_combo_tpl}"
                     success = handle.write(combo_text)
 
                     if success:

@@ -224,8 +224,8 @@ class StatsParser:
 
                     # Make sure we add a new line if it's not there
                     contents = entry_text
-                    if not contents.startswith(os.linesep):
-                        contents = os.linesep + contents
+                    if not contents.startswith("\n"):
+                        contents = "\n" + contents
 
                     success = bool(handle.write(contents))
 

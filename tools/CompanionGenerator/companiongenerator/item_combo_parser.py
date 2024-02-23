@@ -4,7 +4,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.stats_parser import ParserType, StatsParser
 
 
-class ItemCombosParser:
+class ItemComboParser:
     is_file_empty: bool
 
     def __init__(self):
@@ -15,8 +15,8 @@ class ItemCombosParser:
         handle = Path(self.filename)
         return handle.read_text()
 
-    def get_combo_names_from_file_contents(self, file_contents: str = "") -> list[str]:
-        combo_names: list[str] = []
+    def get_combo_names_from_file_contents(self, file_contents: str = "") -> set[str]:
+        combo_names: set[str] = set()
 
         if len(file_contents) == 0:
             file_contents = self.get_file_contents()
@@ -32,7 +32,7 @@ class ItemCombosParser:
             for combo_line in combo_file_lines:
                 if combo_line.startswith("new ItemCombination"):
                     combo_name = stats_parser.get_value_from_line_in_quotes(combo_line)
-                    combo_names.append(combo_name)
+                    combo_names.add(combo_name)
         return combo_names
 
     def get_combo_file_lines(self, file_contents: str):

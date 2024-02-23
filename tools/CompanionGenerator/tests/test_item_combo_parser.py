@@ -1,16 +1,10 @@
-from pathlib import Path
-
-from companiongenerator.constants import MOD_FILENAMES
-from companiongenerator.item_combos_parser import ItemCombosParser
+from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.logger import logger
 
 
-def test_item_combos_parser():
-    parser = ItemCombosParser()
-    handle = Path(MOD_FILENAMES["item_combos"])
-    file_contents = handle.read_text()
-
-    combo_entries = parser.get_combo_entries_from_file_contents(file_contents)
+def test_item_combo_parser():
+    parser = ItemComboParser()
+    combo_entries = parser.get_combo_entries_from_file_contents()
     combo_names = combo_entries["combo_names"]
     combo_result_names = combo_entries["combo_result_names"]
 

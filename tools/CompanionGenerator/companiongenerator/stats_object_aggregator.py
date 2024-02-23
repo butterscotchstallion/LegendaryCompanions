@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from companiongenerator.constants import MOD_FILENAMES
@@ -51,8 +50,8 @@ class StatsObjectAggregator:
                 append_entries.add(entry.get_tpl_with_replacements())
 
         # Add newline and append to file once
-        append_content: str = os.linesep
-        append_content += os.linesep.join(append_entries)
+        append_content: str = "\n"
+        append_content += "\n".join(append_entries)
 
         total_entries_to_append: int = len(append_entries)
 

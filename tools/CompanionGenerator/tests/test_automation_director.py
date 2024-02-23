@@ -7,7 +7,7 @@ from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
-from companiongenerator.item_combos_parser import ItemCombosParser
+from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.stats_parser import ParserType, StatsParser
@@ -358,7 +358,7 @@ def verify_combos_file(combo_names: set[str]) -> None:
     Verifies that all pages and books made it
     into the combo file
     """
-    parser = ItemCombosParser()
+    parser = ItemComboParser()
     combo_info = parser.get_combo_entries_from_file_contents()
 
     # The template has "_1" at the end of every combo result

@@ -6,6 +6,25 @@ from companiongenerator.template_replacer_base import (
 )
 
 
+class ItemComboName:
+    """
+    Instead of parsing the entire combo block,
+    this is just the name which allows us to
+    determine if a combo exists already
+    """
+
+    combo_name: str
+
+    def __init__(self, combo_name: str):
+        self.combo_name = combo_name
+
+    def __eq__(self, other):
+        return self.combo_name == other.combo_name
+
+    def __repr__(self) -> str:
+        return self.combo_name
+
+
 class ItemComboKeywords(TypedDict):
     combo_name: str
     object_one_name: str
