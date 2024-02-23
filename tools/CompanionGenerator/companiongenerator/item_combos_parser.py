@@ -26,7 +26,7 @@ class ItemCombosParser:
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
             stats_parser = StatsParser(
-                filename=MOD_FILENAMES["item_combos"],
+                filename=self.filename,
                 parser_type=ParserType.ITEM_COMBOS,
             )
             for combo_line in combo_file_lines:
@@ -47,12 +47,12 @@ class ItemCombosParser:
 
     def get_combo_entries_from_file_contents(
         self, file_contents: str = ""
-    ) -> dict[str, list[str]]:
+    ) -> dict[str, set[str]]:
         """
         Fetches both combo names and result names from the file contents
         """
-        combo_names: list[str] = []
-        combo_result_names: list[str] = []
+        combo_names: set[str] = set([])
+        combo_result_names: set[str] = set([])
         combo_name_prefix = "new ItemCombination"
         combo_result_name_prefix = "new ItemCombinationResult"
 
@@ -66,7 +66,7 @@ class ItemCombosParser:
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
             stats_parser = StatsParser(
-                filename=MOD_FILENAMES["item_combos"],
+                filename=self.filename,
                 parser_type=ParserType.ITEM_COMBOS,
             )
             for combo_line in combo_file_lines:
@@ -79,12 +79,12 @@ class ItemCombosParser:
                     combo_name_prefix
                 ) and not combo_line.startswith(combo_result_name_prefix):
                     combo_name = stats_parser.get_value_from_line_in_quotes(combo_line)
-                    combo_names.append(combo_name)
+                    combo_names.add(combo_name)
 
                 if combo_line.startswith(combo_result_name_prefix):
                     combo_result_name = stats_parser.get_value_from_line_in_quotes(
                         combo_line
                     )
-                    combo_result_names.append(combo_result_name)
+                    combo_result_names.add(combo_result_name)
 
         return {"combo_names": combo_names, "combo_result_names": combo_result_names}

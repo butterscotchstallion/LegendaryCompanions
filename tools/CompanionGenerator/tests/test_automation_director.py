@@ -154,7 +154,7 @@ def test_create():
     upgrade_combo_name = f"Book_of_Upgrade_Combo_{unique_suffix}"
     updated_upgrade_item_combos = director.update_item_combos(
         combo_name=upgrade_combo_name,
-        object_one_name=upgrade_page_two_stats_name,
+        object_one_name=upgrade_page_one_stats_name,
         object_two_name=upgrade_page_two_stats_name,
         combo_result_item_name=upgrade_book_stats_name,
     )
@@ -350,11 +350,10 @@ def test_create():
     ), "Failed to find upgrade spell in spell entry info"
 
     combo_names = set([summon_combo_name, upgrade_combo_name])
-    combo_result_names = set([summon_book_stats_name, upgrade_book_stats_name])
-    verify_combos_file(combo_names, combo_result_names)
+    verify_combos_file(combo_names)
 
 
-def verify_combos_file(combo_names: set[str], result_names: set[str]) -> None:
+def verify_combos_file(combo_names: set[str]) -> None:
     """
     Verifies that all pages and books made it
     into the combo file
@@ -363,18 +362,26 @@ def verify_combos_file(combo_names: set[str], result_names: set[str]) -> None:
     combo_info = parser.get_combo_entries_from_file_contents()
 
     # The template has "_1" at the end of every combo result
-    result_names_with_suffix = set([result_name + "_1" for result_name in result_names])
+    combo_names_with_suffix = set([combo_name + "_1" for combo_name in combo_names])
 
-    logger.info(f"Result names with suffix: {result_names_with_suffix}")
+    logger.debug(f"[+] Combo names with suffix: {combo_names_with_suffix}")
 
     # Checking issubset here because there could be existing combos
     is_combo_name_subset = combo_names.issubset(combo_info["combo_names"])
-    is_combo_result_name_subset = result_names_with_suffix.issubset(
+    is_combo_result_name_subset = combo_names_with_suffix.issubset(
         combo_info["combo_result_names"]
     )
-    assert is_combo_name_subset, "Combo mismatch"
-    assert is_combo_result_name_subset, "Combo result mismatch"
+
+    if not is_combo_name_subset:
+        logger.debug("[+] Printing combo names difference")
+        logger.debug(combo_names.difference(combo_info["combo_names"]))
 
     if not is_combo_result_name_subset:
-        logger.debug("Printing difference")
-        logger.info(result_names_with_suffix.difference(result_names))
+        logger.debug("[+] Printing combo result names difference")
+        logger.debug(combo_info["combo_result_names"])
+        logger.debug(
+            combo_names_with_suffix.difference(combo_info["combo_result_names"])
+        )
+
+    assert is_combo_name_subset, "[!] Combo name mismatch"
+    assert is_combo_result_name_subset, "[!] Combo name result mismatch"

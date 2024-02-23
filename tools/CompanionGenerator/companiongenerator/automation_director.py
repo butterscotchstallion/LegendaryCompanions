@@ -290,8 +290,12 @@ class AutomationDirector:
                 if created_backup:
                     handle.seek(os.SEEK_END)
                     combo_text = f"{os.linesep}{item_combo_tpl}"
-                    logger.info(f"Added item combo {item_combo.combo_name} to file")
-                    return handle.write(combo_text)
+                    success = handle.write(combo_text)
+
+                    if success:
+                        logger.info(f"Added item combo {item_combo.combo_name} to file")
+
+                    return success
                 else:
                     logger.error(
                         f"Failed to create backup of {MOD_FILENAMES["item_combos"]}"

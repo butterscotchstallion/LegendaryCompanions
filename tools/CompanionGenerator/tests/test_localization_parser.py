@@ -65,6 +65,3 @@ def test_append_localization_entries():
     content_entries = content_list.findall("content")
     verification_ok = verify_localization_added(content_entries, entries)
     assert verification_ok, "Failed to verify loca entries"
-
-    # Write tree
-    parser.write_tree()
