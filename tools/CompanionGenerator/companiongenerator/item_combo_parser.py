@@ -50,6 +50,7 @@ class ItemComboParser:
     ) -> dict[str, set[str]]:
         """
         Fetches both combo names and result names from the file contents
+        @return dict[str, set[str]] combo_names, combo_result_names
         """
         combo_names: set[str] = set([])
         combo_result_names: set[str] = set([])
