@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 
 from companiongenerator.localization_entry import LocalizationEntry
-from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import (
     assert_template_validity,
@@ -13,10 +12,9 @@ def test_loca_entry():
     """
     Tests the generation of a localization entry
     """
-    fetcher = TemplateFetcher()
     loca_value = "Testing localization innit"
     comment = "Test localization comment"
-    loca = LocalizationEntry(text=loca_value, comment=comment, template_fetcher=fetcher)
+    loca = LocalizationEntry(text=loca_value, comment=comment)
     xml_with_replacements = loca.get_tpl_with_replacements()
 
     assert_template_validity(xml_with_replacements)

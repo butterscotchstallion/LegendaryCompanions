@@ -18,11 +18,11 @@ class ItemComboName:
     def __init__(self, combo_name: str):
         self.combo_name = combo_name
 
-    def __eq__(self, other):
-        return self.combo_name == other.combo_name
+    # def __eq__(self, other):
+    #    return self.combo_name == other.combo_name
 
-    def __repr__(self) -> str:
-        return self.combo_name
+    # def __repr__(self) -> str:
+    #    return self.combo_name
 
 
 class ItemComboKeywords(TypedDict):

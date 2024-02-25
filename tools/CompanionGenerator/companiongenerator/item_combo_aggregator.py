@@ -15,16 +15,17 @@ class ItemComboAggregator:
     """
 
     def __init__(self):
+        self.parser = ItemComboParser()
         self.entries: set[ItemCombo | ItemComboName] = set([])
 
-    def load_combo_entries_from_file(self):
+    def load_combo_entries_from_file(self) -> set[ItemCombo | ItemComboName]:
         """
         Reads existing combo file and loads entries
         """
-        parser = ItemComboParser()
-        combo_names = parser.get_combo_names_from_file_contents()
+        combo_names = self.parser.get_combo_names_from_file_contents()
         for combo_name in combo_names:
             self.entries.add(ItemComboName(combo_name))
+        return self.entries
 
     def add_entry(self, entry: ItemCombo | ItemComboName):
         self.entries.add(entry)
@@ -60,7 +61,6 @@ class ItemComboAggregator:
                 handle.seek(os.SEEK_END)
                 entries_text: str = self.get_entries_content_string()
                 success = handle.write(entries_text)
-
                 if success:
                     logger.info("Wrote combos to file")
 

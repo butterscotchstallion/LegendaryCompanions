@@ -27,9 +27,14 @@ def test_load_from_file():
 
     if len(combo_file_contents) > 0:
         combo_entries = parser.get_combo_entries_from_file_contents(combo_file_contents)
+        file_combo_names_len: int = len(combo_entries["combo_names"])
+        file_combo_result_names_len: int = len(combo_entries["combo_result_names"])
+        assert file_combo_names_len == file_combo_result_names_len
 
-        assert len(combo_entries["combo_names"]) == len(
-            combo_entries["combo_result_names"]
-        )
+        # Add each entry to the aggregator
+        combo_aggregator = ItemComboAggregator()
+        entries = combo_aggregator.load_combo_entries_from_file()
+
+        assert len(entries) > 0
     else:
         logger.info("Empty combo file")
