@@ -9,8 +9,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.file_handler import FileHandler
-from companiongenerator.item_combo import ItemCombo
-from companiongenerator.item_combo_parser import ItemComboParser
+from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
@@ -59,6 +58,7 @@ class AutomationDirector:
         self.localization_aggregator = LocalizationAggregator()
         self.book_loca_aggregator = BookLocaAggregator()
         self.stats_object_aggregator = StatsObjectAggregator()
+        self.combo_aggregator = ItemComboAggregator()
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
@@ -264,46 +264,12 @@ class AutomationDirector:
         else:
             logger.error("Failed to create book template")
 
-    def update_item_combos(self, **kwargs):
+    def update_item_combos(self):
         """
         Updates item combos file. Returns True if file update
         succeeds or the combo exists already
         """
-        item_combo = ItemCombo(**kwargs)
-        item_combo_tpl = item_combo.get_tpl_with_replacements()
-
-        with open(MOD_FILENAMES["item_combos"], "a+") as handle:
-            handle.seek(0)
-            item_combo_contents = handle.read()
-            combo_exists = False
-
-            if len(item_combo_contents) > 0:
-                parser = ItemComboParser()
-                combo_exists = parser.combo_name_exists(
-                    item_combo.combo_name, item_combo_contents
-                )
-            if not combo_exists:
-                handler = FileHandler()
-                created_backup = handler.create_backup_file(
-                    MOD_FILENAMES["item_combos"]
-                )
-                if created_backup:
-                    handle.seek(os.SEEK_END)
-                    combo_text = f"\n{item_combo_tpl}"
-                    success = handle.write(combo_text)
-
-                    if success:
-                        logger.info(f"Added item combo {item_combo.combo_name} to file")
-
-                    return success
-                else:
-                    logger.error(
-                        f"Failed to create backup of {MOD_FILENAMES["item_combos"]}"
-                    )
-                    return False
-            else:
-                logger.info(f"Item combo {item_combo.combo_name} exists")
-                return True
+        return self.combo_aggregator.update_item_combos()
 
     def append_root_template(self) -> bool | None:
         """

@@ -20,7 +20,8 @@ def test_combo_aggregation():
 
 def test_load_from_file():
     """
-    TODO: test loading combos from file and the name stuff
+    Tests loading combo entries from file
+    and verifies the resulting entries
     """
     parser = ItemComboParser()
     combo_file_contents: str = parser.get_file_contents()

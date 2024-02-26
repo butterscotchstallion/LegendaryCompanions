@@ -7,6 +7,7 @@ from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
+from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
@@ -139,26 +140,33 @@ def test_create():
     """
     Combos
     """
-
     # Summon book combo
     summon_combo_name = f"Book_of_Summoning_Combo_{unique_suffix}"
-    updated_summon_item_combos = director.update_item_combos(
+    summon_combo = ItemCombo(
         combo_name=summon_combo_name,
         object_one_name=summon_page_one_stats_name,
         object_two_name=summon_page_two_stats_name,
         combo_result_item_name=summon_book_stats_name,
     )
-    assert updated_summon_item_combos, "Failed to update summon item combos file"
+    director.combo_aggregator.add_entry(summon_combo)
 
     # Upgrade book combo
     upgrade_combo_name = f"Book_of_Upgrade_Combo_{unique_suffix}"
-    updated_upgrade_item_combos = director.update_item_combos(
+    upgrade_combo = ItemCombo(
         combo_name=upgrade_combo_name,
         object_one_name=upgrade_page_one_stats_name,
         object_two_name=upgrade_page_two_stats_name,
         combo_result_item_name=upgrade_book_stats_name,
     )
-    assert updated_upgrade_item_combos, "Failed to update upgrade item combos file"
+    director.combo_aggregator.add_entry(upgrade_combo)
+
+    assert (
+        len(director.combo_aggregator.entries) == 2
+    ), "Failed to add summon and upgrade combos"
+
+    # Update combo file
+    updated_combo_file = director.update_item_combos()
+    assert updated_combo_file, "Failed to update upgrade item combos file"
 
     """
     Summon/Upgrade Scrolls

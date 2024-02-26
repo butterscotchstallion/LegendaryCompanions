@@ -1,5 +1,6 @@
 import os
 
+import companiongenerator
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo, ItemComboName
@@ -30,7 +31,7 @@ class ItemComboAggregator:
     def add_entry(self, entry: ItemCombo | ItemComboName):
         self.entries.add(entry)
 
-    def get_entries_content_string(self) -> str:
+    def get_entries_content_string(self) -> str | None:
         """
         Builds a single newline delimited string
         from entries
@@ -39,34 +40,51 @@ class ItemComboAggregator:
         name from existing combos, and then we filter those out
         for writing to file
         """
-        combo_names = (entry.combo_name for entry in self.entries)
-        combos = (entry for entry in self.entries if isinstance(entry, ItemCombo))
-        entry_templates = (
-            entry.get_tpl_with_replacements()
-            for entry in combos
-            if entry.combo_name not in combo_names
-        )
-        return "\n".join(entry_templates)
+        if len(self.entries) == 0:
+            logger.error("No entries")
+        else:
+            logger.debug(f"Building content string for {len(self.entries)} entries")
+            combos = [
+                entry
+                for entry in self.entries
+                if isinstance(entry, companiongenerator.item_combo.ItemCombo)
+            ]
 
-    def update_item_combos(self, **kwargs):
+            logger.info(f"Eligible combos: {len(combos)}")
+
+            if len(combos) > 0:
+                entry_templates = [
+                    entry.get_tpl_with_replacements() for entry in combos
+                ]
+                logger.debug(f"Built {len(entry_templates)} template entries")
+                return "\n".join(entry_templates)
+
+    def update_item_combos(self) -> bool:
         """
         Updates item combos file with entries. Returns True if file update
         succeeds or the combo exists already
         """
+        success = False
         with open(MOD_FILENAMES["item_combos"], "a+") as handle:
             # Create backup before writing
             handler = FileHandler()
             created_backup = handler.create_backup_file(MOD_FILENAMES["item_combos"])
             if created_backup:
                 handle.seek(os.SEEK_END)
-                entries_text: str = self.get_entries_content_string()
-                success = handle.write(entries_text)
-                if success:
-                    logger.info("Wrote combos to file")
+                entries_text: str | None = self.get_entries_content_string()
 
-                return success
+                if entries_text is not None and len(entries_text) > 0:
+                    file_write_success = handle.write(entries_text)
+                    success = bool(file_write_success)
+                else:
+                    logger.error("Empty content entries text")
             else:
                 logger.error(
                     f"Failed to create backup of {MOD_FILENAMES["item_combos"]}"
                 )
-                return False
+        if success:
+            logger.info(f"Wrote {len(self.entries)} combo entries to file")
+        else:
+            logger.error("Error writing item combo entries to file")
+
+        return success

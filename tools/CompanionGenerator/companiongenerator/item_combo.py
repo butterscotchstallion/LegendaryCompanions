@@ -21,8 +21,8 @@ class ItemComboName:
     # def __eq__(self, other):
     #    return self.combo_name == other.combo_name
 
-    # def __repr__(self) -> str:
-    #    return self.combo_name
+    def __repr__(self) -> str:
+        return self.combo_name
 
 
 class ItemComboKeywords(TypedDict):
@@ -50,3 +50,6 @@ class ItemCombo(TemplateReplacerBase):
             "{{objectTwoName}}": self.object_two_name,
             "{{comboResultItemName}}": self.combo_result_item_name,
         }
+
+    def __repr__(self):
+        return self.combo_name
