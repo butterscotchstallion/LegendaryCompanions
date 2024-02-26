@@ -1,7 +1,6 @@
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
-from companiongenerator.template_fetcher import TemplateFetcher
 
 
 def get_page_rt() -> PageRT:
@@ -15,7 +14,6 @@ def get_page_rt() -> PageRT:
         statsName=stats_name,
         name=stats_name,
         icon=icon_name,
-        template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(),
     )
@@ -34,14 +32,12 @@ def get_book_rt() -> BookRT:
         name=stats_name,
         icon=icon_name,
         book_id=book_id,
-        template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(),
     )
 
 
 def get_companion_rt() -> CompanionRT:
-    fetcher = TemplateFetcher()
     display_name = "Chip Chocolate"
     title = "Legendary Muffin"
     stats_name = "LC_Legendary_Muffin"
@@ -56,7 +52,6 @@ def get_companion_rt() -> CompanionRT:
         equipmentSetName=equipment_set_name,
         title=title,
         icon=icon,
-        template_fetcher=fetcher,
         localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(),
     )
@@ -73,7 +68,6 @@ def get_scroll_rt() -> ScrollRT:
         statsName=stats_name,
         name=stats_name,
         scrollSpellName=scroll_spell_name,
-        template_fetcher=TemplateFetcher(),
         localization_aggregator=LocalizationAggregator(),
         root_template_aggregator=RootTemplateAggregator(),
     )

@@ -1,9 +1,19 @@
+from typing import NotRequired, Required, TypedDict, Unpack
 from uuid import uuid4
 
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
+
+
+class RootTemplateKeywords(TypedDict):
+    root_template_aggregator: RootTemplateAggregator
+    localization_aggregator: LocalizationAggregator
+    name: str
+    displayName: str
+    statsName: str
+    parentTemplateId: NotRequired[str]
 
 
 class RootTemplate(TemplateReplacerBase):
@@ -15,7 +25,7 @@ class RootTemplate(TemplateReplacerBase):
     4. Add replacement variables
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Unpack[RootTemplateKeywords]) -> None:
         self.base_path: str = "../templates/"
         self.template_fetcher: TemplateFetcher = TemplateFetcher()
         self.rt_aggregator: RootTemplateAggregator = kwargs["root_template_aggregator"]
@@ -40,12 +50,19 @@ class RootTemplate(TemplateReplacerBase):
         return self.display_name
 
 
+class CompanionRTKeywords(RootTemplateKeywords):
+    equipmentSetName: str
+    title: NotRequired[str]
+    archetypeName: NotRequired[str]
+    icon: NotRequired[str]
+
+
 class CompanionRT(RootTemplate):
     """
     Root template with companion settings
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: Unpack[CompanionRTKeywords]) -> None:
         super().__init__(**kwargs)
         self.template_filename: str = f"{self.base_path}rt_companion.xml"
         self.title: str = ""
@@ -56,8 +73,12 @@ class CompanionRT(RootTemplate):
         if "archetypeName" in kwargs:
             archetype = kwargs["archetypeName"]
         self.replacements["{{archetypeName}}"] = archetype
-        self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
         self.replacements["{{equipmentSetName}}"] = self.equipment_set_name
+
+        if "parentTemplateId" in kwargs:
+            self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
+        else:
+            raise RuntimeError("No parentTemplateId supplied")
 
         if "title" in kwargs:
             self.title = kwargs["title"]
@@ -77,12 +98,18 @@ class CompanionRT(RootTemplate):
         return self.title or self.display_name
 
 
+class ItemRTKeywords(RootTemplateKeywords):
+    name: str
+    description: str
+    icon: NotRequired[str]
+
+
 class PageRT(RootTemplate):
     """
     Root template for objects like books and scrolls
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Unpack[ItemRTKeywords]):
         super().__init__(**kwargs)
         self.template_filename = f"{self.base_path}rt_object_page.xml"
         self.replacements["{{icon}}"] = "Item_BOOK_GEN_Paper_Sheet_F"
@@ -101,12 +128,16 @@ class PageRT(RootTemplate):
         return self.name
 
 
+class BookRTKeywords(ItemRTKeywords):
+    book_id: Required[str]
+
+
 class BookRT(PageRT):
     """
     Root template for books
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Unpack[BookRTKeywords]):
         super().__init__(**kwargs)
         self.template_filename = f"{self.base_path}rt_object_book.xml"
         self.replacements["{{bookId}}"] = kwargs["book_id"]
@@ -118,12 +149,16 @@ class BookRT(PageRT):
         self.replacements["{{descriptionHandle}}"] = self.description_handle
 
 
+class ScrollRTKeywords(ItemRTKeywords):
+    scrollSpellName: Required[str]
+
+
 class ScrollRT(RootTemplate):
     """
     Root template for scrolls
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Unpack[ScrollRTKeywords]):
         super().__init__(**kwargs)
         self.template_filename = f"{self.base_path}rt_object_scroll.xml"
         self.replacements["{{scrollSpellName}}"] = kwargs["scrollSpellName"]
