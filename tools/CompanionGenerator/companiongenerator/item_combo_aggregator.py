@@ -1,6 +1,5 @@
 import os
 
-import companiongenerator
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo import ItemCombo, ItemComboName
@@ -44,13 +43,9 @@ class ItemComboAggregator:
             logger.error("No entries")
         else:
             logger.debug(f"Building content string for {len(self.entries)} entries")
-            combos = [
-                entry
-                for entry in self.entries
-                if isinstance(entry, companiongenerator.item_combo.ItemCombo)
-            ]
+            combos = [entry for entry in self.entries if isinstance(entry, ItemCombo)]
 
-            logger.info(f"Eligible combos: {len(combos)}")
+            logger.debug(f"Eligible combos: {len(combos)}")
 
             if len(combos) > 0:
                 entry_templates = [

@@ -150,7 +150,6 @@ class AutomationDirector:
         Updates spell file and appends new spell
         """
         filename = MOD_FILENAMES["spell_text_file_summons"]
-        handler = FileHandler()
         summon_spell = SummonSpell(
             **kwargs, localization_aggregator=self.localization_aggregator
         )
@@ -178,8 +177,7 @@ class AutomationDirector:
                     return True
                 else:
                     # New spell: create backup before proceeding
-                    handler = FileHandler()
-                    backup_created = handler.create_backup_file(filename)
+                    backup_created = self.file_handler.create_backup_file(filename)
 
                     if backup_created:
                         # Seek to end before appending
