@@ -10,6 +10,7 @@ from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
+from companiongenerator.spell import SummonSpell
 from companiongenerator.spell_parser import SpellParser
 from companiongenerator.stats_object_parser import StatsObjectParser
 
@@ -47,14 +48,30 @@ def test_create():
 
     # Update spells
     summon_spell_name = f"LC_Summon_Legendary_Kobold_{unique_suffix}"
-    updated_spell_file = director.update_summon_spells(
+    summon_spell = SummonSpell(
         display_name="Summon Kobold",
         description="A powerful summoning scroll",
         spell_name=summon_spell_name,
-        integration_name="LegendaryCompanions",
         summon_uuid=companion_map_key,
+        localization_aggregator=director.localization_aggregator,
     )
-    assert updated_spell_file, "Failed to update spell file"
+    director.spell_aggregator.add_entry(summon_spell)
+
+    summon_kobold = SummonSpell(
+        display_name="Summon Kobold",
+        description="A powerful summoning scroll",
+        spell_name=summon_spell_name,
+        summon_uuid=companion_map_key,
+        localization_aggregator=director.localization_aggregator,
+    )
+    director.spell_aggregator.add_entry(summon_kobold)
+
+    assert (
+        len(director.spell_aggregator.entries) == 2
+    ), "Failed to add summon spells to aggregator"
+
+    updated_spells = director.update_summon_spells()
+    assert updated_spells, "Failed to update spells"
 
     # Verify that we didn't add duplicates to the file
     parser = SpellParser()
@@ -365,8 +382,6 @@ def verify_combos_file(combo_names: set[str]) -> None:
 
     # The template has "_1" at the end of every combo result
     combo_names_with_suffix = set([combo_name + "_1" for combo_name in combo_names])
-
-    logger.debug(f"[+] Combo names with suffix: {combo_names_with_suffix}")
 
     # Checking issubset here because there could be existing combos
     is_combo_name_subset = combo_names.issubset(combo_info["combo_names"])

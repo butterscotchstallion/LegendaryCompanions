@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 from typing import TypedDict, Unpack
 from uuid import uuid4
@@ -15,8 +14,7 @@ from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
-from companiongenerator.spell import SummonSpell
-from companiongenerator.spell_parser import SpellParser
+from companiongenerator.spell_aggregator import SpellAggregator
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_object_aggregator import StatsObjectAggregator
 
@@ -59,6 +57,7 @@ class AutomationDirector:
         self.book_loca_aggregator = BookLocaAggregator()
         self.stats_object_aggregator = StatsObjectAggregator()
         self.combo_aggregator = ItemComboAggregator()
+        self.spell_aggregator = SpellAggregator()
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
@@ -145,61 +144,11 @@ class AutomationDirector:
         equipment_text = equipment_set.get_tpl_with_replacements()
         return parser.add_entry(equipment_set_name, equipment_text)
 
-    def update_summon_spells(self, **kwargs):
+    def update_summon_spells(self) -> bool | None:
         """
         Updates spell file and appends new spell
         """
-        filename = MOD_FILENAMES["spell_text_file_summons"]
-        summon_spell = SummonSpell(
-            **kwargs, localization_aggregator=self.localization_aggregator
-        )
-
-        generated_spell_text = summon_spell.get_tpl_with_replacements()
-
-        # Open spell file and append new spell if it doesn't exist
-        try:
-            # Open file for reading and writing, creating if not exists
-            with open(filename, "a+") as handle:
-                parser = SpellParser()
-                # Since we started at the end of the file, we have to seek to the beginning
-                # to get the file contents
-                handle.seek(0)
-                spell_text = handle.read()
-
-                spell_name_exists = parser.entry_name_exists_in_text(
-                    summon_spell.spell_name, spell_text
-                )
-                # Not really a big deal if it exists. We just bail out here
-                if spell_name_exists:
-                    logger.info(
-                        f"Spell name {summon_spell.spell_name} exists! Skipping"
-                    )
-                    return True
-                else:
-                    # New spell: create backup before proceeding
-                    backup_created = self.file_handler.create_backup_file(filename)
-
-                    if backup_created:
-                        # Seek to end before appending
-                        handle.seek(os.SEEK_END)
-                        # Append to existing file
-                        spell_with_new_line = f"\n{generated_spell_text}"
-                        success = handle.write(spell_with_new_line)
-
-                        if success:
-                            logger.info(
-                                f'Appended spell "{summon_spell.spell_name}" [Summon UUID: {summon_spell.summon_uuid}] to spell file'
-                            )
-                        else:
-                            logger.error("Failed to append to spell file")
-
-                        return success
-                    else:
-                        logger.error(f"Failed to create backup of {filename}")
-                        return False
-        except IOError as err:
-            logger.error(f"Error opening summon spell file: {err}")
-            return False
+        return self.spell_aggregator.update_spells()
 
     def update_localization(self, parser: LocalizationParser) -> bool | None:
         """

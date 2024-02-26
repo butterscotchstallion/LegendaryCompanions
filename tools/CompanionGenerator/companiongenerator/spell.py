@@ -25,7 +25,7 @@ class SpellName:
         return self.spell_name
 
 
-class Spell:
+class Spell(TemplateReplacerBase):
     """
     Base spell definition which contains the properties
     shared by all varieties of spells

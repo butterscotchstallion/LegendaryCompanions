@@ -45,8 +45,6 @@ class ItemComboAggregator:
             logger.debug(f"Building content string for {len(self.entries)} entries")
             combos = [entry for entry in self.entries if isinstance(entry, ItemCombo)]
 
-            logger.debug(f"Eligible combos: {len(combos)}")
-
             if len(combos) > 0:
                 entry_templates = [
                     entry.get_tpl_with_replacements() for entry in combos
