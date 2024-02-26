@@ -6,7 +6,6 @@ from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
-from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.xml_utils import get_text_from_entries
 
 from tests.template_validity_helper import is_valid_handle_uuid
@@ -45,7 +44,7 @@ def test_append_localization_entries():
     assert overwrote_backup_file, "Failed to overwrite existing backup file"
 
     # Get new nodes and append to file
-    loca_aggregator = LocalizationAggregator(template_fetcher=TemplateFetcher())
+    loca_aggregator = LocalizationAggregator()
     loca_text = "Tut tut tut tut tut"
     new_handle = loca_aggregator.add_entry_and_return_handle(
         text=loca_text,

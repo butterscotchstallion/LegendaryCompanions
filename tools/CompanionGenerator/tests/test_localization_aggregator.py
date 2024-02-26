@@ -4,7 +4,6 @@ from companiongenerator.localization_aggregator import (
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.root_template import CompanionRT, PageRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
-from companiongenerator.template_fetcher import TemplateFetcher
 
 from tests.template_validity_helper import is_valid_handle_uuid
 
@@ -30,7 +29,6 @@ def test_add_entry() -> None:
         equipmentSetName=equipment_set_name,
         title=title,
         icon=icon,
-        template_fetcher=TemplateFetcher(),
         localization_aggregator=loca_aggregator,
         root_template_aggregator=RootTemplateAggregator(),
     )
@@ -48,7 +46,6 @@ def test_add_entry() -> None:
         statsName=pg_stats_name,
         name=pg_stats_name,
         icon=pg_icon_name,
-        template_fetcher=TemplateFetcher(),
         localization_aggregator=loca_aggregator,
         root_template_aggregator=RootTemplateAggregator(),
     )

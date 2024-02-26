@@ -49,7 +49,7 @@ class StatsObjectAggregator:
 
         # Add newline and append to file once
         append_content: str = "\n"
-        append_content += "\n".join(append_entries)
+        append_content += "\n\n".join(append_entries)
 
         total_entries_to_append: int = len(append_entries)
 
