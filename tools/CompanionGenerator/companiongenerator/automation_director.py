@@ -144,7 +144,7 @@ class AutomationDirector:
         equipment_text = equipment_set.get_tpl_with_replacements()
         return parser.add_entry(equipment_set_name, equipment_text)
 
-    def update_summon_spells(self) -> bool | None:
+    def update_spells(self) -> bool | None:
         """
         Updates spell file and appends new spell
         """

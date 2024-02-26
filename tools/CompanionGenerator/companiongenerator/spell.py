@@ -2,7 +2,7 @@
 Spells
 """
 
-from typing import TypedDict, Unpack
+from typing import NotRequired, TypedDict, Unpack
 
 from tests.template_validity_helper import is_valid_uuid
 
@@ -18,8 +18,16 @@ class SpellKeywords(TypedDict):
     description: str
 
 
+class SpellNameKeywords(TypedDict):
+    spell_name: NotRequired[str]
+
+
 class SpellName:
     spell_name: str
+
+    def __init__(self, **kwargs: Unpack[SpellNameKeywords]):
+        if "spell_name" in kwargs:
+            self.spell_name = kwargs["spell_name"]
 
     def __repr__(self):
         return self.spell_name

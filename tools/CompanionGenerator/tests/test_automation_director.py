@@ -70,7 +70,7 @@ def test_create():
         len(director.spell_aggregator.entries) == 2
     ), "Failed to add summon spells to aggregator"
 
-    updated_spells = director.update_summon_spells()
+    updated_spells = director.update_spells()
     assert updated_spells, "Failed to update spells"
 
     # Verify that we didn't add duplicates to the file
