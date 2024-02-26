@@ -27,5 +27,5 @@ class EquipmentSet(TemplateReplacerBase):
 
     def __init__(self, **kwargs: Unpack[EquipmentSetKeywords]):
         super().__init__()
-        self.filename = kwargs["equipment_set_type"]
+        self.template_filename = kwargs["equipment_set_type"]
         self.replacements = {"{{name}}": kwargs["name"]}

@@ -24,7 +24,7 @@ class BookLocaEntry(TemplateReplacerBase):
         self.unknown_description = kwargs["unknown_description"]
         # Template replacement configuration
         self.base_path = "../templates/"
-        self.filename = f"{self.base_path}book_loca_entry.xml"
+        self.template_filename = f"{self.base_path}book_loca_entry.xml"
         self.template_fetcher = TemplateFetcher()
         self.localization_aggregator: LocalizationAggregator = kwargs[
             "localization_aggregator"

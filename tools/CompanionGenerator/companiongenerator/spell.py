@@ -79,7 +79,7 @@ class SummonSpell(Spell, TemplateReplacerBase):
 
     def __init__(self, **kwargs: Unpack[SummonSpellKeywords]) -> None:
         super().__init__(**kwargs)
-        self.filename = "summon_spell.txt"
+        self.template_filename = "summon_spell.txt"
         self.replacements["{{summon_uuid}}"] = kwargs["summon_uuid"]
         self.summon_uuid = kwargs["summon_uuid"]
 

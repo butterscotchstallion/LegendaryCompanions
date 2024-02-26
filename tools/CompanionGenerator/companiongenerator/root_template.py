@@ -47,7 +47,7 @@ class CompanionRT(RootTemplate):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.filename: str = f"{self.base_path}rt_companion.xml"
+        self.template_filename: str = f"{self.base_path}rt_companion.xml"
         self.title: str = ""
         self.equipment_set_name: str = kwargs["equipmentSetName"]
 
@@ -84,7 +84,7 @@ class PageRT(RootTemplate):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_object_page.xml"
+        self.template_filename = f"{self.base_path}rt_object_page.xml"
         self.replacements["{{icon}}"] = "Item_BOOK_GEN_Paper_Sheet_F"
         self.name = kwargs["name"]
 
@@ -108,7 +108,7 @@ class BookRT(PageRT):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_object_book.xml"
+        self.template_filename = f"{self.base_path}rt_object_book.xml"
         self.replacements["{{bookId}}"] = kwargs["book_id"]
 
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(
@@ -125,7 +125,7 @@ class ScrollRT(RootTemplate):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.filename = f"{self.base_path}rt_object_scroll.xml"
+        self.template_filename = f"{self.base_path}rt_object_scroll.xml"
         self.replacements["{{scrollSpellName}}"] = kwargs["scrollSpellName"]
 
         self.description_handle = self.loca_aggregator.add_entry_and_return_handle(

@@ -9,7 +9,7 @@ class TemplateReplacerBase:
     """
 
     def __init__(self):
-        self.filename = ""
+        self.template_filename = ""
         self.replacements = {}
         self.template_fetcher = TemplateFetcher()
 
@@ -17,7 +17,7 @@ class TemplateReplacerBase:
         """
         Fetches template from filesystem
         """
-        return self.template_fetcher.get_template_text(self.filename).strip()
+        return self.template_fetcher.get_template_text(self.template_filename).strip()
 
     def get_tpl_with_replacements(self):
         """

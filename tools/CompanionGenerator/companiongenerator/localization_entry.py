@@ -19,7 +19,7 @@ class LocalizationEntry(TemplateReplacerBase):
 
     def __init__(self, **kwargs: Unpack[LocalizationEntryKeyWords]):
         self.template_fetcher = TemplateFetcher()
-        self.filename = "localization_entry.xml"
+        self.template_filename = "localization_entry.xml"
         self.comment = ""
 
         """

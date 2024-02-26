@@ -39,7 +39,7 @@ class ItemCombo(TemplateReplacerBase):
 
     def __init__(self, **kwargs: Unpack[ItemComboKeywords]):
         self.template_fetcher = TemplateFetcher()
-        self.filename = "ItemCombos.txt"
+        self.template_filename = "ItemCombos.txt"
         self.combo_name = kwargs["combo_name"]
         self.object_one_name = kwargs["object_one_name"]
         self.object_two_name = kwargs["object_two_name"]
