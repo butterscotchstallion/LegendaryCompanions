@@ -136,4 +136,5 @@ class BookParser:
             logger.error(f"Error parsing book file: {get_error_message(new_node, err)}")
 
     def write_tree(self):
-        self.tree.write(self.filename, "unicode", True)
+        if len(self.filename) > 0:
+            self.tree.write(self.filename, "unicode", True)

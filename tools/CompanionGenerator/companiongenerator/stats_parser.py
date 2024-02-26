@@ -1,7 +1,7 @@
 import os
 from enum import StrEnum
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Required, TypedDict
 
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
@@ -12,11 +12,12 @@ class ParserType(StrEnum):
     EQUIPMENT = "Equipment"
     BOOK = "Book"
     ITEM_COMBOS = "ItemCombos"
+    DEFAULT_TYPE = "Stats"
 
 
 class StatsParserKeywords(TypedDict):
-    filename: str
-    parser_type: ParserType
+    filename: Required[str]
+    parser_type: Required[ParserType]
 
 
 class StatsParser:
@@ -33,15 +34,15 @@ class StatsParser:
 
     """
 
-    def __init__(self, **kwargs: Unpack[StatsParserKeywords]):
+    def __init__(self):
         """
         This is what the line for a new entry starts with in Stats entries.
         In other files, like equipment sets, the format is similar but it
         starts with "new equipment" instead.
         """
         self.new_entry_text: str = "new entry"
-        self.filename: str = kwargs["filename"] or ""
-        self.parser_type: ParserType | str = kwargs["parser_type"] or ""
+        self.filename: str = ""
+        self.parser_type = ParserType.DEFAULT_TYPE
 
     def get_entry_name_from_lines(self, text_lines: list[str]) -> str | None:
         """
@@ -145,7 +146,7 @@ class StatsParser:
         stripped_text_lines = self.get_stripped_text_lines(stats_text)
         spells: set[str] = set([])
         for line in stripped_text_lines:
-            if line.startswith(self.new_entry_text):
+            if line and line.startswith(self.new_entry_text):
                 spell_name = self.get_value_from_line_in_quotes(line)
                 spells.add(spell_name)
         return spells
@@ -204,8 +205,12 @@ class StatsParser:
         """
         Gets file contents from stats file
         """
-        handle = Path(self.filename)
-        return handle.read_text()
+        if self.filename:
+            handle = Path(self.filename)
+            return handle.read_text()
+        else:
+            logger.error(f"No filename set for {__class__}")
+            return ""
 
     def add_entry(self, entry_name: str, entry_text: str) -> bool:
         """

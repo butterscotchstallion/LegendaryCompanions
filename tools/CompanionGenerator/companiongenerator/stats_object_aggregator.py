@@ -4,7 +4,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
 from companiongenerator.stats_object import StatsObject
-from companiongenerator.stats_parser import ParserType, StatsParser
+from companiongenerator.stats_parser import StatsParser
 
 
 class StatsObjectAggregator:
@@ -20,9 +20,7 @@ class StatsObjectAggregator:
         to the object file
         """
         success: bool = False
-        parser = StatsParser(
-            filename=MOD_FILENAMES["books_object_file"], parser_type=ParserType.BOOK
-        )
+        parser = StatsParser()
         handle = Path(MOD_FILENAMES["books_object_file"])
         object_file_contents: str = handle.read_text()
         entry_names: set[str] = parser.get_entry_names_from_text(object_file_contents)

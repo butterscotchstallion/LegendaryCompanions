@@ -16,9 +16,9 @@ from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell import SummonSpell
+from companiongenerator.spell_parser import SpellParser
 from companiongenerator.stats_object import StatsObject
 from companiongenerator.stats_object_aggregator import StatsObjectAggregator
-from companiongenerator.stats_parser import ParserType, StatsParser
 
 
 class StatsKeywords(TypedDict):
@@ -160,7 +160,7 @@ class AutomationDirector:
         try:
             # Open file for reading and writing, creating if not exists
             with open(filename, "a+") as handle:
-                parser = StatsParser(filename=filename, parser_type=ParserType.SPELL)
+                parser = SpellParser()
                 # Since we started at the end of the file, we have to seek to the beginning
                 # to get the file contents
                 handle.seek(0)

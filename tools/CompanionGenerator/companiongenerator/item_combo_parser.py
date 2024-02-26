@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from companiongenerator.constants import MOD_FILENAMES
-from companiongenerator.stats_parser import ParserType, StatsParser
+from companiongenerator.stats_parser import StatsParser
 
 
 class ItemComboParser:
@@ -25,10 +25,7 @@ class ItemComboParser:
 
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
-            stats_parser = StatsParser(
-                filename=self.filename,
-                parser_type=ParserType.ITEM_COMBOS,
-            )
+            stats_parser = StatsParser()
             for combo_line in combo_file_lines:
                 if combo_line.startswith("new ItemCombination"):
                     combo_name = stats_parser.get_value_from_line_in_quotes(combo_line)
@@ -66,10 +63,7 @@ class ItemComboParser:
 
         if not self.is_file_empty:
             combo_file_lines = self.get_combo_file_lines(file_contents)
-            stats_parser = StatsParser(
-                filename=self.filename,
-                parser_type=ParserType.ITEM_COMBOS,
-            )
+            stats_parser = StatsParser()
             for combo_line in combo_file_lines:
                 """
                 These names are pretty similar so we need to check

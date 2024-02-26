@@ -18,11 +18,26 @@ class SpellKeywords(TypedDict):
     description: str
 
 
+class SpellName:
+    spell_name: str
+
+    def __repr__(self):
+        return self.spell_name
+
+
 class Spell:
     """
     Base spell definition which contains the properties
     shared by all varieties of spells
     """
+
+    base_spell_name: str
+    spell_properties: str
+    spell_name: str
+    display_name_handle: str
+    description_handle: str
+    replacements: dict[str, str]
+    loca_aggregator: LocalizationAggregator
 
     def __init__(self, **kwargs: Unpack[SpellKeywords]) -> None:
         self.base_spell_name = ""
@@ -46,6 +61,9 @@ class Spell:
             "{{spell_name}}": self.spell_name,
         }
 
+    def __repr__(self):
+        return self.spell_name
+
 
 class SummonSpellKeywords(SpellKeywords):
     summon_uuid: str
@@ -55,6 +73,9 @@ class SummonSpell(Spell, TemplateReplacerBase):
     """
     The spell used to summon the companion
     """
+
+    filename: str
+    summon_uuid: str
 
     def __init__(self, **kwargs: Unpack[SummonSpellKeywords]) -> None:
         super().__init__(**kwargs)

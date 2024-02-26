@@ -4,14 +4,14 @@ from uuid import uuid4
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
-from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_parser import EquipmentParser
 from companiongenerator.equipment_set import EquipmentSetType
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
-from companiongenerator.stats_parser import ParserType, StatsParser
+from companiongenerator.spell_parser import SpellParser
+from companiongenerator.stats_object_parser import StatsObjectParser
 
 from tests.template_validity_helper import is_valid_handle_uuid, is_valid_uuid
 
@@ -57,9 +57,7 @@ def test_create():
     assert updated_spell_file, "Failed to update spell file"
 
     # Verify that we didn't add duplicates to the file
-    parser = StatsParser(
-        filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
-    )
+    parser = SpellParser()
     spell_list = parser.get_entry_names_from_text()
     spells_set: set[str] = set(spell_list)
 
@@ -297,12 +295,10 @@ def test_create():
     ), "Failed to verify equipment set in file"
 
     # Verify page RT map key in object file
-    stats_parser = StatsParser(
-        filename=MOD_FILENAMES["books_object_file"], parser_type=ParserType.BOOK
-    )
+    stats_object_parser = StatsObjectParser()
 
     # Entry info for all objects
-    object_entry_info: dict[str, dict] = stats_parser.get_entry_info_from_text()
+    object_entry_info: dict[str, dict] = stats_object_parser.get_entry_info_from_text()
 
     # Map of stats_name -> root template id
     objects_to_verify: dict[str, str] = {
@@ -336,9 +332,7 @@ def test_create():
     3. [✓] Scroll for upgrade spell (just need to check that the spell used
     in the spell is there)
     """
-    spell_parser = StatsParser(
-        filename=MOD_FILENAMES["spell_text_file_summons"], parser_type=ParserType.SPELL
-    )
+    spell_parser = SpellParser()
 
     # Verify summon spell
     spell_entry_info = spell_parser.get_entry_info_from_text()
