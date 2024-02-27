@@ -206,6 +206,7 @@ class StatsParser:
         Gets file contents from stats file
         """
         if self.filename:
+            logger.debug(f"Loading file contents: {self.filename}")
             handle = Path(self.filename)
             return handle.read_text()
         else:

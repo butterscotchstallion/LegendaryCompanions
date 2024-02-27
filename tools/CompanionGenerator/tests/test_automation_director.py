@@ -23,6 +23,7 @@ def test_create():
     managers in order to create the necessary structures and files
     """
     director = AutomationDirector()
+    director.start_automation()
     unique_suffix = director.unique_suffix
 
     ## Companion RT
@@ -51,9 +52,9 @@ def test_create():
     assert updated_equipment, "Failed to update equipment"
 
     # Update spells
-    summon_spell_name = f"LC_Summon_Legendary_Kobold_{unique_suffix}"
+    summon_spell_name = f"LC_Summon_Legendary_Muffin_{unique_suffix}"
     summon_spell = SummonSpell(
-        display_name="Summon Kobold",
+        display_name="Summon Muffin",
         description="A powerful summoning scroll",
         spell_name=summon_spell_name,
         summon_uuid=companion_map_key,
@@ -61,18 +62,27 @@ def test_create():
     )
     director.spell_aggregator.add_entry(summon_spell)
 
+    summon_kobold_spell_name = f"LC_Summon_Legendary_Kobold_{unique_suffix}"
     summon_kobold = SummonSpell(
         display_name="Summon Kobold",
         description="A powerful summoning scroll",
-        spell_name=summon_spell_name,
+        spell_name=summon_kobold_spell_name,
         summon_uuid=companion_map_key,
         localization_aggregator=director.localization_aggregator,
     )
     director.spell_aggregator.add_entry(summon_kobold)
 
-    assert (
-        len(director.spell_aggregator.entries) == 2
-    ), "Failed to add summon spells to aggregator"
+    num_found_entries: int = 0
+    for entry in director.spell_aggregator.entries:
+        if num_found_entries < 2 and entry.spell_name in [
+            summon_spell_name,
+            summon_kobold_spell_name,
+        ]:
+            num_found_entries = num_found_entries + 1
+
+        if num_found_entries > 2:
+            break
+    assert num_found_entries >= 2, "Failed to add summon spells to aggregator"
 
     updated_spells = director.update_spells()
     assert updated_spells, "Failed to update spells"
@@ -180,7 +190,7 @@ def test_create():
     director.combo_aggregator.add_entry(upgrade_combo)
 
     assert (
-        len(director.combo_aggregator.entries) == 2
+        len(director.combo_aggregator.entries) >= 2
     ), "Failed to add summon and upgrade combos"
 
     # Update combo file

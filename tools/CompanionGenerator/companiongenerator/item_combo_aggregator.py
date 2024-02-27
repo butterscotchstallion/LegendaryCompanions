@@ -18,7 +18,7 @@ class ItemComboAggregator:
         self.parser = ItemComboParser()
         self.entries: set[ItemCombo | ItemComboName] = set([])
 
-    def load_combo_entries_from_file(self) -> set[ItemCombo | ItemComboName]:
+    def load_entries_from_file(self) -> set[ItemCombo | ItemComboName]:
         """
         Reads existing combo file and loads entries
         """

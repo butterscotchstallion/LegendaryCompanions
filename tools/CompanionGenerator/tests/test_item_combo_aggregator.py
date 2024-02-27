@@ -34,7 +34,7 @@ def test_load_from_file():
 
         # Add each entry to the aggregator
         combo_aggregator = ItemComboAggregator()
-        entries = combo_aggregator.load_combo_entries_from_file()
+        entries = combo_aggregator.load_entries_from_file()
 
         assert len(entries) > 0
     else:

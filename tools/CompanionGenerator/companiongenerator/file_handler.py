@@ -90,12 +90,16 @@ class FileHandler:
         Creates backup and appends content file at supplied path.
         """
         try:
-            created_backup = self.create_backup_file(file_path)
-            if created_backup:
-                with open(file_path, "a+") as handle:
-                    handle.seek(os.SEEK_END)
-                    return bool(handle.write(contents))
+            if len(contents) > 0:
+                created_backup = self.create_backup_file(file_path)
+                if created_backup:
+                    with open(file_path, "a+") as handle:
+                        handle.seek(os.SEEK_END)
+                        return bool(handle.write(contents))
+                else:
+                    return False
             else:
+                logger.error("Empty contents")
                 return False
         except IOError as err:
             logger.error(f"Error appending to file {file_path}: {err}")

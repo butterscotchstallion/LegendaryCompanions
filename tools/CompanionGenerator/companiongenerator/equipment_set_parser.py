@@ -9,5 +9,6 @@ class EquipmentSetParser(StatsParser):
     """
 
     def __init__(self):
+        super().__init__()
         self.new_entry_text = "new equipment"
         self.filename = MOD_FILENAMES["equipment"]
