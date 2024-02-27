@@ -1,4 +1,4 @@
-new equipment "{{name}}"
+new equipment "{{equipment_set_name}}"
     add initialweaponset "Melee"
     add equipmentgroup
     add equipment entry "MAG_GreaterSilver_Greatsword"

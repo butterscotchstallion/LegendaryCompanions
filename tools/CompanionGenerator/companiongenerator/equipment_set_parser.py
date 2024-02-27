@@ -2,7 +2,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.stats_parser import StatsParser
 
 
-class EquipmentParser(StatsParser):
+class EquipmentSetParser(StatsParser):
     """
     Quite similar to StatsParser but has a
     slightly different "new entry" style

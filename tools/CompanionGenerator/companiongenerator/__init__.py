@@ -19,5 +19,5 @@ from .item_combo_parser import ItemComboParser
 from .item_combo import ItemComboName, ItemCombo
 from .item_combo_aggregator import ItemComboAggregator
 from .stats_object import StatsObject
-from .equipment_parser import EquipmentParser
+from .equipment_set_parser import EquipmentSetParser
 from .spell_aggregator import SpellAggregator

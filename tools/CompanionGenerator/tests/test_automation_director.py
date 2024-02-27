@@ -4,8 +4,8 @@ from uuid import uuid4
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
-from companiongenerator.equipment_parser import EquipmentParser
-from companiongenerator.equipment_set import EquipmentSetType
+from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
+from companiongenerator.equipment_set_parser import EquipmentSetParser
 from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
@@ -40,10 +40,14 @@ def test_create():
         statsName=companion_name_attr,
         localization_aggregator=director.localization_aggregator,
     )
-    # Update equipment file
-    updated_equipment = director.update_equipment(
-        equipment_set_name=eqp_set_name, equipment_set_type=EquipmentSetType.MELEE_PLATE
+    director.equipment_set_aggregator.add_entry(
+        EquipmentSet(
+            equipment_set_name=eqp_set_name,
+            equipment_set_type=EquipmentSetType.MELEE_PLATE,
+        )
     )
+    # Update equipment file
+    updated_equipment = director.update_equipment()
     assert updated_equipment, "Failed to update equipment"
 
     # Update spells
@@ -305,7 +309,7 @@ def test_create():
     """
 
     # Verify companion RT equipment set is in equipment file
-    equipment_parser = EquipmentParser()
+    equipment_parser = EquipmentSetParser()
     equipment_set_names = equipment_parser.get_entry_names_from_text()
     assert (
         director.companion.equipment_set_name in equipment_set_names

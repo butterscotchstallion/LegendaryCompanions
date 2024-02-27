@@ -5,8 +5,7 @@ from uuid import uuid4
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
-from companiongenerator.equipment_parser import EquipmentParser
-from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
+from companiongenerator.equipment_set_aggregator import EquipmentSetAggregator
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
@@ -58,6 +57,7 @@ class AutomationDirector:
         self.stats_object_aggregator = StatsObjectAggregator()
         self.combo_aggregator = ItemComboAggregator()
         self.spell_aggregator = SpellAggregator()
+        self.equipment_set_aggregator = EquipmentSetAggregator()
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
@@ -131,18 +131,11 @@ class AutomationDirector:
         self.stats_object_aggregator.add_entry(book_obj)
         return book_rt_id
 
-    def update_equipment(
-        self, equipment_set_name: str, equipment_set_type: EquipmentSetType
-    ):
+    def update_equipment(self) -> bool:
         """
         Updates equipment file with new set, if it doesn't exist
         """
-        parser = EquipmentParser()
-        equipment_set = EquipmentSet(
-            name=equipment_set_name, equipment_set_type=equipment_set_type
-        )
-        equipment_text = equipment_set.get_tpl_with_replacements()
-        return parser.add_entry(equipment_set_name, equipment_text)
+        return self.equipment_set_aggregator.update_equipment_sets()
 
     def update_spells(self) -> bool | None:
         """

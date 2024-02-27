@@ -87,12 +87,16 @@ class FileHandler:
 
     def append_to_file(self, file_path: str, contents: str) -> bool:
         """
-        Appends content file at supplied path.
+        Creates backup and appends content file at supplied path.
         """
         try:
-            with open(file_path, "a+") as handle:
-                handle.seek(os.SEEK_END)
-                return bool(handle.write(contents))
+            created_backup = self.create_backup_file(file_path)
+            if created_backup:
+                with open(file_path, "a+") as handle:
+                    handle.seek(os.SEEK_END)
+                    return bool(handle.write(contents))
+            else:
+                return False
         except IOError as err:
             logger.error(f"Error appending to file {file_path}: {err}")
             return False

@@ -55,20 +55,15 @@ class StatsObjectAggregator:
 
         if total_entries_to_append > 0:
             handler = FileHandler()
-            backup_created = handler.create_backup_file(
-                MOD_FILENAMES["books_object_file"]
+            success = handler.append_to_file(
+                MOD_FILENAMES["books_object_file"], append_content
             )
-
-            if backup_created:
-                success = handler.append_to_file(
-                    MOD_FILENAMES["books_object_file"], append_content
+            if success:
+                logger.info(
+                    f"Appended {total_entries_to_append} entries to object file"
                 )
-                if success:
-                    logger.info(
-                        f"Appended {total_entries_to_append} entries to object file"
-                    )
-                else:
-                    logger.error("Failed to append entries to object file")
+            else:
+                logger.error("Failed to append entries to object file")
         else:
             """
             This indicates we found duplicates and there is nothing to do,

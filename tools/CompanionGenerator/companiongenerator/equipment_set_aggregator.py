@@ -1,4 +1,6 @@
+from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_set import EquipmentSet
+from companiongenerator.file_handler import FileHandler
 
 
 class EquipmentSetAggregator:
@@ -17,3 +19,17 @@ class EquipmentSetAggregator:
 
     def add_entry(self, entry: EquipmentSet):
         self.entries.add(entry)
+
+    def get_content_text(self) -> str:
+        return "\n\n".join(
+            [entry.get_tpl_with_replacements() for entry in self.entries]
+        )
+
+    def update_equipment_sets(self) -> bool:
+        """
+        Appends equipment sets to file
+        """
+        handler = FileHandler()
+        return handler.append_to_file(
+            MOD_FILENAMES["equipment"], self.get_content_text()
+        )

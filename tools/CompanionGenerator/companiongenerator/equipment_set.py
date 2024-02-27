@@ -16,7 +16,7 @@ class EquipmentSetType(StrEnum):
 
 class EquipmentSetKeywords(TypedDict):
     equipment_set_type: EquipmentSetType
-    name: str
+    equipment_set_name: str
 
 
 class EquipmentSet(TemplateReplacerBase):
@@ -28,4 +28,4 @@ class EquipmentSet(TemplateReplacerBase):
     def __init__(self, **kwargs: Unpack[EquipmentSetKeywords]):
         super().__init__()
         self.template_filename = kwargs["equipment_set_type"]
-        self.replacements = {"{{name}}": kwargs["name"]}
+        self.replacements = {"{{equipment_set_name}}": kwargs["equipment_set_name"]}
