@@ -1,7 +1,9 @@
 from typing import NotRequired, Required, TypedDict, Unpack
 from uuid import uuid4
 
-from companiongenerator.constants import ARCH_MELEE_SMART
+from tests.template_validity_helper import is_valid_uuid
+
+from companiongenerator.constants import ARCH_MELEE_SMART_NAME
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
@@ -70,16 +72,16 @@ class CompanionRT(RootTemplate):
         self.equipment_set_name: str = kwargs["equipmentSetName"]
 
         # Companion specific replacements below
-        archetype: str = ARCH_MELEE_SMART
+        archetype: str = ARCH_MELEE_SMART_NAME
         if "archetypeName" in kwargs:
             archetype = kwargs["archetypeName"]
         self.replacements["{{archetypeName}}"] = archetype
         self.replacements["{{equipmentSetName}}"] = self.equipment_set_name
 
-        if "parentTemplateId" in kwargs:
+        if "parentTemplateId" in kwargs and is_valid_uuid(kwargs["parentTemplateId"]):
             self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
         else:
-            raise RuntimeError("No parentTemplateId supplied")
+            raise RuntimeError("Invalid or no parentTemplateId supplied")
 
         if "title" in kwargs:
             self.title = kwargs["title"]

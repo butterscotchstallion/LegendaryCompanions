@@ -1,9 +1,9 @@
 from typing import Literal
-from uuid import uuid4
 
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
+from companiongenerator.constants import ARCH_MELEE_SMART_TPL_ID
 from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.equipment_set_parser import EquipmentSetParser
 from companiongenerator.item_combo import ItemCombo
@@ -28,7 +28,7 @@ def test_create():
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
     # TODO: change this to something real. Maybe an enumeration
-    parent_template_id = str(uuid4())
+    parent_template_id = ARCH_MELEE_SMART_TPL_ID
     companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
     rt_display_name = "Chip Chocolate"
     companion_map_key = director.add_companion_rt(

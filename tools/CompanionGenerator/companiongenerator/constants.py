@@ -24,5 +24,5 @@ MOD_FILENAMES: dict[str, str] = {
     "equipment": f"{STATS_PATH}/Equipment.txt",
 }
 
-ARCH_MELEE_SMART = "melee_smart"
+ARCH_MELEE_SMART_NAME = "melee_smart"
 ARCH_MELEE_SMART_TPL_ID = "39c7c3a9-8393-4df9-9bbf-6d52aa7f34db"
