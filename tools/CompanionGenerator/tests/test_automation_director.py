@@ -23,8 +23,7 @@ def test_create():
     managers in order to create the necessary structures and files
     """
     director = AutomationDirector()
-    director.start_automation()
-    unique_suffix = director.unique_suffix
+    unique_suffix = director.start_automation()
 
     ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"

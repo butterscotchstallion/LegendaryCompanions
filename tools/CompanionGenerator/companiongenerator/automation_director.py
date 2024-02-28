@@ -61,9 +61,11 @@ class AutomationDirector:
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
-    def start_automation(self):
+    def start_automation(self) -> str:
         """
-        Shows start up message and loads entries from existing files
+        Shows start up message and loads entries from existing files.
+
+        Returns the unique string associated with this run.
         """
         logger.info("=================================================")
         logger.info(f"Initializing new automation run! [{self.unique_suffix}]")
@@ -73,6 +75,8 @@ class AutomationDirector:
         self.combo_aggregator.load_entries_from_file()
         self.spell_aggregator.load_entries_from_file()
         self.equipment_set_aggregator.load_entries_from_file()
+
+        return self.unique_suffix
 
     def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """
