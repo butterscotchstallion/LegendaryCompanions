@@ -54,7 +54,7 @@ class StatsParser:
 
     def get_stripped_text_lines(self, stats_text: str) -> list[str]:
         lines = stats_text.splitlines()
-        return [line.strip() for line in lines if line.strip()]
+        return [line.strip() for line in lines]
 
     def get_property_value_by_name(
         self, stats_text_lines: list[str], property_name: str

@@ -27,3 +27,22 @@ def test_item_combo_parser():
     for combo_name in combo_names:
         assert "new ItemCombination" not in combo_name
         assert '"' not in combo_name
+
+
+def test_pages_in_combo_file():
+    """
+    Verifies all pages are present in the combo file
+    """
+    parser = ItemComboParser()
+    combo_entries = parser.get_combo_entries_from_file_contents()
+    if len(combo_entries["combo_names"]) > 0:
+        pages = combo_entries["pages"]
+
+        # Check we have at least one two pages
+        assert len(pages) >= 2, "No pages"
+
+        # Check if first entry is in pages
+        for combo_name in combo_entries["combo_names"]:
+            assert combo_name in pages
+    else:
+        logger.error("No combo names in file")

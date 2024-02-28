@@ -65,7 +65,7 @@ class SpellAggregator:
                 ]
                 logger.debug(f"Built {len(entry_templates)} template entries")
                 self.last_num_entries_written = len(eligible_spells)
-                return "\n\n".join(entry_templates)
+                return "\n\n" + "\n\n".join(entry_templates)
 
     def update_spells(self) -> bool | None:
         """

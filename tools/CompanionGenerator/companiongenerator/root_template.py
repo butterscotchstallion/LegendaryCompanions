@@ -1,6 +1,7 @@
 from typing import NotRequired, Required, TypedDict, Unpack
 from uuid import uuid4
 
+from companiongenerator.constants import ARCH_MELEE_SMART
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
@@ -69,7 +70,7 @@ class CompanionRT(RootTemplate):
         self.equipment_set_name: str = kwargs["equipmentSetName"]
 
         # Companion specific replacements below
-        archetype: str = "melee_smart"
+        archetype: str = ARCH_MELEE_SMART
         if "archetypeName" in kwargs:
             archetype = kwargs["archetypeName"]
         self.replacements["{{archetypeName}}"] = archetype
