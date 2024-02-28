@@ -47,11 +47,14 @@ class ItemComboParser(StatsParser):
         self, file_contents: str = ""
     ) -> dict[str, set[str] | dict[str, set[str]]]:
         """
-        Fetches both combo names and result names from the file contents
-        @return dict[str, set[str]] combo_names, combo_result_names
+        Fetches pages, combo names, and result names from the file contents
+
+        The second return type is for pages
+
+        @return dict[str, set[str]] combo_names, combo_result_names, pages
         """
-        combo_names: set[str] = set([])
-        combo_result_names: set[str] = set([])
+        combo_names: set[str] = set()
+        combo_result_names: set[str] = set()
         pages: dict[str, set[str]] = {}
         combo_name_prefix = "new ItemCombination"
         combo_result_name_prefix = "new ItemCombinationResult"
