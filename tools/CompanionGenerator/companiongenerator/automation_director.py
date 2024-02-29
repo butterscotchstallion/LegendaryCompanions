@@ -83,6 +83,9 @@ class AutomationDirector:
     def add_companion_with_equipment(
         self, companionRT: CompanionRT, equipment_set: EquipmentSet
     ) -> str:
+        """
+        Adds a new companion with equipment set
+        """
         # Used to verify equipment set in test
         self.companion = companionRT
 
