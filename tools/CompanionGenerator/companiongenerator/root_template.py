@@ -53,7 +53,17 @@ class RootTemplate(TemplateReplacerBase):
         return self.display_name
 
 
-class CompanionRTKeywords(RootTemplateKeywords):
+class CompanionRTKeywords(TypedDict):
+    """
+    This is pretty similar to the RootTemplateKeywords
+    but we want the parentTemplateId to be required here.
+    """
+
+    root_template_aggregator: RootTemplateAggregator
+    localization_aggregator: LocalizationAggregator
+    name: str
+    displayName: str
+    statsName: str
     equipmentSetName: str
     title: NotRequired[str]
     archetypeName: NotRequired[str]
