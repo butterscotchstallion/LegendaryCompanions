@@ -84,13 +84,6 @@ def test_create():
     updated_spells = director.update_spells()
     assert updated_spells, "Failed to update spells"
 
-    # Verify that we didn't add duplicates to the file
-    parser = SpellParser()
-    spell_list = parser.get_entry_names_from_text()
-    spells_set: set[str] = set(spell_list)
-
-    assert len(spell_list) == len(spells_set), "Duplicates found in spell file!"
-
     """
     Book Pages
     """

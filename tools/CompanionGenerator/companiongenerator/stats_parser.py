@@ -160,6 +160,7 @@ class StatsParser:
 
         stripped_text_lines = self.get_stripped_text_lines(stats_text)
         entry_info: dict[str, dict] = {}
+        entry_name = ""
         for line in stripped_text_lines:
             quoted_values = self.get_quoted_values(line)
 
