@@ -49,6 +49,8 @@ class AutomationDirector:
     equipment_set_aggregator: EquipmentSetAggregator
     default_localization_filename: str = "English"
     companion: CompanionRT
+    start_time: float
+    end_time: float
 
     def __init__(self):
         self.rt_aggregator = RootTemplateAggregator()
