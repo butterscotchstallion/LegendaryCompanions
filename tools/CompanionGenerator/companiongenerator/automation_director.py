@@ -5,6 +5,7 @@ from uuid import uuid4
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
 from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.equipment_set import EquipmentSet
 from companiongenerator.equipment_set_aggregator import EquipmentSetAggregator
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
@@ -46,6 +47,7 @@ class AutomationDirector:
     stats_object_aggregator: StatsObjectAggregator
     integration_name: str = ""
     default_localization_filename: str = "English"
+    companion: CompanionRT
 
     def __init__(self, **kwargs):
         if "integration_name" in kwargs:
@@ -77,6 +79,26 @@ class AutomationDirector:
         self.equipment_set_aggregator.load_entries_from_file()
 
         return self.unique_suffix
+
+    def add_companion_with_equipment(
+        self, companionRT: CompanionRT, equipment_set: EquipmentSet
+    ) -> str:
+        # Used to verify equipment set in test
+        self.companion = companionRT
+
+        # Add companion
+        tpl = self.companion.get_tpl_with_replacements()
+        logger.info(
+            f"Adding RT entry: {self.companion.display_name} [{self.companion.map_key}]"
+        )
+        self.rt_aggregator.add_entry(
+            tpl, self.companion.get_comment(), self.companion.name
+        )
+
+        # Add equipment set
+        self.equipment_set_aggregator.add_entry(equipment_set)
+
+        return self.companion.map_key
 
     def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """
@@ -232,14 +254,6 @@ class AutomationDirector:
         )
         if backup_created:
             return self.rt_aggregator.append_root_template()
-
-    def add_companion_rt(self, **kwargs) -> str:
-        rt = CompanionRT(**kwargs, root_template_aggregator=self.rt_aggregator)
-        self.companion = rt
-        tpl = rt.get_tpl_with_replacements()
-        logger.info(f"Adding RT entry: {rt.display_name} [{rt.map_key}]")
-        self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
-        return rt.map_key
 
     def add_page_rt(self, **kwargs) -> str:
         rt = PageRT(**kwargs, root_template_aggregator=self.rt_aggregator)

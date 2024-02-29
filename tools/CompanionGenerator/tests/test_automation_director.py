@@ -10,6 +10,7 @@ from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
+from companiongenerator.root_template import CompanionRT
 from companiongenerator.spell import SummonSpell
 from companiongenerator.spell_parser import SpellParser
 from companiongenerator.stats_object_parser import StatsObjectParser
@@ -25,30 +26,27 @@ def test_create():
     director = AutomationDirector()
     unique_suffix = director.start_automation()
 
-    ## Companion RT
     eqp_set_name = "LC_EQP_Legendary"
-    # TODO: change this to something real. Maybe an enumeration
     parent_template_id = ARCH_MELEE_SMART_TPL_ID
     companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
     rt_display_name = "Chip Chocolate"
-    companion_map_key = director.add_companion_rt(
+    companion = CompanionRT(
         title="Legendary Muffin",
         name=companion_name_attr,
         displayName=rt_display_name,
         parentTemplateId=parent_template_id,
         equipmentSetName=eqp_set_name,
         statsName=companion_name_attr,
+        root_template_aggregator=director.rt_aggregator,
         localization_aggregator=director.localization_aggregator,
     )
-    director.equipment_set_aggregator.add_entry(
-        EquipmentSet(
-            equipment_set_name=eqp_set_name,
-            equipment_set_type=EquipmentSetType.MELEE_PLATE,
-        )
+    equipment_set = EquipmentSet(
+        equipment_set_name=eqp_set_name,
+        equipment_set_type=EquipmentSetType.MELEE_PLATE,
     )
-    # Update equipment file
-    updated_equipment = director.update_equipment()
-    assert updated_equipment, "Failed to update equipment"
+    companion_map_key = director.add_companion_with_equipment(companion, equipment_set)
+
+    assert is_valid_uuid(companion_map_key), "Invalid companion map key"
 
     # Update spells
     summon_spell_name = f"LC_Summon_Legendary_Muffin_{unique_suffix}"

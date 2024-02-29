@@ -58,6 +58,7 @@ class CompanionRTKeywords(RootTemplateKeywords):
     title: NotRequired[str]
     archetypeName: NotRequired[str]
     icon: NotRequired[str]
+    parentTemplateId: Required[str]
 
 
 class CompanionRT(RootTemplate):
@@ -81,7 +82,9 @@ class CompanionRT(RootTemplate):
         if "parentTemplateId" in kwargs and is_valid_uuid(kwargs["parentTemplateId"]):
             self.replacements["{{parentTemplateId}}"] = kwargs["parentTemplateId"]
         else:
-            raise RuntimeError("Invalid or no parentTemplateId supplied")
+            raise RuntimeError(
+                "Invalid or no parentTemplateId supplied: " + kwargs["parentTemplateId"]
+            )
 
         if "title" in kwargs:
             self.title = kwargs["title"]

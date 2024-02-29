@@ -1,3 +1,4 @@
+from companiongenerator.constants import ARCH_MELEE_SMART_TPL_ID
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -41,7 +42,7 @@ def get_companion_rt() -> CompanionRT:
     display_name = "Chip Chocolate"
     title = "Legendary Muffin"
     stats_name = "LC_Legendary_Muffin"
-    parent_template_id = "1234"
+    parent_template_id = ARCH_MELEE_SMART_TPL_ID
     equipment_set_name = "LC_EQP_Legendary_Muffin"
     icon = "LC_icon_name"
     return CompanionRT(
