@@ -8,6 +8,7 @@ from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_set import EquipmentSet
 from companiongenerator.equipment_set_aggregator import EquipmentSetAggregator
 from companiongenerator.file_handler import FileHandler
+from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
@@ -79,6 +80,12 @@ class AutomationDirector:
         self.equipment_set_aggregator.load_entries_from_file()
 
         return self.unique_suffix
+
+    def add_combo(self, combo: ItemCombo):
+        """
+        Adds combos to aggregator
+        """
+        self.combo_aggregator.add_entry(combo)
 
     def add_companion_with_equipment(
         self, companionRT: CompanionRT, equipment_set: EquipmentSet

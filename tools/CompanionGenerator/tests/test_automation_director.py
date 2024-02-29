@@ -167,7 +167,7 @@ def test_create():
         object_two_name=summon_page_two_stats_name,
         combo_result_item_name=summon_book_stats_name,
     )
-    director.combo_aggregator.add_entry(summon_combo)
+    director.add_combo(summon_combo)
 
     # Upgrade book combo
     upgrade_combo_name = f"Book_of_Upgrade_Combo_{unique_suffix}"
@@ -177,7 +177,7 @@ def test_create():
         object_two_name=upgrade_page_two_stats_name,
         combo_result_item_name=upgrade_book_stats_name,
     )
-    director.combo_aggregator.add_entry(upgrade_combo)
+    director.add_combo(upgrade_combo)
 
     assert (
         len(director.combo_aggregator.entries) >= 2
