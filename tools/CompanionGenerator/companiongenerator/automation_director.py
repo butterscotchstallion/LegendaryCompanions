@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TypedDict, Unpack
+from typing import Required, TypedDict, Unpack
 from uuid import uuid4
 
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
@@ -20,18 +20,18 @@ from companiongenerator.stats_object_aggregator import StatsObjectAggregator
 
 
 class StatsKeywords(TypedDict):
-    name: str
-    display_name: str
-    description: str
-    stats_name: str
+    name: Required[str]
+    display_name: Required[str]
+    description: Required[str]
+    stats_name: Required[str]
 
 
 class SpellStatsKeywords(StatsKeywords):
-    spell_name: str
+    spell_name: Required[str]
 
 
 class BookKeywords(StatsKeywords):
-    book_id: str
+    book_id: Required[str]
 
 
 class AutomationDirector:
@@ -40,19 +40,17 @@ class AutomationDirector:
     from managers
     """
 
-    base_dir = "../output"
     localization_aggregator: LocalizationAggregator
     book_loca_aggregator: BookLocaAggregator
     rt_aggregator: RootTemplateAggregator
     stats_object_aggregator: StatsObjectAggregator
-    integration_name: str = ""
+    combo_aggregator: ItemComboAggregator
+    spell_aggregator: SpellAggregator
+    equipment_set_aggregator: EquipmentSetAggregator
     default_localization_filename: str = "English"
     companion: CompanionRT
 
-    def __init__(self, **kwargs):
-        if "integration_name" in kwargs:
-            self.integration_name = kwargs["integration_name"]
-
+    def __init__(self):
         self.rt_aggregator = RootTemplateAggregator()
         self.localization_aggregator = LocalizationAggregator()
         self.book_loca_aggregator = BookLocaAggregator()

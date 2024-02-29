@@ -11,11 +11,11 @@ from companiongenerator.template_replacer_base import TemplateReplacerBase
 
 
 class RootTemplateKeywords(TypedDict):
-    root_template_aggregator: RootTemplateAggregator
-    localization_aggregator: LocalizationAggregator
-    name: str
-    displayName: str
-    statsName: str
+    root_template_aggregator: Required[RootTemplateAggregator]
+    localization_aggregator: Required[LocalizationAggregator]
+    name: Required[str]
+    displayName: Required[str]
+    statsName: Required[str]
     parentTemplateId: NotRequired[str]
 
 
@@ -59,16 +59,17 @@ class CompanionRTKeywords(TypedDict):
     but we want the parentTemplateId to be required here.
     """
 
-    root_template_aggregator: RootTemplateAggregator
-    localization_aggregator: LocalizationAggregator
-    name: str
-    displayName: str
-    statsName: str
-    equipmentSetName: str
+    root_template_aggregator: Required[RootTemplateAggregator]
+    localization_aggregator: Required[LocalizationAggregator]
+    name: Required[str]
+    displayName: Required[str]
+    statsName: Required[str]
+    equipmentSetName: Required[str]
+    parentTemplateId: Required[str]
+    # Optional
     title: NotRequired[str]
     archetypeName: NotRequired[str]
     icon: NotRequired[str]
-    parentTemplateId: Required[str]
 
 
 class CompanionRT(RootTemplate):
