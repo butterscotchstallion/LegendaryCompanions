@@ -14,7 +14,7 @@ class StatsObjectAggregator:
     def add_entry(self, stats_object: StatsObject):
         self.entries.add(stats_object)
 
-    def append_entries(self) -> bool:
+    def update_stats_file(self) -> bool:
         """
         Appends all entries that do not exist already
         to the object file

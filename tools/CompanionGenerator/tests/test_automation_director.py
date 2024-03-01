@@ -1,4 +1,5 @@
-from typing import Literal
+import xml.etree.ElementTree as ET
+from typing import Literal, Required, TypedDict, Unpack
 
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
@@ -226,8 +227,8 @@ def test_create():
     ################### END OBJECT ENTRIES #############################
     ####################################################################
 
-    wrote_obj_entries = director.stats_object_aggregator.append_entries()
-    assert wrote_obj_entries, "Failed to append object entries"
+    wrote_obj_entries = director.stats_object_aggregator.update_stats_file()
+    assert wrote_obj_entries, "Failed to update object entries"
 
     ## Append to root template using the above RTs
     appended_rt = director.append_root_template()
@@ -237,12 +238,14 @@ def test_create():
     book_name = f"Book_of_Localization_Testing_{unique_suffix}"
     book_contents = "This is a book about how much I love testing"
     unknown_description = "This is the unknown description"
-    updated_book_children = director.update_book_file(
+    updated_book_children_el = director.update_book_file(
         name=book_name,
         content=book_contents,
         unknown_description=unknown_description,
     )
-    assert updated_book_children is not None, "Failed to update book localization file"
+    assert (
+        updated_book_children_el is not None
+    ), "Failed to update book localization file"
 
     ## TODO: move all this stuff into a dedicated verify function?
     book: BookLocaEntry | Literal[
@@ -253,36 +256,8 @@ def test_create():
     assert is_valid_handle_uuid(book.content_handle)
     assert is_valid_handle_uuid(book.unknown_description_handle)
 
-    # Verify book XML
-    parser = BookParser()
-    all_book_attrs = parser.get_attrs_from_children(updated_book_children)
-    assert all_book_attrs, "Failed to get book attrs"
+    verify_book_xml(book, updated_book_children_el)
 
-    """
-    Verify the above values match the XML
-    NOTE: the books here can be books that existed before
-    we added our book, so we identify the book with our
-    UUID and stop there. Comparing to other books would
-    result in a test failure, as those are different books.
-    """
-    if all_book_attrs is not None:
-        for book_attrs in all_book_attrs:
-            for attrs in book_attrs:
-                book_match = (
-                    attrs.attrib["id"] == "UUID" and attrs.attrib["value"] == book_name
-                )
-                if book_match:
-                    # Handle values use the attribute "handle" for values!
-                    if attrs.attrib["id"] == "Content":
-                        assert (
-                            attrs.attrib["handle"] == book.content_handle
-                        ), "Content handle mismatch"
-                    if attrs.attrib["id"] == "UnknownDescription":
-                        assert (
-                            attrs.attrib["handle"] == book.unknown_description_handle
-                        ), "Unknown description mismatch"
-                    # Stop here because we do not care about other books.
-                    break
     # Localization
     parser = LocalizationParser()
     updated_content_list = director.update_localization(parser)
@@ -307,19 +282,7 @@ def test_create():
     15. Book name -> combo file
     16. Companion RT -> spell file summon UUID
     """
-
-    # Verify companion RT equipment set is in equipment file
-    equipment_parser = EquipmentSetParser()
-    equipment_set_names = equipment_parser.get_entry_names_from_text()
-    assert (
-        director.companion.equipment_set_name in equipment_set_names
-    ), "Failed to verify equipment set in file"
-
-    # Verify page RT map key in object file
-    stats_object_parser = StatsObjectParser()
-
-    # Entry info for all objects
-    object_entry_info: dict[str, dict] = stats_object_parser.get_entry_info_from_text()
+    verify_equipment_set(director)
 
     # Map of stats_name -> root template id
     objects_to_verify: dict[str, str] = {
@@ -336,6 +299,57 @@ def test_create():
         # upgrade_scroll_stats_name: upgrade_scroll_rt_id,
     }
 
+    verify_stats_objects(objects_to_verify)
+    verify_spells(
+        companion_map_key=companion_map_key,
+        spell_names_to_verify=set([summon_kobold_spell_name, summon_spell_name]),
+    )
+    verify_combos_file(set([summon_combo_name, upgrade_combo_name]))
+
+
+def verify_book_xml(book: BookLocaEntry, updated_book_children: ET.Element):
+    """
+    Verify book XML
+    """
+    parser = BookParser()
+    all_book_attrs = parser.get_attrs_from_children(updated_book_children)
+    assert all_book_attrs, "Failed to get book attrs"
+
+    """
+    Verify the above values match the XML
+    NOTE: the books here can be books that existed before
+    we added our book, so we identify the book with our
+    UUID and stop there. Comparing to other books would
+    result in a test failure, as those are different books.
+    """
+    if all_book_attrs is not None:
+        for book_attrs in all_book_attrs:
+            for attrs in book_attrs:
+                book_match = (
+                    attrs.attrib["id"] == "UUID" and attrs.attrib["value"] == book.name
+                )
+                if book_match:
+                    # Handle values use the attribute "handle" for values!
+                    if attrs.attrib["id"] == "Content":
+                        assert (
+                            attrs.attrib["handle"] == book.content_handle
+                        ), "Content handle mismatch"
+                    if attrs.attrib["id"] == "UnknownDescription":
+                        assert (
+                            attrs.attrib["handle"] == book.unknown_description_handle
+                        ), "Unknown description mismatch"
+                    # Stop here because we do not care about other books.
+                    break
+
+
+def verify_stats_objects(objects_to_verify: dict[str, str]):
+    """ """
+    # Verify page RT map key in object file
+    stats_object_parser = StatsObjectParser()
+
+    # Entry info for all objects
+    object_entry_info: dict[str, dict] = stats_object_parser.get_entry_info_from_text()
+
     # Verify each object
     for stats_name in objects_to_verify:
         assert (
@@ -346,6 +360,22 @@ def test_create():
             == object_entry_info[stats_name]["root_template_id"]
         ), f"Root template id mismatch for {stats_name}"
 
+
+def verify_equipment_set(director: AutomationDirector):
+    # Verify companion RT equipment set is in equipment file
+    equipment_parser = EquipmentSetParser()
+    equipment_set_names = equipment_parser.get_entry_names_from_text()
+    assert (
+        director.companion.equipment_set_name in equipment_set_names
+    ), "Failed to verify equipment set in file"
+
+
+class VerifySpellsKeywords(TypedDict):
+    spell_names_to_verify: Required[set[str]]
+    companion_map_key: Required[str]
+
+
+def verify_spells(**kwargs: Unpack[VerifySpellsKeywords]):
     """
     Verify each spell made it into the file
     1. [✓] Companion summon spell with
@@ -354,26 +384,15 @@ def test_create():
     in the spell is there)
     """
     spell_parser = SpellParser()
+    companion_map_key: str = kwargs["companion_map_key"]
+    spell_names: set[str] = kwargs["spell_names_to_verify"]
 
-    # Verify summon spell
-    spell_entry_info = spell_parser.get_entry_info_from_text()
+    spell_entry_info: dict[str, dict] = spell_parser.get_entry_info_from_text()
 
-    # Summon spell
-    assert (
-        summon_spell_name in spell_entry_info
-    ), "Failed to find summon spell in spell entry info"
-    summon_entry = spell_entry_info[summon_spell_name]
-    assert (
-        summon_entry["summon_uuid"] == companion_map_key
-    ), "Failed to find companion RT in summon spell"
-
-    # Upgrade spell
-    assert (
-        upgrade_spell_name in spell_entry_info
-    ), "Failed to find upgrade spell in spell entry info"
-
-    combo_names = set([summon_combo_name, upgrade_combo_name])
-    verify_combos_file(combo_names)
+    # Verify each spell name
+    for spell_name in spell_names:
+        assert spell_name in spell_entry_info, f"Failed to verify spell: {spell_name}"
+        assert spell_entry_info[spell_name]["summon_uuid"] == companion_map_key
 
 
 def verify_combos_file(combo_names: set[str]) -> None:

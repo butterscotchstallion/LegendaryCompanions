@@ -21,3 +21,12 @@ from .item_combo_aggregator import ItemComboAggregator
 from .stats_object import StatsObject
 from .equipment_set_parser import EquipmentSetParser
 from .spell_aggregator import SpellAggregator
+from .book_loca_aggregator import BookLocaAggregator
+from .equipment_set import EquipmentSet
+from .equipment_set_aggregator import EquipmentSetAggregator
+from .localization_parser import LocalizationParser
+from .root_template import ScrollRT
+from .stats_object_aggregator import StatsObjectAggregator
+from .spell_parser import SpellParser
+from .equipment_set import EquipmentSetType
+from .stats_object_parser import StatsObjectParser

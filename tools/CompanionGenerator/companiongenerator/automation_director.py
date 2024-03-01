@@ -1,3 +1,4 @@
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Required, TypedDict, Unpack
 from uuid import uuid4
@@ -209,7 +210,7 @@ class AutomationDirector:
         else:
             logger.error("No localization entries!")
 
-    def update_book_file(self, **kwargs):
+    def update_book_file(self, **kwargs) -> ET.Element | None:
         """
         Updates book file
         1. Add new book to book loca aggregator
