@@ -153,9 +153,9 @@ def test_create():
     )
     assert is_valid_uuid(upgrade_book_rt_id), "Failed to add upgrade book"
 
-    """
-    -----------------End pages/books------------------------------------------
-    """
+    ####################################################################
+    ################### END PAGES & BOOKS ##############################
+    ####################################################################
 
     """
     Combos
@@ -251,10 +251,10 @@ def test_create():
     10. [✓] Page 1 RT Description -> localization file [test_localization]
     11. [✓] Page 2 RT DisplayName -> localization file [test_localization]
     12. [✓] Page 2 RT DisplayName -> localization file [test_localization]
-    13. Page 1 name -> combo file
-    14. Page 2 name -> combo file
-    15. Book name -> combo file
-    16. Companion RT -> spell file summon UUID
+    13. [✓] Page 1 name -> combo file
+    14. [✓] Page 2 name -> combo file
+    15. [✓] Book name -> combo file
+    16. [✓] Companion RT -> spell file summon UUID
     """
     verify_equipment_set(director)
 
@@ -298,7 +298,7 @@ def verify_books(director: AutomationDirector):
     book: BookLocaEntry | Literal[
         False
     ] = director.book_loca_aggregator.get_book_with_name(book_name)
-    assert book is not False, "Returned False from get_book_with_name"
+    assert isinstance(book, BookLocaEntry), f"No book found with name {book_name}"
     assert is_valid_handle_uuid(book.content_handle)
     assert is_valid_handle_uuid(book.unknown_description_handle)
 
