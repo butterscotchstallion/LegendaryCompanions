@@ -234,34 +234,8 @@ def test_create():
     appended_rt = director.append_root_template()
     assert appended_rt, "Failed to append root template"
 
-    # Write book localization file (book contents)
-    book_name = f"Book_of_Localization_Testing_{unique_suffix}"
-    book_contents = "This is a book about how much I love testing"
-    unknown_description = "This is the unknown description"
-    updated_book_children_el = director.update_book_file(
-        name=book_name,
-        content=book_contents,
-        unknown_description=unknown_description,
-    )
-    assert (
-        updated_book_children_el is not None
-    ), "Failed to update book localization file"
-
-    ## TODO: move all this stuff into a dedicated verify function?
-    book: BookLocaEntry | Literal[
-        False
-    ] = director.book_loca_aggregator.get_book_with_name(book_name)
-
-    assert book is not False, "Returned False from get_book_with_name"
-    assert is_valid_handle_uuid(book.content_handle)
-    assert is_valid_handle_uuid(book.unknown_description_handle)
-
-    verify_book_xml(book, updated_book_children_el)
-
-    # Localization
-    parser = LocalizationParser()
-    updated_content_list = director.update_localization(parser)
-    assert updated_content_list is not None, "Failed to update localization"
+    verify_books(director)
+    verify_localization(director)
 
     """
     Verify links between different parts of the process.
@@ -305,6 +279,36 @@ def test_create():
         spell_names_to_verify=set([summon_kobold_spell_name, summon_spell_name]),
     )
     verify_combos_file(set([summon_combo_name, upgrade_combo_name]))
+
+
+def verify_books(director: AutomationDirector):
+    # Write book localization file (book contents)
+    book_name = f"Book_of_Localization_Testing_{director.unique_suffix}"
+    book_contents = "This is a book about how much I love testing"
+    unknown_description = "This is the unknown description"
+    updated_book_children_el = director.update_book_file(
+        name=book_name,
+        content=book_contents,
+        unknown_description=unknown_description,
+    )
+    assert (
+        updated_book_children_el is not None
+    ), "Failed to update book localization file"
+
+    book: BookLocaEntry | Literal[
+        False
+    ] = director.book_loca_aggregator.get_book_with_name(book_name)
+    assert book is not False, "Returned False from get_book_with_name"
+    assert is_valid_handle_uuid(book.content_handle)
+    assert is_valid_handle_uuid(book.unknown_description_handle)
+
+    verify_book_xml(book, updated_book_children_el)
+
+
+def verify_localization(director: AutomationDirector):
+    parser = LocalizationParser()
+    updated_content_list = director.update_localization(parser)
+    assert updated_content_list is not None, "Failed to update localization"
 
 
 def verify_book_xml(book: BookLocaEntry, updated_book_children: ET.Element):
