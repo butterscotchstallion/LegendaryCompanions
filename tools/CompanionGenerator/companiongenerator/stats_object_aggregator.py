@@ -28,10 +28,10 @@ class StatsObjectAggregator:
 
         total_existing_entries: int = len(entry_names)
 
-        logger.info(f"There are {total_existing_entries} entries in the object file")
+        logger.trace(f"There are {total_existing_entries} entries in the object file")
 
         if total_existing_entries == 0:
-            logger.info("There are NO existing object entries")
+            logger.trace("There are NO existing object entries")
 
         """
         1. Find all entries that don't exist in the file
@@ -42,9 +42,9 @@ class StatsObjectAggregator:
         self.entries = set(sorted(self.entries))
         for entry in self.entries:
             if entry.stats_name in entry_names:
-                logger.info(f"Skipping existing entry '{entry.stats_name}'")
+                logger.trace(f"Skipping existing entry '{entry.stats_name}'")
             else:
-                logger.info(f"Adding object entry for '{entry.stats_name}'")
+                logger.trace(f"Adding object entry for '{entry.stats_name}'")
                 append_entries.add(entry.get_tpl_with_replacements())
 
         # Add newline and append to file once

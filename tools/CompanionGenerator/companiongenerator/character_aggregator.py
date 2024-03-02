@@ -41,11 +41,11 @@ class CharacterAggregator:
                 handler = FileHandler()
                 success = handler.append_to_file(self.filename, content_text)
                 if success:
-                    logger.info("CharacterAggregator: updated character file")
+                    logger.trace("CharacterAggregator: updated character file")
                 else:
                     logger.error("CharacterAggregator: error updating character file")
                 return success
             else:
-                logger.error("CharacterAggregator: no eligible entries")
+                logger.trace("CharacterAggregator: no eligible entries")
         else:
-            logger.error("CharacterAggregator: no entries to write")
+            logger.trace("CharacterAggregator: no entries to write")

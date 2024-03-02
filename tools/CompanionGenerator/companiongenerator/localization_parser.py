@@ -57,10 +57,6 @@ class LocalizationParser:
                     content_entries_set
                 )
 
-                logger.info(
-                    f"Localization content list has {len(content_text_list)} entries"
-                )
-
                 # Append new entries
                 for loca_entry in entries:
                     if loca_entry.text not in content_text_list:
