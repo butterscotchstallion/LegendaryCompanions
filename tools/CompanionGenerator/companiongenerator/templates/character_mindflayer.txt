@@ -1,4 +1,4 @@
-new entry "{{name}}"
+new entry "{{stats_name}}"
 	type "Character"
 	using "_Aberration"
 		data "Strength" "11"
