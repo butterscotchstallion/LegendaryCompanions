@@ -5,13 +5,11 @@ from tests.template_validity_helper import is_valid_uuid
 
 from companiongenerator.constants import ARCH_MELEE_SMART_NAME
 from companiongenerator.localization_aggregator import LocalizationAggregator
-from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_replacer_base import TemplateReplacerBase
 
 
 class RootTemplateKeywords(TypedDict):
-    root_template_aggregator: Required[RootTemplateAggregator]
     localization_aggregator: Required[LocalizationAggregator]
     name: Required[str]
     displayName: Required[str]
@@ -31,7 +29,6 @@ class RootTemplate(TemplateReplacerBase):
     def __init__(self, **kwargs: Unpack[RootTemplateKeywords]) -> None:
         self.base_path: str = "../templates/"
         self.template_fetcher: TemplateFetcher = TemplateFetcher()
-        self.rt_aggregator: RootTemplateAggregator = kwargs["root_template_aggregator"]
         self.loca_aggregator: LocalizationAggregator = kwargs["localization_aggregator"]
         self.name: str = kwargs["name"]
         self.display_name: str = kwargs["displayName"]
@@ -59,7 +56,6 @@ class CompanionRTKeywords(TypedDict):
     but we want the parentTemplateId to be required here.
     """
 
-    root_template_aggregator: Required[RootTemplateAggregator]
     localization_aggregator: Required[LocalizationAggregator]
     name: Required[str]
     displayName: Required[str]

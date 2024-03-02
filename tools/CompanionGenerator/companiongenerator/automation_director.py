@@ -19,7 +19,15 @@ from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.log_message import CriticalErrorMessage
 from companiongenerator.log_message_aggregator import LogMessageAggregator
 from companiongenerator.logger import logger
-from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
+from companiongenerator.root_template import (
+    BookRT,
+    BookRTKeywords,
+    CompanionRT,
+    ItemRTKeywords,
+    PageRT,
+    ScrollRT,
+    ScrollRTKeywords,
+)
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
 from companiongenerator.spell_aggregator import SpellAggregator
 from companiongenerator.stats_object import StatsObject
@@ -355,22 +363,22 @@ class AutomationDirector:
                 )
         return success
 
-    def add_page_rt(self, **kwargs) -> str:
-        rt = PageRT(**kwargs, root_template_aggregator=self.rt_aggregator)
+    def add_page_rt(self, **kwargs: Unpack[ItemRTKeywords]) -> str:
+        rt = PageRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
 
-    def add_book_rt(self, **kwargs) -> str:
-        rt = BookRT(**kwargs, root_template_aggregator=self.rt_aggregator)
+    def add_book_rt(self, **kwargs: Unpack[BookRTKeywords]) -> str:
+        rt = BookRT(**kwargs)
         # Used to verify links in test
         self.book_rt = rt
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
 
-    def add_scroll_rt(self, **kwargs) -> str:
-        rt = ScrollRT(**kwargs, root_template_aggregator=self.rt_aggregator)
+    def add_scroll_rt(self, **kwargs: Unpack[ScrollRTKeywords]) -> str:
+        rt = ScrollRT(**kwargs)
         tpl = rt.get_tpl_with_replacements()
         self.rt_aggregator.add_entry(tpl, rt.get_comment(), rt.name)
         return rt.map_key
