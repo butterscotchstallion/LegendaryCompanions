@@ -32,7 +32,9 @@ def test_has_errata():
             message="Critical error message", module_name="Critical Module Name"
         )
     )
-    assert aggregator.has_errata(), "Failed to verify critical error message count"
+    assert (
+        aggregator.has_critical_errata()
+    ), "Failed to verify critical error message count"
 
     aggregator.log(error_message)
     aggregator.log(info_message)

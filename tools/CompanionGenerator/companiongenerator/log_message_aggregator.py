@@ -1,4 +1,7 @@
-from companiongenerator.log_message import LogMessage, LogMessageLevel
+from companiongenerator.log_message import (
+    LogMessage,
+    LogMessageLevel,
+)
 from companiongenerator.logger import logger
 
 
@@ -17,16 +20,17 @@ class LogMessageAggregator:
         formatted_message = self._get_formatted_message(message)
         getattr(logger, message.level.lower())(formatted_message)
 
-    def get_messages_by_level(self, level: LogMessageLevel):
+    def get_messages_by_level(self, level: LogMessageLevel) -> list[LogMessage]:
         return [msg for msg in self.messages if msg.level == level]
 
     def get_error_messages(self) -> list[LogMessage]:
-        """
-        Returns a list of errors and critical errors
-        """
-        errors = self.get_messages_by_level(LogMessageLevel.error)
-        critical_errors = self.get_messages_by_level(LogMessageLevel.critical)
-        return errors + critical_errors
+        return self.get_messages_by_level(LogMessageLevel.error)
+
+    def get_critical_error_messages(self) -> list[LogMessage]:
+        return self.get_messages_by_level(LogMessageLevel.critical)
 
     def has_errata(self) -> bool:
         return len(self.get_error_messages()) > 0
+
+    def has_critical_errata(self) -> bool:
+        return len(self.get_critical_error_messages()) > 0
