@@ -29,7 +29,7 @@ def test_create():
     director = AutomationDirector()
     unique_suffix = director.start_automation()
 
-    eqp_set_name = "LC_EQP_Legendary"
+    eqp_set_name = f"LC_EQP_Legendary_{unique_suffix}"
     parent_template_id = ARCH_MELEE_SMART_TPL_ID
     companion_name_attr = f"LC_Legendary_Muffin_{unique_suffix}"
     rt_display_name = "Chip Chocolate"
