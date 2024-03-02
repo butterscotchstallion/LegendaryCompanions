@@ -2,5 +2,7 @@ from companiongenerator.template_replacer_base import TemplateReplacerBase
 
 
 class Character(TemplateReplacerBase):
-    def __init__(self):
-        self.template_filename = "Character.txt"
+    """
+    Base class for character templates. This should not be used
+    directly
+    """

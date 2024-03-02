@@ -1,11 +1,11 @@
-from companiongenerator.character import Character
 from companiongenerator.character_aggregator import CharacterAggregator
+from companiongenerator.character_mindflayer import CharacterMindflayer
 
 
 def test_char_aggregator():
-    char = Character()
+    mindflayer = CharacterMindflayer()
     char_aggregator = CharacterAggregator()
-    char_aggregator.add_entry(char)
-    char_aggregator.add_entry(char)
+    char_aggregator.add_entry(mindflayer)
+    char_aggregator.add_entry(mindflayer)
 
     assert len(char_aggregator.entries) == 1
