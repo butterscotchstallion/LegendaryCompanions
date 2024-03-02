@@ -8,7 +8,7 @@ from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
 from companiongenerator.character import Character
 from companiongenerator.character_aggregator import CharacterAggregator
-from companiongenerator.constants import MOD_FILENAMES
+from companiongenerator.constants import MOD_FILENAMES, MODULE_NAMES
 from companiongenerator.equipment_set import EquipmentSet
 from companiongenerator.equipment_set_aggregator import EquipmentSetAggregator
 from companiongenerator.file_handler import FileHandler
@@ -103,7 +103,7 @@ class AutomationDirector:
         self.log_message_aggregator.log(
             InfoMessage(
                 message=f"Loaded entries from file in {str(round(time() - automation_start, 2))} seconds",
-                module_name=str(__class__),
+                module_name=MODULE_NAMES["AutomationDirector"],
             )
         )
 
@@ -152,7 +152,8 @@ class AutomationDirector:
         if not success:
             self.log_message_aggregator.log(
                 CriticalErrorMessage(
-                    message="Error updating character file", module_name=str(__class__)
+                    message="Error updating character file",
+                    module_name=MODULE_NAMES["AutomationDirector"],
                 )
             )
         return success
@@ -232,7 +233,7 @@ class AutomationDirector:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
                         message="Error updating equipment set",
-                        module_name=str(__class__),
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
         return success
@@ -247,7 +248,8 @@ class AutomationDirector:
             if not success:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
-                        message="Error updating spells", module_name=str(__class__)
+                        message="Error updating spells",
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
         return success
@@ -276,7 +278,7 @@ class AutomationDirector:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
                         message="Error updating localization",
-                        module_name=str(__class__),
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
         return success
@@ -322,7 +324,8 @@ class AutomationDirector:
             if not success:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
-                        message="Error updating book file", module_name=str(__class__)
+                        message="Error updating book file",
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
 
@@ -337,7 +340,8 @@ class AutomationDirector:
             if not success:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
-                        message="Error updating item combos", module_name=str(__class__)
+                        message="Error updating item combos",
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
         return success
@@ -359,7 +363,7 @@ class AutomationDirector:
                 self.log_message_aggregator.log(
                     CriticalErrorMessage(
                         message="Error updating root template",
-                        module_name=str(__class__),
+                        module_name=MODULE_NAMES["AutomationDirector"],
                     )
                 )
         return success

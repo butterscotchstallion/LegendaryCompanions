@@ -28,3 +28,6 @@ MOD_FILENAMES: dict[str, str] = {
 
 ARCH_MELEE_SMART_NAME = "melee_smart"
 ARCH_MELEE_SMART_TPL_ID = "39c7c3a9-8393-4df9-9bbf-6d52aa7f34db"
+MODULE_NAMES = {
+    "AutomationDirector": "AutomationDirector",
+}
