@@ -216,26 +216,31 @@ class AutomationDirector:
         """
         Updates equipment file with new set, if it doesn't exist
         """
-        success = self.equipment_set_aggregator.update_equipment_sets()
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating equipment set", module_name=str(__class__)
+        success = False
+        if self.can_update():
+            success = self.equipment_set_aggregator.update_equipment_sets()
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating equipment set",
+                        module_name=str(__class__),
+                    )
                 )
-            )
         return success
 
     def update_spells(self) -> bool | None:
         """
         Updates spell file and appends new spell
         """
-        success = self.spell_aggregator.update_spells()
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating spells", module_name=str(__class__)
+        success = False
+        if self.can_update():
+            success = self.spell_aggregator.update_spells()
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating spells", module_name=str(__class__)
+                    )
                 )
-            )
         return success
 
     def update_localization(self, parser: LocalizationParser) -> bool:
@@ -247,22 +252,24 @@ class AutomationDirector:
         entries = self.localization_aggregator.entries
         num_entries = len(entries)
         success = False
-        if num_entries:
-            backup_created = self.file_handler.create_backup_file(loca_file)
-            if backup_created:
-                updated_content_list = parser.append_entries(loca_file, entries)
-                if updated_content_list is not None:
-                    parser.write_tree()
-                    success = True
-        else:
-            logger.error("No localization entries!")
+        if self.can_update():
+            if num_entries:
+                backup_created = self.file_handler.create_backup_file(loca_file)
+                if backup_created:
+                    updated_content_list = parser.append_entries(loca_file, entries)
+                    if updated_content_list is not None:
+                        parser.write_tree()
+                        success = True
+            else:
+                logger.error("No localization entries!")
 
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating localization", module_name=str(__class__)
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating localization",
+                        module_name=str(__class__),
+                    )
                 )
-            )
         return success
 
     def update_book_file(self, **kwargs) -> ET.Element | None:
@@ -274,53 +281,56 @@ class AutomationDirector:
         4. Obtain modified XML tree of book structure with new books
         5. Write new XML tree to file
         """
-        book_filename = MOD_FILENAMES["books"]
-        book = self.book_loca_aggregator.add_book_and_return_book(
-            localization_aggregator=self.localization_aggregator,
-            **kwargs,
-        )
         success = False
-        self.book_content_handle = book.content_handle
+        if self.can_update():
+            book_filename = MOD_FILENAMES["books"]
+            book = self.book_loca_aggregator.add_book_and_return_book(
+                localization_aggregator=self.localization_aggregator,
+                **kwargs,
+            )
+            self.book_content_handle = book.content_handle
 
-        create_ok = self.file_handler.create_template_if_not_exists(
-            book_filename, MOD_FILENAMES["book_template_file"]
-        )
-
-        if create_ok:
-            parser = BookParser()
-            books = parser.update_book_file(
-                book_filename, self.book_loca_aggregator.entries
+            create_ok = self.file_handler.create_template_if_not_exists(
+                book_filename, MOD_FILENAMES["book_template_file"]
             )
 
-            if books is not None:
-                backup_created = self.file_handler.create_backup_file(book_filename)
-                if backup_created:
-                    parser.write_tree()
-                    logger.info(
-                        f"Updated book file: {Path(parser.filename).stem} with book {book.name}"
-                    )
-                    success = True
-                    return books
-
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating book file", module_name=str(__class__)
+            if create_ok:
+                parser = BookParser()
+                books = parser.update_book_file(
+                    book_filename, self.book_loca_aggregator.entries
                 )
-            )
+
+                if books is not None:
+                    backup_created = self.file_handler.create_backup_file(book_filename)
+                    if backup_created:
+                        parser.write_tree()
+                        logger.info(
+                            f"Updated book file: {Path(parser.filename).stem} with book {book.name}"
+                        )
+                        success = True
+                        return books
+
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating book file", module_name=str(__class__)
+                    )
+                )
 
     def update_item_combos(self):
         """
         Updates item combos file. Returns True if file update
         succeeds or the combo exists already
         """
-        success = self.combo_aggregator.update_item_combos()
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating item combos", module_name=str(__class__)
+        success = False
+        if self.can_update():
+            success = self.combo_aggregator.update_item_combos()
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating item combos", module_name=str(__class__)
+                    )
                 )
-            )
         return success
 
     def update_root_template(self) -> bool | None:
@@ -328,19 +338,21 @@ class AutomationDirector:
         Appends to existing root template using
         RootTemplateAggregator.
         """
-        backup_created = self.file_handler.create_backup_file(
-            MOD_FILENAMES["root_template_merged"]
-        )
         success = False
-        if backup_created:
-            success = self.rt_aggregator.append_root_template()
-
-        if not success:
-            self.log_message_aggregator.log(
-                CriticalErrorMessage(
-                    message="Error updating root template", module_name=str(__class__)
-                )
+        if self.can_update():
+            backup_created = self.file_handler.create_backup_file(
+                MOD_FILENAMES["root_template_merged"]
             )
+            if backup_created:
+                success = self.rt_aggregator.append_root_template()
+
+            if not success:
+                self.log_message_aggregator.log(
+                    CriticalErrorMessage(
+                        message="Error updating root template",
+                        module_name=str(__class__),
+                    )
+                )
         return success
 
     def add_page_rt(self, **kwargs) -> str:
