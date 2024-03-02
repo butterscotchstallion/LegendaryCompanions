@@ -236,7 +236,7 @@ def test_create():
     assert updated_stats, "Failed to update object entries"
 
     ## Update root template
-    updated_root_template = director.append_root_template()
+    updated_root_template = director.update_root_template()
     assert updated_root_template, "Failed to append root template"
 
     # Update combo file

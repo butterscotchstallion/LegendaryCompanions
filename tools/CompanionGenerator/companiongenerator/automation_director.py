@@ -16,6 +16,7 @@ from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
+from companiongenerator.log_message import CriticalErrorMessage
 from companiongenerator.log_message_aggregator import LogMessageAggregator
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
@@ -113,9 +114,11 @@ class AutomationDirector:
         self, companionRT: CompanionRT, equipment_set: EquipmentSet
     ) -> str:
         """
-        Adds a new companion with equipment set
+        - Adds a new companion with equipment set
+        - Used to verify equipment set in test
+        - Need to refactor this if we ever add the ability to add
+        more than one companion in a run
         """
-        # Used to verify equipment set in test
         self.companion = companionRT
 
         # Add companion
@@ -136,7 +139,14 @@ class AutomationDirector:
         self.character_aggregator.add_entry(character)
 
     def update_characters(self) -> bool | None:
-        return self.character_aggregator.update_character_file()
+        success = self.character_aggregator.update_character_file()
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating character file", module_name=str(__class__)
+                )
+            )
+        return success
 
     def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """
@@ -206,15 +216,29 @@ class AutomationDirector:
         """
         Updates equipment file with new set, if it doesn't exist
         """
-        return self.equipment_set_aggregator.update_equipment_sets()
+        success = self.equipment_set_aggregator.update_equipment_sets()
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating equipment set", module_name=str(__class__)
+                )
+            )
+        return success
 
     def update_spells(self) -> bool | None:
         """
         Updates spell file and appends new spell
         """
-        return self.spell_aggregator.update_spells()
+        success = self.spell_aggregator.update_spells()
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating spells", module_name=str(__class__)
+                )
+            )
+        return success
 
-    def update_localization(self, parser: LocalizationParser) -> bool | None:
+    def update_localization(self, parser: LocalizationParser) -> bool:
         """
         Update localization file with all entries
         from localization aggregator
@@ -222,20 +246,24 @@ class AutomationDirector:
         loca_file = MOD_FILENAMES["localization"]
         entries = self.localization_aggregator.entries
         num_entries = len(entries)
-
+        success = False
         if num_entries:
-            logger.info(f"There are {num_entries} localization entries aggregated")
-
             backup_created = self.file_handler.create_backup_file(loca_file)
-
             if backup_created:
                 updated_content_list = parser.append_entries(loca_file, entries)
-
                 if updated_content_list is not None:
                     parser.write_tree()
-                    return True
+                    success = True
         else:
             logger.error("No localization entries!")
+
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating localization", module_name=str(__class__)
+                )
+            )
+        return success
 
     def update_book_file(self, **kwargs) -> ET.Element | None:
         """
@@ -251,7 +279,7 @@ class AutomationDirector:
             localization_aggregator=self.localization_aggregator,
             **kwargs,
         )
-
+        success = False
         self.book_content_handle = book.content_handle
 
         create_ok = self.file_handler.create_template_if_not_exists(
@@ -271,18 +299,31 @@ class AutomationDirector:
                     logger.info(
                         f"Updated book file: {Path(parser.filename).stem} with book {book.name}"
                     )
+                    success = True
                     return books
-        else:
-            logger.error("Failed to create book template")
+
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating book file", module_name=str(__class__)
+                )
+            )
 
     def update_item_combos(self):
         """
         Updates item combos file. Returns True if file update
         succeeds or the combo exists already
         """
-        return self.combo_aggregator.update_item_combos()
+        success = self.combo_aggregator.update_item_combos()
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating item combos", module_name=str(__class__)
+                )
+            )
+        return success
 
-    def append_root_template(self) -> bool | None:
+    def update_root_template(self) -> bool | None:
         """
         Appends to existing root template using
         RootTemplateAggregator.
@@ -290,8 +331,17 @@ class AutomationDirector:
         backup_created = self.file_handler.create_backup_file(
             MOD_FILENAMES["root_template_merged"]
         )
+        success = False
         if backup_created:
-            return self.rt_aggregator.append_root_template()
+            success = self.rt_aggregator.append_root_template()
+
+        if not success:
+            self.log_message_aggregator.log(
+                CriticalErrorMessage(
+                    message="Error updating root template", module_name=str(__class__)
+                )
+            )
+        return success
 
     def add_page_rt(self, **kwargs) -> str:
         rt = PageRT(**kwargs, root_template_aggregator=self.rt_aggregator)
