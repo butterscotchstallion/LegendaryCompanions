@@ -15,7 +15,7 @@ class SpellAggregator:
     entries: set[Spell | SpellName]
 
     def __init__(self):
-        self.entries = set([])
+        self.entries: set[Spell | SpellName] = set([])
         self.filename = MOD_FILENAMES["spell_text_file_summons"]
         self.parser = SpellParser()
         self.file_handler = FileHandler()

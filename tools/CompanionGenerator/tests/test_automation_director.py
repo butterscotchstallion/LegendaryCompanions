@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from typing import Literal, Required, TypedDict, Unpack
+from typing import Literal, Required, TypedDict
 
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
@@ -14,7 +14,7 @@ from companiongenerator.item_combo_parser import ItemComboParser
 from companiongenerator.localization_parser import LocalizationParser
 from companiongenerator.logger import logger
 from companiongenerator.root_template import CompanionRT
-from companiongenerator.spell import SummonSpell
+from companiongenerator.spell import Spell, SpellName, SummonSpell
 from companiongenerator.spell_parser import SpellParser
 from companiongenerator.stats_object_parser import StatsObjectParser
 
@@ -291,10 +291,7 @@ def test_create():
     }
 
     verify_stats_objects(objects_to_verify)
-    verify_spells(
-        companion_map_key=companion_map_key,
-        spell_names_to_verify=set([summon_kobold_spell_name, summon_spell_name]),
-    )
+    verify_spells(director)
     verify_combos_file(set([summon_combo_name, upgrade_combo_name]))
 
 
@@ -402,7 +399,7 @@ class VerifySpellsKeywords(TypedDict):
     companion_map_key: Required[str]
 
 
-def verify_spells(**kwargs: Unpack[VerifySpellsKeywords]):
+def verify_spells(director: AutomationDirector):
     """
     Verify each spell made it into the file
     1. [✓] Companion summon spell with
@@ -411,15 +408,21 @@ def verify_spells(**kwargs: Unpack[VerifySpellsKeywords]):
     in the spell is there)
     """
     spell_parser = SpellParser()
-    companion_map_key: str = kwargs["companion_map_key"]
-    spell_names: set[str] = kwargs["spell_names_to_verify"]
+    companion_map_key: str = director.companion.map_key
+    spell_entries: set[Spell | SpellName] = director.spell_aggregator.entries
 
     spell_entry_info: dict[str, dict] = spell_parser.get_entry_info_from_text()
 
     # Verify each spell name
-    for spell_name in spell_names:
-        assert spell_name in spell_entry_info, f"Failed to verify spell: {spell_name}"
-        assert spell_entry_info[spell_name]["summon_uuid"] == companion_map_key
+    for spell in spell_entries:
+        assert (
+            spell.spell_name in spell_entry_info
+        ), f"Failed to verify spell: {spell.spell_name}"
+
+        if isinstance(spell, SummonSpell):
+            assert (
+                spell_entry_info[spell.spell_name]["summon_uuid"] == companion_map_key
+            )
 
 
 def verify_combos_file(combo_names: set[str]) -> None:
