@@ -49,14 +49,14 @@ class ItemComboAggregator:
         if len(self.entries) == 0:
             logger.error("No entries")
         else:
-            logger.debug(f"Building content string for {len(self.entries)} entries")
+            logger.trace(f"Building content string for {len(self.entries)} entries")
             combos = [entry for entry in self.entries if isinstance(entry, ItemCombo)]
 
             if len(combos) > 0:
                 entry_templates = [
                     entry.get_tpl_with_replacements() for entry in combos
                 ]
-                logger.debug(f"Built {len(entry_templates)} template entries")
+                logger.trace(f"Built {len(entry_templates)} template entries")
                 return "\n".join(entry_templates)
 
     def update_item_combos(self) -> bool:

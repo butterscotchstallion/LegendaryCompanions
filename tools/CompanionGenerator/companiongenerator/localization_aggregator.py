@@ -42,7 +42,9 @@ class LocalizationAggregator:
                         handle=entry.attrib["contentuid"],
                         comment=entry.text,
                     )
-            logger.info(f"Added {loca_entries_added} existing localization entries")
+            logger.info(
+                f"LocalizationAggregator: added {loca_entries_added} existing localization entries"
+            )
         else:
             logger.info("No existing localization to load")
 

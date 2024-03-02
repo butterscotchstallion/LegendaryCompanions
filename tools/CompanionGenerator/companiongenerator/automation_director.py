@@ -16,7 +16,7 @@ from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
-from companiongenerator.log_message import CriticalErrorMessage
+from companiongenerator.log_message import CriticalErrorMessage, InfoMessage
 from companiongenerator.log_message_aggregator import LogMessageAggregator
 from companiongenerator.logger import logger
 from companiongenerator.root_template import (
@@ -100,8 +100,11 @@ class AutomationDirector:
         self.equipment_set_aggregator.load_entries_from_file()
         self.character_aggregator.load_entries_from_file()
 
-        logger.info(
-            f"Loaded entries from file in {str(round(time() - automation_start, 2))} seconds"
+        self.log_message_aggregator.log(
+            InfoMessage(
+                message=f"Loaded entries from file in {str(round(time() - automation_start, 2))} seconds",
+                module_name=str(__class__),
+            )
         )
 
         return self.unique_suffix

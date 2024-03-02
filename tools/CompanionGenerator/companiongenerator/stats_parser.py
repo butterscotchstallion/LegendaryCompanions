@@ -208,7 +208,7 @@ class StatsParser:
         Gets file contents from stats file
         """
         if self.filename:
-            logger.debug(f"Loading file contents: {self.filename}")
+            logger.trace(f"Loading file contents: {self.filename}")
             handle = Path(self.filename)
             contents = handle.read_text()
             self.is_file_empty = len(contents) == 0
@@ -236,12 +236,12 @@ class StatsParser:
                     # Make sure we add a new line if it's not there
                     contents = entry_text
                     if not contents.startswith("\n"):
-                        contents = "\n" + contents
+                        contents = "\n\n" + contents
 
                     success = bool(handle.write(contents))
 
                     if success:
-                        logger.info(f"Added {self.parser_type} entry to file")
+                        logger.trace(f"Added {self.parser_type} entry to file")
 
                     return success
             else:

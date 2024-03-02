@@ -1,6 +1,5 @@
 import os
 import shutil
-from collections.abc import Iterable
 from pathlib import Path
 
 from companiongenerator.logger import logger
@@ -16,7 +15,7 @@ class FileHandler:
         try:
             if not os.path.exists(filename):
                 tpl_file = Path(template_filename).read_text()
-                logger.info(f"Creating file from template: {filename}")
+                logger.trace(f"Creating file from template: {filename}")
                 return Path(filename).write_text(tpl_file)
             else:
                 return True
@@ -33,33 +32,6 @@ class FileHandler:
                 return "%3.1f %s" % (num, x)
             num /= 1024.0
 
-    def write_string_to_file(self, file_path: str, contents: str) -> bool:
-        """
-        Writes list to file and confirms it was successful by checking
-        that it exists
-        """
-        if not os.path.exists(file_path):
-            with open(file_path, "w") as handle:
-                handle.write(contents)
-
-            file_written_successfully = os.path.exists(file_path)
-
-            if file_written_successfully:
-                readable_size = self.convert_bytes(os.path.getsize(file_path))
-                filename = Path(file_path).stem
-                logger.info(f'Wrote file "{filename}" ({readable_size})')
-            else:
-                logger.error(f"Error writing to file {file_path}")
-
-            return file_written_successfully
-        else:
-            logger.error(f"File exists: {file_path}!")
-            return False
-
-    def write_list_to_file(self, file_path: str, lines: Iterable[str]):
-        file_contents = "\n".join(lines)
-        return self.write_string_to_file(file_path, file_contents)
-
     def create_backup_file(self, file_path: str) -> bool | None:
         """
         Creates backup file from provided filename
@@ -71,7 +43,7 @@ class FileHandler:
             backup_path = f"{origin_parent}/{origin_filename}.lcbackup"
             result = shutil.copy2(file_path, backup_path)
             if result:
-                logger.info(f"Created backup file: {origin_filename}.lcbackup")
+                logger.trace(f"Created backup file: {origin_filename}.lcbackup")
                 return True
             else:
                 raise RuntimeError("Error creating backup file: failed to copy")
@@ -100,7 +72,7 @@ class FileHandler:
                 else:
                     return False
             else:
-                logger.error("Empty contents")
+                logger.trace("Empty contents")
                 return False
         except IOError as err:
             logger.error(f"Error appending to file {file_path}: {err}")

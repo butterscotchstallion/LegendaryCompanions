@@ -50,20 +50,20 @@ class SpellAggregator:
         string.
         """
         if len(self.entries) == 0:
-            logger.error("No entries")
+            logger.trace("No entries")
         else:
-            logger.debug(f"Building content string for {len(self.entries)} entries")
+            logger.trace(f"Building content string for {len(self.entries)} entries")
             eligible_spells: list[Spell] = self.get_eligible_entries()
             eligible_spells_len = len(eligible_spells)
 
             if eligible_spells_len > 0:
-                logger.debug(
+                logger.trace(
                     f"Eligible spells ({eligible_spells_len}): {eligible_spells}"
                 )
                 entry_templates = [
                     entry.get_tpl_with_replacements() for entry in eligible_spells
                 ]
-                logger.debug(f"Built {len(entry_templates)} template entries")
+                logger.trace(f"Built {len(entry_templates)} template entries")
                 self.last_num_entries_written = len(eligible_spells)
                 return "\n\n" + "\n\n".join(entry_templates)
 
