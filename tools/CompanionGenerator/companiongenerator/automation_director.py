@@ -118,9 +118,7 @@ class AutomationDirector:
         """
         self.combo_aggregator.add_entry(combo)
 
-    def add_companion_with_equipment(
-        self, companionRT: CompanionRT, equipment_set: EquipmentSet
-    ) -> str:
+    def add_companion(self, companionRT: CompanionRT) -> str:
         """
         - Adds a new companion with equipment set
         - Used to verify equipment set in test
@@ -138,10 +136,10 @@ class AutomationDirector:
             tpl, self.companion.get_comment(), self.companion.name
         )
 
-        # Add equipment set
-        self.equipment_set_aggregator.add_entry(equipment_set)
-
         return self.companion.map_key
+
+    def add_equipment_set(self, equipment_set: EquipmentSet):
+        self.equipment_set_aggregator.add_entry(equipment_set)
 
     def add_character_entry(self, character: Character):
         self.character_aggregator.add_entry(character)

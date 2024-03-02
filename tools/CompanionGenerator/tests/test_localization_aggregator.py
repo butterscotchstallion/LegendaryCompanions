@@ -4,7 +4,6 @@ from companiongenerator.localization_aggregator import (
 )
 from companiongenerator.localization_entry import LocalizationEntry
 from companiongenerator.root_template import CompanionRT, PageRT
-from companiongenerator.root_template_aggregator import RootTemplateAggregator
 
 from tests.template_validity_helper import is_valid_handle_uuid
 
@@ -31,7 +30,6 @@ def test_add_entry() -> None:
         title=title,
         icon=icon,
         localization_aggregator=loca_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
     assert is_valid_handle_uuid(companion_rt.display_name_handle)
     assert is_valid_handle_uuid(companion_rt.title_handle)
@@ -48,7 +46,6 @@ def test_add_entry() -> None:
         name=pg_stats_name,
         icon=pg_icon_name,
         localization_aggregator=loca_aggregator,
-        root_template_aggregator=RootTemplateAggregator(),
     )
     assert is_valid_handle_uuid(page_rt.display_name_handle)
     assert is_valid_handle_uuid(page_rt.description_handle)

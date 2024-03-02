@@ -46,14 +46,16 @@ def test_create():
     character = CharacterMindflayer(stats_name=companion_name_attr)
     director.add_character_entry(character)
 
+    companion_map_key = director.add_companion(companion)
+
+    assert is_valid_uuid(companion_map_key), "Invalid companion map key"
+
     # Add equipment set
     equipment_set = EquipmentSet(
         equipment_set_name=eqp_set_name,
         equipment_set_type=EquipmentSetType.MELEE_PLATE,
     )
-    companion_map_key = director.add_companion_with_equipment(companion, equipment_set)
-
-    assert is_valid_uuid(companion_map_key), "Invalid companion map key"
+    director.add_equipment_set(equipment_set)
 
     # Add spells
     summon_spell_name = f"LC_Summon_Legendary_Muffin_{unique_suffix}"
@@ -184,8 +186,12 @@ def test_create():
     director.add_combo(upgrade_combo)
 
     assert (
-        len(director.combo_aggregator.entries) >= 2
-    ), "Failed to add summon and upgrade combos"
+        director.combo_aggregator.get_entry_by_combo_name(summon_combo_name) is not None
+    )
+    assert (
+        director.combo_aggregator.get_entry_by_combo_name(upgrade_combo_name)
+        is not None
+    )
 
     """
     Summon/Upgrade Scrolls
@@ -229,6 +235,10 @@ def test_create():
     # Update and verify character
     updated_char = director.update_characters()
     assert updated_char, "Failed to update character file"
+
+    # Update equipment sets
+    updated_equipment = director.update_equipment()
+    assert updated_equipment, "Failed to update equipment"
 
     # Update stats file
     updated_stats = director.stats_object_aggregator.update_stats_file()
