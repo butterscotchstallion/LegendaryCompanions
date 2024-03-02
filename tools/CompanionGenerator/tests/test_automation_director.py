@@ -40,7 +40,6 @@ def test_create():
         parentTemplateId=parent_template_id,
         equipmentSetName=eqp_set_name,
         statsName=companion_name_attr,
-        root_template_aggregator=director.rt_aggregator,
         localization_aggregator=director.localization_aggregator,
     )
     # Add character entry

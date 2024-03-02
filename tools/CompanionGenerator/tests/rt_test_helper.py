@@ -1,7 +1,6 @@
 from companiongenerator.constants import ARCH_MELEE_SMART_TPL_ID
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
-from companiongenerator.root_template_aggregator import RootTemplateAggregator
 
 
 def get_page_rt() -> PageRT:
@@ -16,7 +15,6 @@ def get_page_rt() -> PageRT:
         name=stats_name,
         icon=icon_name,
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -34,7 +32,6 @@ def get_book_rt() -> BookRT:
         icon=icon_name,
         book_id=book_id,
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -54,7 +51,6 @@ def get_companion_rt() -> CompanionRT:
         title=title,
         icon=icon,
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(),
     )
 
 
@@ -70,5 +66,4 @@ def get_scroll_rt() -> ScrollRT:
         name=stats_name,
         scrollSpellName=scroll_spell_name,
         localization_aggregator=LocalizationAggregator(),
-        root_template_aggregator=RootTemplateAggregator(),
     )
