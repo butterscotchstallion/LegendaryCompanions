@@ -7,12 +7,20 @@ from companiongenerator.logger import logger
 
 
 def test_add_entry():
-    mindflayer = CharacterMindflayer(stats_name="LC_character_test")
+    test_stats_name = f"LC_character_test_{uuid4()}"
+    mindflayer = CharacterMindflayer(stats_name=test_stats_name)
     char_aggregator = CharacterAggregator()
     char_aggregator.add_entry(mindflayer)
     char_aggregator.add_entry(mindflayer)
 
-    assert len(char_aggregator.entries) == 1
+    num_entries_with_this_name = len(
+        [
+            entry
+            for entry in char_aggregator.entries
+            if entry.stats_name == test_stats_name
+        ]
+    )
+    assert num_entries_with_this_name == 1
 
 
 def test_update_character_file():

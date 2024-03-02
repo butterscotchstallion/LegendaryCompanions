@@ -5,6 +5,8 @@ from uuid import uuid4
 
 from companiongenerator.book_loca_aggregator import BookLocaAggregator
 from companiongenerator.book_parser import BookParser
+from companiongenerator.character import Character
+from companiongenerator.character_aggregator import CharacterAggregator
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.equipment_set import EquipmentSet
 from companiongenerator.equipment_set_aggregator import EquipmentSetAggregator
@@ -49,6 +51,7 @@ class AutomationDirector:
     combo_aggregator: ItemComboAggregator
     spell_aggregator: SpellAggregator
     equipment_set_aggregator: EquipmentSetAggregator
+    character_aggregator: CharacterAggregator
     default_localization_filename: str = "English"
     companion: CompanionRT
     start_time: float
@@ -62,6 +65,7 @@ class AutomationDirector:
         self.combo_aggregator = ItemComboAggregator()
         self.spell_aggregator = SpellAggregator()
         self.equipment_set_aggregator = EquipmentSetAggregator()
+        self.character_aggregator = CharacterAggregator()
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
@@ -110,6 +114,9 @@ class AutomationDirector:
         self.equipment_set_aggregator.add_entry(equipment_set)
 
         return self.companion.map_key
+
+    def add_character_entry(self, character: Character):
+        self.character_aggregator.add_entry(character)
 
     def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """

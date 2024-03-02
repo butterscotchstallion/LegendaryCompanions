@@ -4,6 +4,7 @@ from typing import Literal, Required, TypedDict, Unpack
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
+from companiongenerator.character_mindflayer import CharacterMindflayer
 from companiongenerator.constants import ARCH_MELEE_SMART_TPL_ID
 from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.equipment_set_parser import EquipmentSetParser
@@ -41,6 +42,15 @@ def test_create():
         root_template_aggregator=director.rt_aggregator,
         localization_aggregator=director.localization_aggregator,
     )
+    # Add character entry
+    character = CharacterMindflayer(stats_name=companion_name_attr)
+    director.add_character_entry(character)
+
+    assert (
+        len(director.character_aggregator.entries) == 1
+    ), "Error adding character entry"
+
+    # Add equipment set
     equipment_set = EquipmentSet(
         equipment_set_name=eqp_set_name,
         equipment_set_type=EquipmentSetType.MELEE_PLATE,
@@ -295,9 +305,9 @@ def verify_books(director: AutomationDirector):
         updated_book_children_el is not None
     ), "Failed to update book localization file"
 
-    book: BookLocaEntry | Literal[
-        False
-    ] = director.book_loca_aggregator.get_book_with_name(book_name)
+    book: BookLocaEntry | Literal[False] = (
+        director.book_loca_aggregator.get_book_with_name(book_name)
+    )
     assert isinstance(book, BookLocaEntry), f"No book found with name {book_name}"
     assert is_valid_handle_uuid(book.content_handle)
     assert is_valid_handle_uuid(book.unknown_description_handle)

@@ -95,6 +95,7 @@ class FileHandler:
                 if created_backup:
                     with open(file_path, "a+") as handle:
                         handle.seek(os.SEEK_END)
+                        contents = f"\n\n{contents}"
                         return bool(handle.write(contents))
                 else:
                     return False
