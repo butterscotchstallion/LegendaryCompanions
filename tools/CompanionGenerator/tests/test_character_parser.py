@@ -1,4 +1,5 @@
 from companiongenerator.character_parser import CharacterParser
+from companiongenerator.logger import logger
 
 
 def test_char_parser():
@@ -7,3 +8,5 @@ def test_char_parser():
 
     if not parser.is_file_empty:
         assert len(entries) >= 1
+    else:
+        logger.error("Empty character file?")

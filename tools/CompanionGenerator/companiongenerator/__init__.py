@@ -31,3 +31,4 @@ from .spell_parser import SpellParser
 from .equipment_set import EquipmentSetType
 from .stats_object_parser import StatsObjectParser
 from .character_parser import CharacterParser
+from .character import Character
