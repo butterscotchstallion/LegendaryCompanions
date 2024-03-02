@@ -17,4 +17,5 @@ class Character(TemplateReplacerBase):
 
     def __init__(self, **kwargs: Unpack[CharacterKeywords]):
         super().__init__()
-        self.replacements = {"{stats_name}": self.stats_name}
+        self.stats_name = kwargs["stats_name"]
+        self.replacements = {"{{stats_name}}": self.stats_name}
