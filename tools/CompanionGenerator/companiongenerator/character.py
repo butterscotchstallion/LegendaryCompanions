@@ -22,3 +22,11 @@ class Character(TemplateReplacerBase):
 
     def __repr__(self):
         return self.stats_name
+
+
+class CharacterName:
+    def __init__(self, **kwargs: Unpack[CharacterKeywords]):
+        self.stats_name = kwargs["stats_name"]
+
+    def __repr__(self):
+        return self.stats_name

@@ -5,6 +5,7 @@ from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
 from companiongenerator.book_parser import BookParser
 from companiongenerator.character_mindflayer import CharacterMindflayer
+from companiongenerator.character_parser import CharacterParser
 from companiongenerator.constants import ARCH_MELEE_SMART_TPL_ID
 from companiongenerator.equipment_set import EquipmentSet, EquipmentSetType
 from companiongenerator.equipment_set_parser import EquipmentSetParser
@@ -46,9 +47,12 @@ def test_create():
     character = CharacterMindflayer(stats_name=companion_name_attr)
     director.add_character_entry(character)
 
-    assert (
-        len(director.character_aggregator.entries) == 1
-    ), "Error adding character entry"
+    # Update and verify character
+    updated_char = director.update_characters()
+    assert updated_char, "Failed to update character file"
+    char_parser = CharacterParser()
+    char_entry_names = char_parser.get_entry_names_from_text()
+    assert companion_name_attr in char_entry_names
 
     # Add equipment set
     equipment_set = EquipmentSet(

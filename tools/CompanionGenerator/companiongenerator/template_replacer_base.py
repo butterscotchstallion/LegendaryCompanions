@@ -1,3 +1,4 @@
+from companiongenerator.logger import logger
 from companiongenerator.template_fetcher import TemplateFetcher
 from companiongenerator.template_variable_replacer import TemplateVariableReplacer
 
@@ -13,16 +14,25 @@ class TemplateReplacerBase:
         self.replacements = {}
         self.template_fetcher = TemplateFetcher()
 
-    def _get_template_text(self):
+    def _get_template_text(self) -> str:
         """
         Fetches template from filesystem
         """
-        return self.template_fetcher.get_template_text(self.template_filename).strip()
+        if self.template_filename:
+            return self.template_fetcher.get_template_text(
+                self.template_filename
+            ).strip()
+        else:
+            logger.error("No template name defined!")
+            return ""
 
-    def get_tpl_with_replacements(self):
+    def get_tpl_with_replacements(self) -> str:
         """
         Replaces using map
         """
         tpl_text = self._get_template_text()
-        replacer = TemplateVariableReplacer()
-        return replacer.replace_placeholders(tpl_text, self.replacements)
+        if tpl_text:
+            replacer = TemplateVariableReplacer()
+            return replacer.replace_placeholders(tpl_text, self.replacements)
+        else:
+            return ""

@@ -83,6 +83,7 @@ class AutomationDirector:
         self.combo_aggregator.load_entries_from_file()
         self.spell_aggregator.load_entries_from_file()
         self.equipment_set_aggregator.load_entries_from_file()
+        self.character_aggregator.load_entries_from_file()
 
         return self.unique_suffix
 
@@ -117,6 +118,9 @@ class AutomationDirector:
 
     def add_character_entry(self, character: Character):
         self.character_aggregator.add_entry(character)
+
+    def update_characters(self) -> bool | None:
+        return self.character_aggregator.update_character_file()
 
     def add_scroll(self, **kwargs: Unpack[SpellStatsKeywords]) -> str:
         """

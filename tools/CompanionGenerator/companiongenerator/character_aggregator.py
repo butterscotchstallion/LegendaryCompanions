@@ -1,20 +1,25 @@
-from companiongenerator.character import Character
+from companiongenerator.character import Character, CharacterName
+from companiongenerator.character_parser import CharacterParser
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
 
 
 class CharacterAggregator:
-    entries: set[Character] = set()
+    entries: set[Character | CharacterName] = set()
 
     def __init__(self):
         self.filename: str = MOD_FILENAMES["character"]
 
-    def add_entry(self, entry: Character):
+    def add_entry(self, entry: Character | CharacterName):
         self.entries.add(entry)
 
     def load_entries_from_file(self):
-        pass
+        parser = CharacterParser()
+        character_entry_names = parser.get_entry_names_from_text()
+
+        for entry_name in character_entry_names:
+            self.add_entry(CharacterName(stats_name=entry_name))
 
     def get_eligible_entries(self) -> set[Character]:
         return set([entry for entry in self.entries if isinstance(entry, Character)])
