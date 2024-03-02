@@ -42,7 +42,8 @@ class StatsParser:
         """
         self.new_entry_text: str = "new entry"
         self.filename: str = ""
-        self.parser_type = ParserType.DEFAULT_TYPE
+        self.parser_type: ParserType = ParserType.DEFAULT_TYPE
+        self.is_file_empty: bool = True
 
     def get_entry_name_from_lines(self, text_lines: list[str]) -> str | None:
         """
@@ -209,7 +210,10 @@ class StatsParser:
         if self.filename:
             logger.debug(f"Loading file contents: {self.filename}")
             handle = Path(self.filename)
-            return handle.read_text()
+            contents = handle.read_text()
+            self.is_file_empty = len(contents) == 0
+
+            return contents
         else:
             logger.error(f"No filename set for {__class__}")
             return ""

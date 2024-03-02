@@ -1,4 +1,5 @@
 """Mod file paths"""
+
 MOD_NAME = "LegendaryCompanions"
 BASE_PATH = "../replica_mod_directory"
 PUBLIC_PATH = f"{BASE_PATH}/Public/{MOD_NAME}"
@@ -22,6 +23,7 @@ MOD_FILENAMES: dict[str, str] = {
     "item_combos": f"{STATS_PATH}/ItemCombos.txt",
     "books_object_file": f"{STATS_DATA_PATH}/LC_Books.txt",
     "equipment": f"{STATS_PATH}/Equipment.txt",
+    "character": f"{STATS_DATA_PATH}/Character.txt",
 }
 
 ARCH_MELEE_SMART_NAME = "melee_smart"

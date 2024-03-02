@@ -30,3 +30,4 @@ from .stats_object_aggregator import StatsObjectAggregator
 from .spell_parser import SpellParser
 from .equipment_set import EquipmentSetType
 from .stats_object_parser import StatsObjectParser
+from .character_parser import CharacterParser
