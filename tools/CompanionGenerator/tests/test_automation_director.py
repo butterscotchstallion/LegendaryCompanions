@@ -47,13 +47,6 @@ def test_create():
     character = CharacterMindflayer(stats_name=companion_name_attr)
     director.add_character_entry(character)
 
-    # Update and verify character
-    updated_char = director.update_characters()
-    assert updated_char, "Failed to update character file"
-    char_parser = CharacterParser()
-    char_entry_names = char_parser.get_entry_names_from_text()
-    assert companion_name_attr in char_entry_names
-
     # Add equipment set
     equipment_set = EquipmentSet(
         equipment_set_name=eqp_set_name,
@@ -63,7 +56,7 @@ def test_create():
 
     assert is_valid_uuid(companion_map_key), "Invalid companion map key"
 
-    # Update spells
+    # Add spells
     summon_spell_name = f"LC_Summon_Legendary_Muffin_{unique_suffix}"
     summon_spell = SummonSpell(
         display_name="Summon Muffin",
@@ -95,9 +88,6 @@ def test_create():
         if num_found_entries > 2:
             break
     assert num_found_entries >= 2, "Failed to add summon spells to aggregator"
-
-    updated_spells = director.update_spells()
-    assert updated_spells, "Failed to update spells"
 
     """
     Book Pages
@@ -198,10 +188,6 @@ def test_create():
         len(director.combo_aggregator.entries) >= 2
     ), "Failed to add summon and upgrade combos"
 
-    # Update combo file
-    updated_combo_file = director.update_item_combos()
-    assert updated_combo_file, "Failed to update upgrade item combos file"
-
     """
     Summon/Upgrade Scrolls
 
@@ -238,18 +224,32 @@ def test_create():
     assert is_valid_uuid(upgrade_scroll_rt_id), "Invalid upgrade scroll RT id"
 
     ####################################################################
-    ################### END OBJECT ENTRIES #############################
+    ############## END OBJECT ENTRIES/BEGIN UPDATES ####################
     ####################################################################
 
-    wrote_obj_entries = director.stats_object_aggregator.update_stats_file()
-    assert wrote_obj_entries, "Failed to update object entries"
+    # Update and verify character
+    updated_char = director.update_characters()
+    assert updated_char, "Failed to update character file"
 
-    ## Append to root template using the above RTs
-    appended_rt = director.append_root_template()
-    assert appended_rt, "Failed to append root template"
+    # Update stats file
+    updated_stats = director.stats_object_aggregator.update_stats_file()
+    assert updated_stats, "Failed to update object entries"
 
-    verify_books(director)
-    verify_localization(director)
+    ## Update root template
+    updated_root_template = director.append_root_template()
+    assert updated_root_template, "Failed to append root template"
+
+    # Update combo file
+    updated_combo_file = director.update_item_combos()
+    assert updated_combo_file, "Failed to update upgrade item combos file"
+
+    # Update spells
+    updated_spells = director.update_spells()
+    assert updated_spells, "Failed to update spells"
+
+    ####################################################################
+    ################ END UPDATES/BEGIN VERIFICATION ####################
+    ####################################################################
 
     """
     Verify links between different parts of the process.
@@ -270,6 +270,9 @@ def test_create():
     15. [✓] Book name -> combo file
     16. [✓] Companion RT -> spell file summon UUID
     """
+    verify_character(director)
+    verify_books(director)
+    verify_localization(director)
     verify_equipment_set(director)
 
     # Map of stats_name -> root template id
@@ -293,6 +296,12 @@ def test_create():
         spell_names_to_verify=set([summon_kobold_spell_name, summon_spell_name]),
     )
     verify_combos_file(set([summon_combo_name, upgrade_combo_name]))
+
+
+def verify_character(director: AutomationDirector):
+    char_parser = CharacterParser()
+    char_entry_names = char_parser.get_entry_names_from_text()
+    assert director.companion.name in char_entry_names
 
 
 def verify_books(director: AutomationDirector):

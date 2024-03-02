@@ -29,11 +29,16 @@ class LogMessage:
         self.timestamp = datetime.now()
         self.message = kwargs["message"]
         self.module_name = kwargs["module_name"]
+        self.level = LogMessageLevel.info
 
         if "level" in kwargs:
             self.level = kwargs["level"]
-        else:
-            self.level = LogMessageLevel.info
+
+
+class InfoMessage(LogMessage):
+    def __init__(self, **kwargs: Unpack[LogMessageKeywords]):
+        super().__init__(**kwargs)
+        self.level = LogMessageLevel.info
 
 
 class ErrorMessage(LogMessage):
