@@ -28,9 +28,7 @@ def test_has_errata():
     info_message = LogMessage(message="Regular info message", module_name=module_name)
 
     aggregator.log(
-        CriticalErrorMessage(
-            message="Critical error message", module_name="Critical Module Name"
-        )
+        CriticalErrorMessage(message="Critical error message", module_name=module_name)
     )
     assert (
         aggregator.has_critical_errata()

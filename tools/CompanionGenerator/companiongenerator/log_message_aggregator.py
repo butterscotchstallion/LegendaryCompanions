@@ -16,7 +16,6 @@ class LogMessageAggregator:
 
     def log(self, message: LogMessage):
         self.messages.add(message)
-
         formatted_message = self._get_formatted_message(message)
         getattr(logger, message.level.lower())(formatted_message)
 

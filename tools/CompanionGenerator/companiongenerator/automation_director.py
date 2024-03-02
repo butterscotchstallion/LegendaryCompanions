@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from time import time
 from typing import Required, TypedDict, Unpack
 from uuid import uuid4
 
@@ -15,6 +16,7 @@ from companiongenerator.item_combo import ItemCombo
 from companiongenerator.item_combo_aggregator import ItemComboAggregator
 from companiongenerator.localization_aggregator import LocalizationAggregator
 from companiongenerator.localization_parser import LocalizationParser
+from companiongenerator.log_message_aggregator import LogMessageAggregator
 from companiongenerator.logger import logger
 from companiongenerator.root_template import BookRT, CompanionRT, PageRT, ScrollRT
 from companiongenerator.root_template_aggregator import RootTemplateAggregator
@@ -52,6 +54,7 @@ class AutomationDirector:
     spell_aggregator: SpellAggregator
     equipment_set_aggregator: EquipmentSetAggregator
     character_aggregator: CharacterAggregator
+    log_message_aggregator: LogMessageAggregator
     default_localization_filename: str = "English"
     companion: CompanionRT
     start_time: float
@@ -66,6 +69,7 @@ class AutomationDirector:
         self.spell_aggregator = SpellAggregator()
         self.equipment_set_aggregator = EquipmentSetAggregator()
         self.character_aggregator = CharacterAggregator()
+        self.log_message_aggregator = LogMessageAggregator()
         self.file_handler = FileHandler()
         self.unique_suffix = str(uuid4())[0:6]
 
@@ -79,13 +83,25 @@ class AutomationDirector:
         logger.info(f"Initializing new automation run! [{self.unique_suffix}]")
         logger.info("=================================================")
 
+        automation_start = time()
+
         self.localization_aggregator.load_localization_entries_from_file()
         self.combo_aggregator.load_entries_from_file()
         self.spell_aggregator.load_entries_from_file()
         self.equipment_set_aggregator.load_entries_from_file()
         self.character_aggregator.load_entries_from_file()
 
+        logger.info(
+            f"Loaded entries from file in {str(round(time() - automation_start, 2))} seconds"
+        )
+
         return self.unique_suffix
+
+    def can_update(self) -> bool:
+        """
+        We should not update unless there are no critical errors
+        """
+        return not self.log_message_aggregator.has_critical_errata()
 
     def add_combo(self, combo: ItemCombo):
         """
