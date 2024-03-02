@@ -25,9 +25,8 @@ class LogMessageAggregator:
         Returns a list of errors and critical errors
         """
         errors = self.get_messages_by_level(LogMessageLevel.error)
-        # critical_errors = self.get_messages_by_level(LogMessageLevel.critical)
-        # return errors + critical_errors
-        return errors
+        critical_errors = self.get_messages_by_level(LogMessageLevel.critical)
+        return errors + critical_errors
 
     def has_errata(self) -> bool:
         return len(self.get_error_messages()) > 0

@@ -10,7 +10,7 @@ class LogMessageLevel(StrEnum):
     error = "ERROR"
     # These don't exist on the logger currently
     # warn = "WARN"
-    # critical = "CRITICAL"
+    critical = "CRITICAL"
 
 
 class LogMessageKeywords(TypedDict):
@@ -40,3 +40,9 @@ class ErrorMessage(LogMessage):
     def __init__(self, **kwargs: Unpack[LogMessageKeywords]):
         super().__init__(**kwargs)
         self.level = LogMessageLevel.error
+
+
+class CriticalErrorMessage(LogMessage):
+    def __init__(self, **kwargs: Unpack[LogMessageKeywords]):
+        super().__init__(**kwargs)
+        self.level = LogMessageLevel.critical

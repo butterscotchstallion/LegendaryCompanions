@@ -3,7 +3,6 @@ from uuid import uuid4
 from companiongenerator.character_aggregator import CharacterAggregator
 from companiongenerator.character_mindflayer import CharacterMindflayer
 from companiongenerator.character_parser import CharacterParser
-from companiongenerator.logger import logger
 
 
 def test_add_entry():
@@ -37,8 +36,6 @@ def test_update_character_file():
     assert updated, "Failed to update character file"
 
     entries_from_file = char_parser.get_entry_names_from_text()
-
-    logger.debug(f"CharacterAggregatorTest: {entries_from_file}")
 
     assert (
         chr_stats_name in entries_from_file
