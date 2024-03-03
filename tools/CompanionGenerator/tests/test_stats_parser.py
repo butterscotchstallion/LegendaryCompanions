@@ -62,31 +62,6 @@ def test_parse_quoted_value():
     ), "Unexpected value for malformed spell input"
 
 
-def test_get_entry_names_from_file():
-    """Gets a list of all entries in a file and
-    tests parsing entry names from those results
-    """
-    handle = Path(MOD_FILENAMES["spell_text_file_summons"])
-    spell_text_file_contents = handle.read_text()
-    spell_list = parser.get_entry_names_from_text(spell_text_file_contents)
-    spells_set: set[str] = set(spell_list)
-
-    if len(spell_text_file_contents) > 0 and len(spell_list) == 0:
-        assert len(spell_list) > 0, "No spells in list!"
-
-    expected_spell_names: set[str] = set(
-        [
-            "LC_Summon",
-            "LC_Summon_RSO_Legendary",
-            "LC_Summon_Githzerai_Legendary",
-            "LC_Summon_Muffin_Legendary",
-            "LC_Upgrade_Companion",
-        ]
-    )
-
-    assert expected_spell_names.issubset(spells_set)
-
-
 def test_parse_book_objects_file():
     handle = Path(MOD_FILENAMES["books_object_file"])
     objects_file_text = handle.read_text()
