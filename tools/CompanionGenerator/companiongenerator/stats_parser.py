@@ -1,9 +1,7 @@
-import os
 from enum import StrEnum
 from pathlib import Path
 from typing import Required, TypedDict
 
-from companiongenerator.file_handler import FileHandler
 from companiongenerator.logger import logger
 
 
@@ -212,39 +210,7 @@ class StatsParser:
             handle = Path(self.filename)
             contents = handle.read_text()
             self.is_file_empty = len(contents) == 0
-
             return contents
         else:
             logger.error(f"No filename set for {__class__}")
             return ""
-
-    def add_entry(self, entry_name: str, entry_text: str) -> bool:
-        """
-        Adds new entry if it doesn't exist
-        """
-        existing_names: set[str] = self.get_entry_names_from_text(
-            self.get_file_contents()
-        )
-
-        if entry_name not in existing_names:
-            handler = FileHandler()
-            backup_created = handler.create_backup_file(self.filename)
-            if backup_created:
-                with open(self.filename, "a+") as handle:
-                    handle.seek(os.SEEK_END)
-
-                    # Make sure we add a new line if it's not there
-                    contents = entry_text
-                    if not contents.startswith("\n"):
-                        contents = "\n\n" + contents
-
-                    success = bool(handle.write(contents))
-
-                    if success:
-                        logger.trace(f"Added {self.parser_type} entry to file")
-
-                    return success
-            else:
-                return False
-        else:
-            return True
