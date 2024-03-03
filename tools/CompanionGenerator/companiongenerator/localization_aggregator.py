@@ -18,7 +18,7 @@ class LocalizationAggregator:
     all entries will be written to the localization file.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self):
         self.entries: set[LocalizationEntry] = set([])
 
     def load_localization_entries_from_file(self):

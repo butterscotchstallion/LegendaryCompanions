@@ -18,9 +18,9 @@ class LocalizationParser:
     entries_added: int
 
     def __init__(self):
-        self.filename = ""
-        self.entries_added = 0
-        self.tree = None
+        self.filename: str = ""
+        self.entries_added: int = 0
+        self.tree: ET.ElementTree | None = None
 
     def get_content_list(self, root: ET.Element) -> list[ET.Element]:
         return root.findall("content")
@@ -81,4 +81,6 @@ class LocalizationParser:
     def write_tree(self):
         if self.tree and self.entries_added > 0:
             self.tree.write(self.filename, "unicode", True)
-            logger.info(f"Wrote {self.entries_added} localization entries")
+            logger.debug(
+                f"[LocalizationParser] Wrote {self.entries_added} localization entries"
+            )

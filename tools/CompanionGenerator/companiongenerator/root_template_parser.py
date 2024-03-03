@@ -71,7 +71,7 @@ class RootTemplateParser:
 
         return existing_names
 
-    def append_nodes_to_children(
+    def get_updated_children(
         self, filename: str, nodes: set[RootTemplateNodeEntry]
     ) -> str | None:
         """

@@ -359,7 +359,7 @@ class AutomationDirector:
                 MOD_FILENAMES["root_template_merged"]
             )
             if backup_created:
-                success = self.rt_aggregator.append_root_template()
+                success = self.rt_aggregator.update_root_template()
 
             if not success:
                 self.log_message_aggregator.log(

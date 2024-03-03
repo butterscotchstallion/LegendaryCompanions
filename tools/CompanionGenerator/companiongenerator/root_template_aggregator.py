@@ -5,7 +5,7 @@ from companiongenerator.root_template_parser import RootTemplateParser
 
 
 class RootTemplateAggregator:
-    def __init__(self, **kwargs) -> None:
+    def __init__(self) -> None:
         self.file_handler = FileHandler()
         self.root_template_parser = RootTemplateParser()
         self.entries: set[RootTemplateNodeEntry] = set([])
@@ -19,7 +19,7 @@ class RootTemplateAggregator:
             )
         )
 
-    def append_root_template(self) -> bool | None:
+    def update_root_template(self) -> bool | None:
         """
         1. Find existing backups, if any
         2. Overwrite existing backup if exists, or create new one
@@ -32,7 +32,7 @@ class RootTemplateAggregator:
         Returns:
             bool | None: Returns true if successful
         """
-        xml_merged_str = self.root_template_parser.append_nodes_to_children(
+        xml_merged_str = self.root_template_parser.get_updated_children(
             MOD_FILENAMES["root_template_merged"], self.entries
         )
 

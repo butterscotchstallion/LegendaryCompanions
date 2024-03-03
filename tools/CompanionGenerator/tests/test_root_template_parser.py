@@ -92,7 +92,7 @@ def test_parse_and_append():
     )
 
     # Parse XML and verify children tag exists
-    xml_with_new_nodes = parser.append_nodes_to_children(
+    xml_with_new_nodes = parser.get_updated_children(
         MOD_FILENAMES["root_template_merged"],
         new_nodes,
     )
