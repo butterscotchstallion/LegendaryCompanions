@@ -267,7 +267,9 @@ class AutomationDirector:
             if num_entries:
                 backup_created = self.file_handler.create_backup_file(loca_file)
                 if backup_created:
-                    updated_content_list = parser.append_entries(loca_file, entries)
+                    updated_content_list = parser.get_updated_children(
+                        loca_file, entries
+                    )
                     if updated_content_list is not None:
                         parser.write_tree()
                         success = True
@@ -307,7 +309,7 @@ class AutomationDirector:
 
             if create_ok:
                 parser = BookParser()
-                books = parser.update_book_file(
+                books = parser.get_updated_children(
                     book_filename, self.book_loca_aggregator.entries
                 )
 

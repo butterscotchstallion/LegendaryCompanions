@@ -25,7 +25,7 @@ class LocalizationParser:
     def get_content_list(self, root: ET.Element) -> list[ET.Element]:
         return root.findall("content")
 
-    def append_entries(
+    def get_updated_children(
         self, filename: str, entries: set[LocalizationEntry]
     ) -> ET.Element | None:
         # Appends localization entries and returns updated content list

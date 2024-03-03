@@ -56,7 +56,7 @@ def test_append_localization_entries():
     # Parse loca XML and return tree for verification
     parser = LocalizationParser()
     entries = loca_aggregator.entries
-    content_list = parser.append_entries(MOD_FILENAMES["localization"], entries)
+    content_list = parser.get_updated_children(MOD_FILENAMES["localization"], entries)
 
     assert content_list is not None, "Failed to append to loca entries"
 

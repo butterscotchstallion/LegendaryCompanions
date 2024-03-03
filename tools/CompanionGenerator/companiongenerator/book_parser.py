@@ -66,7 +66,7 @@ class BookParser:
                     """
                     return region_node_children
 
-    def update_book_file(self, filename: str, books: list[BookLocaEntry]):
+    def get_updated_children(self, filename: str, books: list[BookLocaEntry]):
         """
         Parses book file and appends new books
 
