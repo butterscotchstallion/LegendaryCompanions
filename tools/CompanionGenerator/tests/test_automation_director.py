@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from typing import Literal, Required, TypedDict
+from typing import Literal
 
 from companiongenerator.automation_director import AutomationDirector
 from companiongenerator.book_loca_entry import BookLocaEntry
@@ -376,7 +376,10 @@ def verify_book_xml(book: BookLocaEntry, updated_book_children: ET.Element):
 
 
 def verify_stats_objects(objects_to_verify: dict[str, str]):
-    """ """
+    """
+    Verifies that each stats object in the file has a matching
+    root template id
+    """
     # Verify page RT map key in object file
     stats_object_parser = StatsObjectParser()
 
@@ -403,11 +406,6 @@ def verify_equipment_set(director: AutomationDirector):
     ), "Failed to verify equipment set in file"
 
 
-class VerifySpellsKeywords(TypedDict):
-    spell_names_to_verify: Required[set[str]]
-    companion_map_key: Required[str]
-
-
 def verify_spells(director: AutomationDirector):
     """
     Verify each spell made it into the file
@@ -428,6 +426,7 @@ def verify_spells(director: AutomationDirector):
             spell.spell_name in spell_entry_info
         ), f"Failed to verify spell: {spell.spell_name}"
 
+        # Verify summon_uuid for summoning spells
         if isinstance(spell, SummonSpell):
             assert (
                 spell_entry_info[spell.spell_name]["summon_uuid"] == companion_map_key
