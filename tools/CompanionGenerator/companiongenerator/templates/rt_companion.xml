@@ -36,5 +36,8 @@
                 </node>
             </children>
         </node>
+        <node id="SkillList">
+            <children></children>
+        </node>
     </children>
 </node>
