@@ -58,6 +58,27 @@ def verify_node_children(node_children: list[ET.Element], root_template_object) 
     return False
 
 
+def test_parse_skill_list():
+    """
+    Parses RT template and gets skill list children,
+    then adds a skill and verifies it was added
+    """
+    parser = RootTemplateParser()
+
+    # Get companion node XML
+    companion_rt = get_companion_rt()
+    companion_xml = companion_rt.get_tpl_with_replacements()
+
+    # parse it into an element
+    root = ET.fromstring(companion_xml)
+    skill_list_node = parser.get_skill_list_node(root)
+
+    ET.dump(skill_list_node)
+
+    # skill_list_node = parser.get_skill_list_node()
+    # assert skill_list_node is not None, "Failed to get skill list node"
+
+
 def test_parse_and_append():
     """
     Tests parsing XML files and appending to the

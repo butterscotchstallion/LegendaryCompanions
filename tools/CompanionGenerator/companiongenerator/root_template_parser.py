@@ -7,7 +7,7 @@ from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
 from companiongenerator.xml_utils import (
     get_comment_preserving_parser,
     get_error_message,
-    get_tag_with_id_from_root,
+    get_tag_with_id_from_node,
 )
 
 
@@ -20,11 +20,17 @@ class RootTemplateParser:
         self.filename = ""
         self.tree: ET.ElementTree
 
+    def get_skill_list_node(self, game_object_node: ET.Element) -> ET.Element | None:
+        """
+        Find the skill list node inside of the individual companion node
+        """
+        return get_tag_with_id_from_node(game_object_node, "node", "SkillList")
+
     def get_templates_children(self, root: ET.Element) -> ET.Element | None:
         # Get region#Templates
-        templates_region = get_tag_with_id_from_root(root, "region", "Templates")
+        templates_region = get_tag_with_id_from_node(root, "region", "Templates")
         if templates_region is not None:
-            node = get_tag_with_id_from_root(templates_region, "node", "Templates")
+            node = get_tag_with_id_from_node(templates_region, "node", "Templates")
             if node is not None:
                 return node.find("children")
 

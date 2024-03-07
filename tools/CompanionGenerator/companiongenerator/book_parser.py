@@ -7,7 +7,7 @@ from companiongenerator.logger import logger
 from companiongenerator.xml_utils import (
     get_comment_preserving_parser,
     get_error_message,
-    get_tag_with_id_from_root,
+    get_tag_with_id_from_node,
 )
 
 
@@ -51,9 +51,9 @@ class BookParser:
         Args:
             root (ET.Element): root element
         """
-        region = get_tag_with_id_from_root(root, "region", "TranslatedStringKeys")
+        region = get_tag_with_id_from_node(root, "region", "TranslatedStringKeys")
         if region is not None:
-            region_node = get_tag_with_id_from_root(
+            region_node = get_tag_with_id_from_node(
                 region, "node", "TranslatedStringKeys"
             )
             if region_node is not None:
