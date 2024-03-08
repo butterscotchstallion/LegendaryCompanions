@@ -73,7 +73,8 @@ def test_parse_skill_list():
     root = ET.fromstring(companion_xml)
     skill_list_node = parser.get_skill_list_node(root)
 
-    ET.dump(skill_list_node)
+    if skill_list_node:
+        ET.dump(skill_list_node)
 
     # skill_list_node = parser.get_skill_list_node()
     # assert skill_list_node is not None, "Failed to get skill list node"

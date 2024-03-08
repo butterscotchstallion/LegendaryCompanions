@@ -23,6 +23,7 @@ class RootTemplateParser:
     def get_skill_list_node(self, game_object_node: ET.Element) -> ET.Element | None:
         """
         Find the skill list node inside of the individual companion node
+        node > children > node#SkillList > children > node
         """
         return get_tag_with_id_from_node(game_object_node, "node", "SkillList")
 
