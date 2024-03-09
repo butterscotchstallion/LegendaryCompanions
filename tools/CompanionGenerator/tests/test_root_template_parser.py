@@ -73,13 +73,9 @@ def test_parse_skill_list():
     root_companion_node = ET.fromstring(companion_xml)
     skill_list_node = parser.get_skill_list_node(root_companion_node)
 
-    if skill_list_node is not None:
-        ET.dump(skill_list_node)
-    else:
-        assert False, "Failed to get skill list node"
-
-    # skill_list_node = parser.get_skill_list_node()
-    # assert skill_list_node is not None, "Failed to get skill list node"
+    assert skill_list_node is not None
+    # The node should have a children tag inside it
+    assert skill_list_node.find("children") is not None
 
 
 def test_parse_and_append():
