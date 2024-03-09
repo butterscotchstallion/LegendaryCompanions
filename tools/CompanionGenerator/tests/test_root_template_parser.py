@@ -4,6 +4,7 @@ from companiongenerator import logger
 from companiongenerator.constants import MOD_FILENAMES
 from companiongenerator.root_template_aggregator import RootTemplateNodeEntry
 from companiongenerator.root_template_parser import RootTemplateParser
+from companiongenerator.skill import Skill
 
 from tests.rt_test_helper import get_companion_rt, get_page_rt, get_scroll_rt
 
@@ -76,6 +77,12 @@ def test_parse_skill_list():
     assert skill_list_node is not None
     # The node should have a children tag inside it
     assert skill_list_node.find("children") is not None
+
+    # Add new skill, append, and verify
+    new_skill = Skill("SummonChurros")
+    updated_skill_list = parser.get_updated_skill_list()
+
+    assert updated_skill_list, "Failed to update skill list"
 
 
 def test_parse_and_append():
