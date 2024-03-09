@@ -69,7 +69,7 @@ def test_parse_skill_list():
     companion_rt = get_companion_rt()
     companion_xml = companion_rt.get_tpl_with_replacements()
 
-    # parse it into an element
+    # Parse it into an element
     root_companion_node = ET.fromstring(companion_xml)
     skill_list_node = parser.get_skill_list_node(root_companion_node)
 

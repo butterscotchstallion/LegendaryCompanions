@@ -25,7 +25,7 @@ class RootTemplateParser:
         Find the skill list node inside of the individual companion node
         node > children > node#SkillList > children > skill node
         """
-        return game_object_node.findall(""".//*[@id='SkillList']""")[0]
+        return game_object_node.findall(""".//node[@id='SkillList']""")[0]
 
     def get_templates_children(self, root: ET.Element) -> ET.Element | None:
         # Get region#Templates

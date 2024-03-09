@@ -6,6 +6,24 @@ from xml.etree import ElementTree
 StringIO = io.StringIO
 
 
+class getElementById:
+    def __init__(self, tree):
+        self.di = {}
+
+        def v(node):
+            i = node.attrib.get("id")
+            if i is not None:
+                self.di[i] = node
+
+            for child in node:
+                v(child)
+
+        v(tree.getroot())
+
+    def __call__(self, k):
+        return self.di[k]
+
+
 def get_comment_preserving_parser():
     return ElementTree.XMLParser(target=ElementTree.TreeBuilder(insert_comments=True))
 
