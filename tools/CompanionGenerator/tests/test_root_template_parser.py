@@ -70,11 +70,13 @@ def test_parse_skill_list():
     companion_xml = companion_rt.get_tpl_with_replacements()
 
     # parse it into an element
-    root = ET.fromstring(companion_xml)
-    skill_list_node = parser.get_skill_list_node(root)
+    root_companion_node = ET.fromstring(companion_xml)
+    skill_list_node = parser.get_skill_list_node(root_companion_node)
 
-    if skill_list_node:
+    if skill_list_node is not None:
         ET.dump(skill_list_node)
+    else:
+        assert False, "Failed to get skill list node"
 
     # skill_list_node = parser.get_skill_list_node()
     # assert skill_list_node is not None, "Failed to get skill list node"
