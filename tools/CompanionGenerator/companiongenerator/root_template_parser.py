@@ -129,10 +129,14 @@ class RootTemplateParser:
                             if new_node.comment:
                                 node_children.append(ET.Comment(new_node.comment))
 
-                            node_children.append(
-                                ET.fromstring(new_node.root_template_xml)
-                            )
-                            nodes_names_added.add(new_node.name)
+                            # Append skill node
+                            new_node_el = ET.fromstring(new_node.root_template_xml)
+                            skill_list_node = self.get_skill_list_node(root)
+                            if skill_list_node is not None:
+                                updated_node_el = self.upd
+
+                                node_children.append(updated_node_el)
+                                nodes_names_added.add(new_node.name)
 
                     logger.info(
                         f"{len(nodes_names_added)} root templates added to {Path(self.filename).stem}: {','.join(nodes_names_added)}"
