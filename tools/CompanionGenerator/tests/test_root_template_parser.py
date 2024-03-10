@@ -80,9 +80,17 @@ def test_parse_skill_list():
 
     # Add new skill, append, and verify
     new_skill = Skill("SummonChurros")
-    updated_skill_list = parser.get_updated_skill_list()
+    skills = set([new_skill])
+    updated_skill_list = parser.get_updated_skill_list(skill_list_node, skills)
 
-    assert updated_skill_list, "Failed to update skill list"
+    assert updated_skill_list is not None, "Failed to update skill list"
+
+    # Verify skills were added
+    updated_children = updated_skill_list.find("children")
+    assert updated_children is not None
+
+    updated_skill_nodes = updated_children.findall("node")
+    assert skills is not None and len(updated_skill_nodes) == 1
 
 
 def test_parse_and_append():

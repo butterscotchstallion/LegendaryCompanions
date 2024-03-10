@@ -4,6 +4,7 @@ from pathlib import Path
 
 from companiongenerator.logger import logger
 from companiongenerator.root_template_node_entry import RootTemplateNodeEntry
+from companiongenerator.skill import Skill
 from companiongenerator.xml_utils import (
     get_comment_preserving_parser,
     get_error_message,
@@ -19,6 +20,21 @@ class RootTemplateParser:
     def __init__(self):
         self.filename = ""
         self.tree: ET.ElementTree
+
+    def get_updated_skill_list(
+        self, skill_list_node: ET.Element, skills: set[Skill]
+    ) -> ET.Element | None:
+        """
+        Appends skills to skill list node
+        """
+        children_node = skill_list_node.find("children")
+
+        if children_node is not None:
+            for skill in skills:
+                skill_xml = skill.get_tpl_with_replacements()
+                skill_el = ET.fromstring(skill_xml)
+                children_node.append(skill_el)
+            return skill_list_node
 
     def get_skill_list_node(self, game_object_node: ET.Element) -> ET.Element | None:
         """
