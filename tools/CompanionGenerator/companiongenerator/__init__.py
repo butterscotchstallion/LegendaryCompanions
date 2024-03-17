@@ -32,3 +32,6 @@ from .equipment_set import EquipmentSetType
 from .stats_object_parser import StatsObjectParser
 from .character_parser import CharacterParser
 from .character import Character, CharacterName
+from .file_resetter import FileResetter
+from .file_templates import FileTemplates
+from .replica_files import ReplicaFiles
